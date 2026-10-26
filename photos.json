@@ -257,6 +257,12 @@
    "author": "Andreas Trepte",
    "license": "CC BY-SA 2.5",
    "page": "https://commons.wikimedia.org/wiki/File:Tower_of_the_Winds_Athen.jpg"
+  },
+  {
+   "src": "img/torreVentos-2.jpg",
+   "author": "Jakub Hałun",
+   "license": "CC BY 4.0",
+   "page": "https://commons.wikimedia.org/wiki/File:Tower_of_the_Winds%2C_Athens%2C_20240531_1804_9858.jpg"
   }
  ],
  "hipocausto": [
@@ -301,6 +307,12 @@
    "author": "John Singer Sargent (pintura)",
    "license": "CC0",
    "page": "https://commons.wikimedia.org/wiki/File:Bedouin_Tent_MET_APS3594.jpg"
+  },
+  {
+   "src": "img/tenda-2.jpg",
+   "author": "Tomergavish",
+   "license": "CC BY-SA 4.0",
+   "page": "https://commons.wikimedia.org/wiki/File:A_Bedouin_tent_2.jpg"
   }
  ],
  "iglu": [
@@ -379,6 +391,12 @@
    "author": "Pascal Vuylsteker",
    "license": "CC BY-SA 2.0",
    "page": "https://commons.wikimedia.org/wiki/File:NGA_Fog_sculpture_by_Fujiko_Nakaya_%283070821894%29.jpg"
+  },
+  {
+   "src": "img/nakaya-2.jpg",
+   "author": "Bertie Mabootoo",
+   "license": "CC BY 2.0",
+   "page": "https://commons.wikimedia.org/wiki/File:NGA_Fog_sculpture_by_Fujiko_Nakaya_%28429173353%29.jpg"
   }
  ],
  "pedregulho": [
@@ -395,6 +413,158 @@
    "author": "Art & Language",
    "license": "CC BY-SA 4.0",
    "page": "https://commons.wikimedia.org/wiki/File:Art_language_air_conditioning_show_conceptual_contemporary_art.jpg"
+  }
+ ],
+ "mediaTic": [
+  {
+   "src": "img/mediaTic-1.jpg",
+   "author": "Enfo",
+   "license": "CC BY-SA 3.0",
+   "page": "https://commons.wikimedia.org/wiki/File:35_Edifici_Media-TIC%2C_c._Sancho_de_%C3%81vila.JPG"
+  }
+ ],
+ "botticelli": [
+  {
+   "src": "img/botticelli-1.jpg",
+   "author": "Sandro Botticelli",
+   "license": "Domínio público",
+   "page": "https://commons.wikimedia.org/wiki/File:Sandro_Botticelli_-_La_nascita_di_Venere_-_Google_Art_Project_-_edited.jpg"
+  }
+ ],
+ "calder": [
+  {
+   "src": "img/calder-1.jpg",
+   "author": "Wmpearl",
+   "license": "CC0",
+   "page": "https://commons.wikimedia.org/wiki/File:%27Mobile%27%2C_by_Alexander_Calder%2C_Tate_Modern.JPG"
+  }
+ ],
+ "rickey": [
+  {
+   "src": "img/rickey-1.jpg",
+   "author": "IH Havens",
+   "license": "CC BY-SA 4.0",
+   "page": "https://commons.wikimedia.org/wiki/File:George_Rickey_Kinetic_Sculpture_Downtown_South_Bend_2015.jpg"
+  }
+ ],
+ "chillida": [
+  {
+   "src": "img/chillida-1.jpg",
+   "author": "Ermell",
+   "license": "CC BY-SA 4.0",
+   "page": "https://commons.wikimedia.org/wiki/File:San_Sebastian_Peine_del_Viento-Haizearen_Orrazia_1190518.jpg"
+  }
+ ],
+ "strandbeest": [
+  {
+   "src": "img/strandbeest-1.jpg",
+   "author": "Luc Van Braekel",
+   "license": "CC BY 2.0",
+   "page": "https://commons.wikimedia.org/wiki/File:Theo_Jansen_at_CWF08_%283046346089%29.jpg"
+  }
+ ],
+ "zephyrometer": [
+  {
+   "src": "img/zephyrometer-1.jpg",
+   "author": "Lanma726",
+   "license": "CC BY-SA 3.0",
+   "page": "https://commons.wikimedia.org/wiki/File:Zephyrometer_Wellington.jpg"
+  }
+ ],
+ "seaOrgan": [
+  {
+   "src": "img/seaOrgan-1.jpg",
+   "author": "Andrej Šalov",
+   "license": "CC BY-SA 3.0",
+   "page": "https://commons.wikimedia.org/wiki/File:Sea_organ_Zadar_3.JPG"
+  }
+ ],
+ "singingTree": [
+  {
+   "src": "img/singingTree-1.jpg",
+   "author": "Childzy",
+   "license": "CC BY 3.0",
+   "page": "https://commons.wikimedia.org/wiki/File:Singing_Ringing_Tree_Stitch.jpg"
+  }
+ ],
+ "bahrainWTC": [
+  {
+   "src": "img/bahrainWTC-1.jpg",
+   "author": "B.alotaby",
+   "license": "CC BY-SA 4.0",
+   "page": "https://commons.wikimedia.org/wiki/File:Bahrain_World_trade_Center_.jpg"
+  }
+ ],
+ "rokko": [
+  {
+   "src": "img/rokko-1.jpg",
+   "author": "そらみみ",
+   "license": "CC BY-SA 4.0",
+   "page": "https://commons.wikimedia.org/wiki/File:Rokko-Shidare_Observatory_from_Rokko_View_Palace.JPG"
+  }
+ ],
+ "burj": [
+  {
+   "src": "img/burj-1.jpg",
+   "author": "Laika ac",
+   "license": "CC BY-SA 2.0",
+   "page": "https://commons.wikimedia.org/wiki/File:Burj_Khalifa_%2816260269606%29.jpg"
+  }
+ ],
+ "aeolus": [
+  {
+   "src": "img/aeolus-1.jpg",
+   "author": "Editor5807",
+   "license": "CC BY-SA 3.0",
+   "page": "https://commons.wikimedia.org/wiki/File:Canary_Wharf_Aeolus_sculpture.JPG"
+  }
+ ],
+ "pearlRiver": [
+  {
+   "src": "img/pearlRiver-1.jpg",
+   "author": "IndexxRus",
+   "license": "CC BY-SA 3.0",
+   "page": "https://commons.wikimedia.org/wiki/File:Pearl_River_Tower_%28Guangzhou%2C_China%29_indexxrus.JPG"
+  }
+ ],
+ "shanghaiTower": [
+  {
+   "src": "img/shanghaiTower-1.jpg",
+   "author": "Baycrest",
+   "license": "CC BY-SA 2.5",
+   "page": "https://commons.wikimedia.org/wiki/File:Shanghai_Tower_2015.jpg"
+  }
+ ],
+ "montgolfier": [
+  {
+   "src": "img/montgolfier-1.jpg",
+   "author": "Library of Congress",
+   "license": "Domínio público",
+   "page": "https://commons.wikimedia.org/wiki/File:Experience_aerostatique_faite_Versailles_le_19_sept._1783_LCCN2002736265.tiff"
+  }
+ ],
+ "kitchenMonument": [
+  {
+   "src": "img/kitchenMonument-1.jpg",
+   "author": "Latefa Benzakour",
+   "license": "CC BY-SA 3.0",
+   "page": "https://commons.wikimedia.org/wiki/File:K%C3%BCchenmonument_Berlin.jpg"
+  }
+ ],
+ "deller": [
+  {
+   "src": "img/deller-1.jpg",
+   "author": "Hesperian Nguyen",
+   "license": "CC BY-SA 4.0",
+   "page": "https://commons.wikimedia.org/wiki/File:Sacrilege_-_Deller.jpg"
+  }
+ ],
+ "bigAirPackage": [
+  {
+   "src": "img/bigAirPackage-1.jpg",
+   "author": "Arnoldius",
+   "license": "CC BY-SA 4.0",
+   "page": "https://commons.wikimedia.org/wiki/File:Gasometer_OB_Big_Air_Package.jpg"
   }
  ]
 }

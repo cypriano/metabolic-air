@@ -127,6 +127,7 @@ h2{margin:0;font:400 28px/1.05 var(--display);letter-spacing:-.01em;text-wrap:ba
 /* photos — always shown in black and white to keep the almanac’s palette */
 .filters{align-items:stretch}
 .cover-tg{margin-left:auto;display:flex;align-items:center;gap:0}
+.cover-tg + .cover-tg{margin-left:16px}
 .cover-tg > span{color:var(--mute);padding-right:12px;font-size:11px;letter-spacing:.12em}
 .cover-tg button{margin:0 -1px -1px 0}
 @media (max-width:620px){.cover-tg{margin-left:0;margin-top:10px;width:100%}}
@@ -1581,6 +1582,308 @@ footer{padding-block:28px 48px;display:flex;justify-content:space-between;gap:16
 
   const yearOf = p => { const s = p.pt[5]; if (/Tradicional/.test(s)) return -5000; const m = s.match(/(\d{1,4})/); if (!m) return 9999; return /a\.C\./.test(s) ? -(+m[1]) : +m[1]; };
 
+  /* ───────── Volume III, third layer: inflatables and wind ───────── */
+  Object.assign(DOM, { infl: 'Infláveis|Inflatables', vento: 'Vento|Wind' });
+  ORDER[3] = ['his', 'arte', 'exp', 'arq', 'infl', 'vento'];
+  // works already in the volume that belong with the new groups
+  ['suitaloon', 'villaRosa', 'oase7', 'christoPackage', 'olympicRainbow', 'leviathan', 'antFarm', 'silverClouds'].forEach(k => { const p = PLATES.find(x => x.key === k); if (p) p.dom = 'infl'; });
+  ['blueSail'].forEach(k => { const p = PLATES.find(x => x.key === k); if (p) p.dom = 'vento'; });
+  Object.assign(UI.pt, { order: 'Ordem', oAsc: 'Mais antigas', oDesc: 'Mais recentes', oGrp: 'Por grupo' });
+  Object.assign(UI.en, { order: 'Order', oAsc: 'Oldest first', oDesc: 'Newest first', oGrp: 'By group' });
+
+  const membrane = (cx, base, rx, ry, cls = '') => `<path class="${cls}" d="M${cx - rx} ${base} C${cx - rx} ${base - ry * 1.3} ${cx + rx} ${base - ry * 1.3} ${cx + rx} ${base}"/>`;
+  const arcs = (x, y, rs, a0 = -.6, a1 = .6) => rs.map(r => `<path class="thin" d="M${f1(x + r * Math.cos(a0))} ${f1(y + r * Math.sin(a0))} A${r} ${r} 0 0 1 ${f1(x + r * Math.cos(a1))} ${f1(y + r * Math.sin(a1))}"/>`).join('');
+
+  Object.assign(art, {
+    lanchester: () =>
+      `<line x1="10" y1="150" x2="230" y2="150"/>` + membrane(120, 150, 90, 70) + membrane(120, 150, 84, 64, 'thin') +
+      `<rect x="200" y="132" width="20" height="18"/><path class="thin" d="M210 136 V146 M205 141 H215"/><rect class="knock" x="32" y="122" width="16" height="28"/>` +
+      A('M120 120 L120 84', '') + A('M90 118 L74 98', '') + A('M150 118 L166 98', '') + T(120, 172, 'barraca sustentada só por ar|a tent held up by air alone', 'middle'),
+    radome: () =>
+      `<rect class="h" x="60" y="132" width="120" height="18"/><path d="M60 132 A60 60 0 0 1 180 132"/>` +
+      `<path class="dash" d="M96 108 Q120 84 144 108 M120 100 V132"/><line x1="10" y1="150" x2="230" y2="150"/>` + T(120, 172, 'cúpula de ar protege o radar|an air dome shields the radar', 'middle'),
+    fiberthin: () =>
+      `<line x1="10" y1="150" x2="230" y2="150"/><path d="M30 150 C30 90 90 80 120 96 C150 80 210 90 210 150"/><path class="thin" d="M120 96 V150"/>` +
+      `<rect class="knock" x="60" y="122" width="16" height="28"/><ellipse class="thin" cx="160" cy="118" rx="14" ry="8"/>` + T(120, 172, 'uma casa barata de nylon inflado|a cheap house of inflated nylon', 'middle'),
+    kleinAerostatic: () => {
+      const R = rng(311); let s = `<line x1="10" y1="156" x2="230" y2="156"/>`;
+      for (let i = 0; i < 26; i++) { const x = 30 + R() * 180, y = 12 + R() * 90, r = 4 + R() * 3; s += `<circle class="${i % 3 ? '' : 'f'}" cx="${f1(x)}" cy="${f1(y)}" r="${f1(r)}"/><path class="thin" d="M${f1(x)} ${f1(y + r)} q-2 6 0 12"/>`; }
+      return s + person(120, 156, .7) + T(120, 176, '1.001 balões soltos no céu|1,001 balloons released', 'middle');
+    },
+    lundyAEC: () =>
+      `<line x1="10" y1="150" x2="230" y2="150"/><path d="M20 150 C20 60 220 60 220 150"/><path class="thin" d="M34 150 C34 74 206 74 206 150"/>` +
+      [60, 90, 120, 150, 180].map(x => `<line class="thin" x1="${x}" y1="${x === 120 ? 76 : x < 120 ? 96 - (120 - x) * .2 : 96 - (x - 120) * .2}" x2="${x}" y2="${x === 120 ? 90 : 104}"/>`).join('') +
+      `<rect class="knock" x="108" y="122" width="24" height="28"/>` + T(120, 172, 'pavilhão itinerante de parede dupla|travelling double-wall pavilion', 'middle'),
+    structuresGonflables: () =>
+      `<line x1="10" y1="150" x2="230" y2="150"/>` + membrane(64, 150, 40, 46) + `<rect x="120" y="70" width="90" height="22" rx="11"/><rect x="120" y="96" width="90" height="22" rx="11"/>` +
+      `<ellipse cx="168" cy="140" rx="26" ry="10"/><ellipse cx="168" cy="128" rx="20" ry="8"/>` + T(120, 172, 'objetos e casas de ar, Paris|objects and houses of air, Paris', 'middle'),
+    ufo: () =>
+      `<line x1="10" y1="152" x2="230" y2="152"/><path class="h" d="M14 70 C40 50 200 40 226 66 C230 84 210 94 120 96 C30 98 8 86 14 70 Z"/><path d="M14 70 C40 50 200 40 226 66 C230 84 210 94 120 96 C30 98 8 86 14 70 Z"/>` +
+      [50, 90, 130, 170, 200].map(x => person(x, 152, .8) + `<line class="thin" x1="${x}" y1="${152 - 22 * .8}" x2="${x}" y2="96"/>`).join('') + T(120, 176, 'inflável como protesto na rua|inflatable as street protest', 'middle'),
+    hollein: () =>
+      `<line x1="10" y1="150" x2="230" y2="150"/>` + membrane(110, 150, 66, 70) +
+      `<rect x="92" y="126" width="36" height="4"/><path d="M98 130 V150 M122 130 V150"/>` + person(140, 150, .8) +
+      `<path d="M176 146 C190 146 196 140 206 140"/><rect x="206" y="132" width="20" height="18"/>` + T(120, 172, 'um escritório que cabe numa mala|an office that fits in a case', 'middle'),
+    usPavilion70: () => {
+      let s = `<ellipse cx="120" cy="84" rx="104" ry="58"/>`;
+      for (let i = -3; i <= 3; i++) s += `<line class="thin" x1="${120 + i * 26 - 50}" y1="${30 + Math.abs(i) * 4}" x2="${120 + i * 26 + 50}" y2="${138 - Math.abs(i) * 4}"/><line class="thin" x1="${120 + i * 26 + 50}" y1="${30 + Math.abs(i) * 4}" x2="${120 + i * 26 - 50}" y2="${138 - Math.abs(i) * 4}"/>`;
+      return `<defs><clipPath id="cp-us"><ellipse cx="120" cy="84" rx="104" ry="58"/></clipPath></defs>` + `<g clip-path="url(#cp-us)">${s}</g><ellipse cx="120" cy="84" rx="104" ry="58"/>` + T(120, 172, 'cobertura de ar sobre 10.000 m²|an air roof over 10,000 m²', 'middle');
+    },
+    pepsi: () =>
+      `<line x1="10" y1="150" x2="230" y2="150"/><path d="M40 150 A80 80 0 0 1 200 150"/><path class="thin" d="M40 150 L120 70 L200 150 M66 104 L120 150 L174 104 M66 104 H174"/>` +
+      `<circle class="h" cx="120" cy="116" r="30"/><circle cx="120" cy="116" r="30"/>` + dots(80, 10, 230, 50, 148, .7, 321) + T(120, 172, 'espelho de Mylar inflado por dentro|inflated Mylar mirror inside', 'middle'),
+    arcticCity: () =>
+      `<path d="M10 150 L40 120 L60 136 L80 112 L100 150"/><line x1="10" y1="150" x2="230" y2="150"/><path class="bold" d="M60 150 C80 40 200 40 230 150"/>` +
+      [[110, 130, 10, 20], [128, 118, 12, 32], [148, 126, 10, 24], [166, 134, 14, 16], [186, 128, 10, 22]].map(([x, y, w, h]) => `<rect class="h" x="${x}" y="${y}" width="${w}" height="${h}"/>`).join('') +
+      T(120, 172, 'uma cúpula de 2 km sobre uma cidade|a 2 km dome over a city', 'middle'),
+    mullerM210: () =>
+      `<line x1="10" y1="110" x2="230" y2="110"/><rect class="h" x="60" y="110" width="120" height="40"/><rect x="60" y="110" width="120" height="40"/>` +
+      membrane(120, 110, 70, 64) + person(110, 110, .8) + `<path d="M190 104 C200 100 206 96 214 96"/><rect x="214" y="88" width="14" height="14"/>` +
+      T(120, 172, 'térreo de ar sobre um subsolo de terra|an air floor over an earth basement', 'middle'),
+    kitchenMonument: () =>
+      `<line x1="10" y1="150" x2="230" y2="150"/><rect class="h" x="10" y="110" width="50" height="40"/><path d="M60 150 C60 50 220 50 220 150"/>` +
+      `<rect x="100" y="122" width="80" height="4"/>` + person(110, 150, .8) + person(170, 150, .8) + T(120, 172, 'uma sala inflável que sai de uma caixa|an inflatable room unfolding from a box', 'middle'),
+    serpentine2006: () =>
+      `<line x1="10" y1="150" x2="230" y2="150"/><rect class="h" x="40" y="120" width="160" height="30"/><ellipse class="knock" cx="120" cy="72" rx="96" ry="34"/>` +
+      A('M226 50 L226 90', '') + A('M226 90 L226 50', '') + T(120, 172, 'cobertura que sobe e desce com o tempo|a canopy that rises and falls with the weather', 'middle'),
+    kumaTeahouse: () =>
+      `<line x1="10" y1="150" x2="230" y2="150"/><path d="M30 150 C20 100 60 70 100 90 C120 100 130 100 150 86 C190 64 228 100 210 150"/><path class="thin" d="M40 150 C32 106 64 82 100 100 C122 112 132 110 152 98 C186 78 216 108 200 150"/>` +
+      `<rect class="knock" x="58" y="130" width="14" height="20"/>` + T(120, 172, 'casa de chá de membrana dupla|a double-membrane tea house', 'middle'),
+    waterCube: () => {
+      const R = rng(331); let s = `<rect x="30" y="40" width="180" height="110"/><line x1="10" y1="150" x2="230" y2="150"/>`;
+      for (let i = 0; i < 70; i++) { const x = 36 + R() * 168, y = 46 + R() * 98; s += hex(f1(x) * 1, f1(y) * 1, 4 + R() * 6); }
+      return `<defs><clipPath id="cp-wc"><rect x="30" y="40" width="180" height="110"/></clipPath></defs>` + `<g clip-path="url(#cp-wc)">${s}</g><rect x="30" y="40" width="180" height="110"/>` + T(120, 172, 'almofadas de ETFE como espuma|ETFE cushions like foam', 'middle');
+    },
+    mediaTic: () => {
+      let s = `<rect x="50" y="20" width="140" height="130"/><line x1="10" y1="150" x2="230" y2="150"/>`;
+      for (let i = 0; i < 5; i++) for (let j = 0; j < 6; j++) { const x = 54 + i * 27, y = 24 + j * 21; s += `<rect x="${x}" y="${y}" width="24" height="18" rx="6"/>`; if ((i + j) % 2) s += dots(6, x + 3, x + 21, y + 3, y + 15, .7, i * 10 + j); }
+      return s + sun(214, 22) + T(120, 172, 'nuvem de nitrogênio dentro do ETFE|a nitrogen cloud inside the ETFE', 'middle');
+    },
+    deller: () =>
+      `<line x1="10" y1="150" x2="230" y2="150"/>` + [[30, 70], [80, 70], [130, 70], [180, 70]].map(([x, y]) => `<rect x="${x}" y="${y + 20}" width="14" height="${60}" rx="6"/><rect x="${x + 26}" y="${y + 20}" width="14" height="60" rx="6"/><rect x="${x - 2}" y="${y + 6}" width="44" height="14" rx="6"/>`).join('') +
+      person(76, 118, .6) + person(156, 126, .6) + T(120, 172, 'Stonehenge inflável para pular|a bouncy, inflatable Stonehenge', 'middle'),
+    arkNova: () =>
+      `<line x1="10" y1="150" x2="230" y2="150"/><path class="h" d="M20 150 C10 80 70 30 120 40 C190 50 236 100 214 150 Z"/><path d="M20 150 C10 80 70 30 120 40 C190 50 236 100 214 150 Z"/>` +
+      `<ellipse class="knock" cx="150" cy="80" rx="22" ry="16"/>` + [60, 80, 100, 120].map(x => `<rect class="knock" x="${x}" y="134" width="14" height="10"/>`).join('') + T(120, 172, 'sala de concerto inflável e itinerante|an inflatable touring concert hall', 'middle'),
+    bigAirPackage: () => {
+      let s = `<rect x="70" y="10" width="100" height="146"/><line x1="10" y1="156" x2="230" y2="156"/>`;
+      for (let x = 80; x < 170; x += 12) s += `<line class="thin" x1="${x}" y1="10" x2="${x}" y2="156"/>`;
+      return s + `<rect class="knock" x="80" y="20" width="80" height="126" rx="30"/>` + person(120, 156, .4) + T(176, 30, '~90 m') + T(120, 176, 'um pacote de ar dentro de um gasômetro|an air package inside a gasholder', 'middle');
+    },
+    spainExpo: () => {
+      let s = `<line x1="10" y1="150" x2="230" y2="150"/><line class="bold" x1="10" y1="24" x2="230" y2="24"/>`;
+      [[30, 90], [62, 120], [94, 70], [126, 110], [158, 80], [190, 116]].forEach(([x, h]) => { s += `<rect class="knock" x="${x}" y="26" width="26" height="${h}" rx="13"/>`; });
+      return s + person(84, 150, .7) + person(150, 150, .7) + T(120, 172, 'cilindros de ETFE reciclado sobre a praça|recycled ETFE cylinders over the plaza', 'middle');
+    },
+
+    botticelli: () =>
+      `<circle cx="34" cy="40" r="12"/><circle cx="54" cy="50" r="10"/>` + A('M50 40 C90 46 120 60 150 76', 'dash') + A('M64 56 C96 66 120 78 150 90', 'dash') +
+      `<path d="M140 150 Q180 104 220 150 Z"/><path class="thin" d="M150 150 L180 118 M160 150 L182 120 M170 150 L184 122 M190 150 L186 122 M200 150 L188 120"/><path d="M180 118 C176 100 184 84 182 66 M182 66 C190 60 196 62 198 70"/>` +
+      wave(10, 156, 27, 8, 2) + T(10, 18, 'Zéfiro sopra|Zephyr blows'),
+    hokusai: () =>
+      `<path class="thin" d="M10 150 L120 60 L230 150"/><line x1="10" y1="150" x2="230" y2="150"/>` +
+      `<path d="M40 150 C46 110 70 80 110 64 M70 110 C90 94 104 90 120 92"/>` +
+      [[140, 50, 20], [160, 70, -10], [186, 40, 30], [204, 64, 5], [170, 30, -25]].map(([x, y, a]) => `<rect class="knock" x="${x - 5}" y="${y - 4}" width="10" height="8" transform="rotate(${a} ${x} ${y})"/>`).join('') +
+      person(100, 150, .7).replace('M', 'M') + A('M10 40 L80 54') + A('M10 70 L60 80') + T(120, 172, 'o vento leva os papéis|the wind takes the papers', 'middle'),
+    turner: () => {
+      let p = ''; for (let t = 0; t <= 5 * Math.PI; t += .12) { const r = 8 + t * 5.6; p += `${t ? 'L' : 'M'}${f1(120 + r * Math.cos(t))} ${f1(84 + r * .62 * Math.sin(t))} `; }
+      return `<path class="thin" d="${p}"/><path d="M110 92 H134 L128 100 H114 Z"/><line x1="122" y1="92" x2="122" y2="66"/>` + T(120, 172, 'barco no centro da tempestade|a boat at the storm’s centre', 'middle');
+    },
+    calder: () =>
+      `<line x1="120" y1="0" x2="120" y2="20"/><line x1="60" y1="20" x2="190" y2="20"/><line x1="60" y1="20" x2="60" y2="50"/><line x1="190" y1="20" x2="190" y2="34"/><circle class="f" cx="190" cy="44" r="10"/>` +
+      `<line x1="30" y1="50" x2="110" y2="50"/><line x1="30" y1="50" x2="30" y2="66"/><circle class="f" cx="30" cy="74" r="8"/><line x1="110" y1="50" x2="110" y2="80"/><line x1="80" y1="80" x2="160" y2="80"/>` +
+      `<line x1="80" y1="80" x2="80" y2="96"/><path class="f" d="M70 96 H92 L86 112 H76 Z"/><line x1="160" y1="80" x2="160" y2="94"/><circle class="f" cx="160" cy="104" r="12"/>` +
+      A('M10 130 C60 120 160 140 230 126', 'dash') + T(120, 172, 'formas suspensas giram no ar|suspended shapes turn in the air', 'middle'),
+    rickey: () =>
+      `<line x1="10" y1="156" x2="230" y2="156"/><line class="bold" x1="120" y1="156" x2="120" y2="90"/>` +
+      `<line class="bold" x1="120" y1="90" x2="60" y2="20"/><line class="bold" x1="120" y1="90" x2="190" y2="30"/>` +
+      `<path class="dash" d="M40 40 A90 90 0 0 1 80 10 M210 50 A90 90 0 0 0 176 14"/>` + T(120, 176, 'lâminas que oscilam com o vento|blades that sway in the wind', 'middle'),
+    chillida: () =>
+      wave(10, 120, 27, 8, 3) + `<path class="h" d="M150 150 L160 110 L190 100 L220 116 L226 150 Z"/>` +
+      `<path class="bold" d="M188 100 C186 80 196 70 204 64 M200 70 C210 70 214 60 212 52 M196 74 C186 72 178 66 178 58"/>` +
+      `<rect class="h" x="10" y="132" width="110" height="18"/>` + [30, 60, 90].map(x => `<rect class="knock" x="${x - 3}" y="130" width="6" height="4"/>` + A(`M${x} 128 L${x} 98`)).join('') +
+      T(14, 172, 'ondas empurram ar pelo piso|waves push air through the floor'),
+    strandbeest: () => {
+      let s = `<line x1="10" y1="150" x2="230" y2="150"/><line class="bold" x1="40" y1="90" x2="200" y2="90"/>`;
+      for (let x = 50; x <= 190; x += 20) s += `<path class="thin" d="M${x} 90 L${x - 10} 120 L${x} 150 M${x} 90 L${x + 8} 116 L${x} 150"/>`;
+      s += `<path d="M60 90 V40 L100 30 V86 M140 86 V30 L180 40 V90"/>`;
+      return s + A('M10 50 L52 50') + T(120, 172, 'criaturas de praia movidas pelo vento|beach creatures powered by wind', 'middle');
+    },
+    zephyrometer: () =>
+      `<line x1="10" y1="156" x2="230" y2="156"/><path class="bold" d="M120 156 L126 10"/><path class="dash" d="M120 156 L98 14 M120 156 L150 14"/><circle class="f" cx="120" cy="152" r="4"/>` +
+      wave(10, 150, 27, 8, 2) + A('M10 40 L70 40') + T(160, 30, '26 m') + T(120, 176, 'uma agulha que se curva ao vento|a needle that bends in the wind', 'middle'),
+    kahnTechnorama: () => {
+      let s = `<rect x="20" y="20" width="200" height="130"/>`;
+      for (let i = 0; i < 20; i++) for (let j = 0; j < 13; j++) { const x = 25 + i * 10, y = 25 + j * 10, a = 40 * Math.sin(i * .5 + j * .3); s += `<rect class="${Math.abs(a) > 25 ? 'f' : 'thin'}" x="${x - 3}" y="${y - 3}" width="6" height="6" transform="rotate(${f1(a)} ${x} ${y})"/>`; }
+      return s + A('M4 90 L40 90') + T(120, 172, 'milhares de placas articuladas|thousands of hinged plates', 'middle');
+    },
+    seaOrgan: () =>
+      `<path d="M10 70 H70 V90 H110 V110 H150 V130 H230"/>` + wave(150, 140, 9, 8, 3) +
+      `<path class="dash" d="M226 140 C200 150 120 150 100 120 C90 104 76 100 64 82"/>` + `<rect class="knock" x="58" y="76" width="10" height="4"/>` + arcs(64, 70, [10, 18, 26], -2.2, -.9) +
+      T(120, 172, 'o mar empurra ar por tubos sob os degraus|the sea pushes air through pipes under the steps', 'middle'),
+    singingTree: () => {
+      let s = `<line x1="10" y1="156" x2="230" y2="156"/>`;
+      for (let i = 0; i < 9; i++) { const y = 140 - i * 13, w = 30 + Math.sin(i * .7) * 30 + i * 6; s += `<path d="M${f1(120 - w)} ${y} Q120 ${y - 8} ${f1(120 + w)} ${y + 4}"/>`; }
+      return s + `<line x1="120" y1="156" x2="120" y2="140"/>` + A('M10 60 L50 60') + arcs(190, 50, [10, 18, 26]) + T(120, 176, 'tubos de aço que cantam com o vento|steel pipes that sing in the wind', 'middle');
+    },
+    bahrainWTC: () =>
+      `<line x1="10" y1="156" x2="230" y2="156"/><path d="M40 156 C50 100 70 40 96 10 L100 156 Z"/><path d="M200 156 C190 100 170 40 144 10 L140 156 Z"/>` +
+      [50, 86, 122].map(y => `<line x1="100" y1="${y}" x2="140" y2="${y}"/><circle cx="120" cy="${y}" r="9"/><path class="thin" d="M120 ${y - 9} V${y + 9}"/>`).join('') +
+      A('M10 86 L36 86') + T(120, 176, 'três turbinas entre as torres|three turbines between the towers', 'middle'),
+    seedCathedral: () => {
+      let s = `<line x1="10" y1="156" x2="230" y2="156"/><rect x="80" y="70" width="80" height="80"/>`;
+      for (let a = 0; a < 2 * Math.PI; a += Math.PI / 18) { const x0 = 120 + 40 * Math.cos(a), y0 = 110 + 40 * Math.sin(a); if (y0 > 148) continue; s += `<line class="thin" x1="${f1(x0)}" y1="${f1(y0)}" x2="${f1(120 + 74 * Math.cos(a))}" y2="${f1(110 + 74 * Math.sin(a))}"/>`; }
+      return s + A('M8 30 L50 40') + T(120, 176, '60 mil hastes que balançam ao vento|60,000 rods that sway in the wind', 'middle');
+    },
+    burj: () =>
+      `<line x1="10" y1="156" x2="230" y2="156"/><path d="M80 156 V120 H90 V90 H100 V60 H108 V34 H114 V10 L120 2 L126 10 V34 H132 V60 H140 V90 H150 V120 H160 V156"/>` +
+      A('M10 70 L80 70') + `<path class="dash" d="M150 60 C170 54 180 70 170 80 C160 90 176 100 196 94"/>` + T(120, 176, 'recuos que “confundem” o vento|setbacks that “confuse” the wind', 'middle'),
+    pearlRiver: () =>
+      `<line x1="10" y1="156" x2="230" y2="156"/><path d="M80 156 V20 Q120 10 160 20 V156"/>` +
+      [50, 110].map(y => `<rect class="knock" x="92" y="${y}" width="56" height="20"/><circle cx="120" cy="${y + 10}" r="7"/><path class="thin" d="M120 ${y + 3} V${y + 17}"/>`).join('') +
+      A('M10 60 L90 60') + A('M10 120 L90 120') + T(120, 176, 'aberturas com turbinas na fachada|openings with turbines in the façade', 'middle'),
+    aeolus: () => {
+      let s = `<line x1="10" y1="156" x2="230" y2="156"/><path d="M40 156 C40 50 200 50 200 156"/>`;
+      for (let a = Math.PI; a <= 2 * Math.PI; a += Math.PI / 20) { const x = 120 + 80 * Math.cos(a), y = 156 + 102 * Math.sin(a); s += `<line class="thin" x1="${f1(x)}" y1="${f1(y)}" x2="${f1(x + 16 * Math.cos(a))}" y2="${f1(y + 16 * Math.sin(a))}"/>`; }
+      return s + A('M8 30 L44 40') + T(120, 176, '310 tubos tocados pelo vento|310 tubes played by the wind', 'middle');
+    },
+    shanghaiTower: () =>
+      `<line x1="10" y1="156" x2="230" y2="156"/><path d="M84 156 C90 110 100 60 112 8 M156 156 C150 110 140 60 128 8 M112 8 H128"/>` +
+      `<path class="thin" d="M86 140 L154 130 M92 100 L148 92 M100 60 L140 56 M106 30 L134 28"/>` + A('M10 90 L80 96') + A('M160 96 C190 100 200 110 230 116', 'dash') +
+      T(120, 176, 'giro de 120° reduz a carga do vento|a 120° twist cuts wind load', 'middle'),
+    inujima: () =>
+      `<line x1="10" y1="140" x2="230" y2="140"/><rect class="h" x="170" y="20" width="16" height="120"/><rect class="h" x="194" y="40" width="12" height="100"/>` +
+      `<path d="M40 140 V100 H170"/><path class="thin" d="M30 160 H150 V140"/>` + A('M10 160 L60 160') + A('M150 150 C170 140 178 120 178 20') +
+      T(14, 92, 'ar fresco do subsolo|cool air from below') + T(120, 176, 'chaminés antigas viram motor de ventilação|old chimneys become a ventilation engine', 'middle'),
+    rokko: () => {
+      let s = `<line x1="10" y1="150" x2="230" y2="150"/><path d="M60 150 C60 90 90 30 120 20 C150 30 180 90 180 150"/>`;
+      for (let x = 70; x <= 170; x += 12) s += `<path class="thin" d="M${x} 150 C${x} 100 ${(x + 120) / 2} 50 120 20"/>`;
+      return s + `<rect class="h" x="100" y="130" width="40" height="20"/>` + A('M10 120 L60 124') + A('M120 126 L120 70') + T(144, 144, 'gelo|ice') + T(120, 172, 'vento e gelo como ar-condicionado|wind and ice as air conditioning', 'middle');
+    }
+  });
+
+  R3('lanchester', 'infl',
+    ["Hospital de campanha pneumático", "A primeira patente de um edifício sustentado por ar", "O engenheiro Frederick Lanchester patenteou uma tenda para hospitais de campanha mantida de pé apenas por uma leve sobrepressão de ar, com portas em eclusa para não deixar o ar escapar.", "A ideia não foi construída na época, mas já descrevia o princípio de todos os edifícios infláveis: um ventilador, uma membrana e uma pequena diferença de pressão.", "O ponto de partida técnico da arquitetura pneumática, décadas antes dos materiais certos existirem.", "1917 · Frederick Lanchester"],
+    ["Pneumatic field hospital", "The first patent for an air-supported building", "Engineer Frederick Lanchester patented a field-hospital tent held up only by a slight overpressure of air, with airlock doors to keep the air in.", "It was not built at the time, but it already described the principle of every inflatable building: a fan, a membrane and a small pressure difference.", "The technical starting point of pneumatic architecture, decades before the right materials existed.", "1917 · Frederick Lanchester"], ['pneumatica', 'pressao']);
+  R3('radome', 'infl',
+    ["Radome", "Cúpulas de ar para proteger radares", "Walter Bird construiu no Laboratório Aeronáutico de Cornell uma cúpula inflável de cerca de 16 m para proteger antenas de radar do vento e da neve no Ártico.", "O sucesso dos radomes levou Bird a fundar a Birdair em 1956, empresa que levou as estruturas infladas a piscinas, depósitos e pavilhões.", "A tecnologia militar que deu à arquitetura inflável seus materiais e sua engenharia.", "1948 · Walter Bird"],
+    ["Radome", "Air domes to shelter radar", "At Cornell Aeronautical Laboratory, Walter Bird built an inflatable dome about 16 m across to shield radar antennas from Arctic wind and snow.", "The radomes’ success led Bird to found Birdair in 1956, which took inflated structures to pools, warehouses and pavilions.", "The military technology that gave inflatable architecture its materials and engineering.", "1948 · Walter Bird"], ['pneumatica', 'pressao']);
+  R3('fiberthin', 'infl',
+    ["Fiberthin Airhouse", "Uma casa barata feita de ar", "Frank Lloyd Wright desenhou com a U.S. Rubber Company uma casa inflável de tecido emborrachado, com cúpulas baixas, pensada como moradia acessível e rápida de montar.", "O projeto mostra que mesmo um arquiteto ligado à madeira e à pedra se interessou pelas membranas infladas no pós-guerra.", "A pneumática vista como resposta ao custo e à pressa da habitação.", "c. 1957 · Frank Lloyd Wright"],
+    ["Fiberthin Airhouse", "A cheap house made of air", "With the U.S. Rubber Company, Frank Lloyd Wright designed an inflatable house of rubberised fabric with low domes, meant as affordable, quick-to-erect housing.", "It shows that even an architect associated with timber and stone took an interest in inflated membranes after the war.", "Pneumatics seen as an answer to the cost and urgency of housing.", "c. 1957 · Frank Lloyd Wright"], ['pneumatica']);
+  R3('kleinAerostatic', 'infl',
+    ["Escultura aerostática", "Mil e um balões azuis soltos no céu", "Na abertura de uma exposição em Paris, Yves Klein soltou 1.001 balões azuis cheios de gás no céu de Saint-Germain-des-Prés. A obra existiu só enquanto os balões subiam.", "Klein falava de uma “sensibilidade imaterial” e pensava a cor azul como acesso ao espaço infinito.", "Uma obra feita de empuxo e desaparecimento: o ar leva a escultura embora.", "1957 · Yves Klein"],
+    ["Aerostatic Sculpture", "A thousand and one blue balloons released", "At the opening of an exhibition in Paris, Yves Klein released 1,001 gas-filled blue balloons into the sky over Saint-Germain-des-Prés. The work existed only while the balloons rose.", "Klein spoke of an “immaterial sensibility” and saw the colour blue as access to infinite space.", "A work made of buoyancy and disappearance: the air carries the sculpture away.", "1957 · Yves Klein"], ['empuxo']);
+  R3('lundyAEC', 'infl',
+    ["Pavilhão da Comissão de Energia Atômica", "Um pavilhão itinerante de parede dupla", "Victor Lundy e Walter Bird criaram um pavilhão inflável de duas membranas, com ar entre elas, para levar uma exposição sobre energia nuclear a várias cidades e países.", "A parede dupla tornava a estrutura mais rígida e isolada. Lundy fez outras estruturas infladas na Feira Mundial de Nova York de 1964.", "Um dos primeiros grandes pavilhões infláveis: arquitetura que viaja dobrada e se ergue com ar.", "1960 · Victor Lundy e Walter Bird"],
+    ["Atomic Energy Commission Pavilion", "A travelling double-wall pavilion", "Victor Lundy and Walter Bird created an inflatable pavilion of two membranes with air between them, to take an exhibition on nuclear energy to cities in several countries.", "The double wall made the structure stiffer and better insulated. Lundy made other inflated structures for the 1964 New York World’s Fair.", "One of the first large inflatable pavilions: architecture that travels folded and rises with air.", "1960 · Victor Lundy and Walter Bird"], ['pneumatica', 'isolamento']);
+  R3('structuresGonflables', 'infl',
+    ["Structures Gonflables", "A exposição que reuniu tudo o que é inflável", "O grupo Utopie organizou em Paris uma exposição com móveis, objetos, casas e máquinas infláveis. Foi ali que Hans-Walter Müller mostrou sua primeira estrutura, o Volux.", "O grupo Utopie, ligado a Jean Baudrillard, via no inflável uma crítica à arquitetura pesada e permanente, num ano de revolta política em Paris.", "Marca o momento em que o ar se tornou linguagem política e cultural, e não só técnica.", "1968 · Grupo Utopie"],
+    ["Structures Gonflables", "The exhibition that gathered everything inflatable", "The Utopie group staged an exhibition in Paris of inflatable furniture, objects, houses and machines. Hans-Walter Müller showed his first structure, the Volux, there.", "Utopie, linked to Jean Baudrillard, saw the inflatable as a critique of heavy, permanent architecture, in a year of political revolt in Paris.", "It marks the moment air became a political and cultural language, not just a technique.", "1968 · Utopie group"], ['pneumatica', 'gases']);
+  R3('ufo', 'infl',
+    ["Urboeffimeri", "Infláveis como protesto na rua", "O grupo florentino UFO carregou pela cidade grandes tubos e objetos infláveis de polietileno, alguns com slogans, em manifestações estudantis.", "A arquitetura radical italiana usou o inflável como objeto efêmero de ação urbana, longe da ideia de edifício permanente.", "O ar ocupa a rua por algumas horas e muda o uso do espaço público.", "1968 · UFO"],
+    ["Urboeffimeri", "Inflatables as street protest", "The Florentine group UFO carried large polyethylene tubes and inflatable objects through the city, some bearing slogans, during student protests.", "Italian radical architecture used the inflatable as an ephemeral object of urban action, far from the idea of a permanent building.", "Air occupies the street for a few hours and changes how public space is used.", "1968 · UFO"], ['pneumatica']);
+  R3('hollein', 'infl',
+    ["Mobile Office", "Um escritório que cabe numa mala", "Hans Hollein inflou uma bolha transparente de PVC ao redor de si mesmo, sentado a uma prancheta com telefone, num campo perto de Viena, para um programa de televisão.", "A ideia era que o local de trabalho pudesse ser levado numa mala e montado em qualquer lugar em minutos.", "Antecipa o trabalho nômade: o espaço reduzido a uma bolha de ar em volta do corpo e de uma mesa.", "1969 · Hans Hollein"],
+    ["Mobile Office", "An office that fits in a case", "Hans Hollein inflated a transparent PVC bubble around himself, seated at a drawing board with a telephone, in a field near Vienna, for a television programme.", "The idea was that the workplace could be carried in a case and set up anywhere in minutes.", "It anticipates nomadic work: space reduced to a bubble of air around a body and a desk.", "1969 · Hans Hollein"], ['pneumatica']);
+  R3('usPavilion70', 'infl',
+    ["Pavilhão dos EUA, Expo ’70", "A maior cobertura sustentada por ar de sua época", "Davis Brody e o engenheiro David Geiger cobriram uma área oval com uma membrana translúcida presa por cabos e sustentada por ar, sobre taludes de terra.", "O baixo perfil e os cabos tornavam a cobertura estável ao vento. A solução foi usada depois em vários estádios cobertos por ar nos Estados Unidos.", "Mostra a pneumática em escala de estádio, com uma pressão interna mínima.", "1970 · Davis Brody e David Geiger"],
+    ["US Pavilion, Expo ’70", "The largest air-supported roof of its day", "Davis Brody and engineer David Geiger covered an oval area with a translucent membrane restrained by cables and held up by air, over earth berms.", "The low profile and cables made the roof stable in wind. The approach was later used for several air-supported stadiums in the United States.", "Pneumatics at stadium scale, with minimal internal pressure.", "1970 · Davis Brody and David Geiger"], ['pneumatica', 'pressao']);
+  R3('pepsi', 'infl',
+    ["Pavilhão Pepsi", "Uma cúpula de névoa com um espelho de ar por dentro", "O coletivo E.A.T., de artistas e engenheiros, cobriu a cúpula com a névoa de Fujiko Nakaya e instalou por dentro um enorme espelho esférico de Mylar mantido por diferença de pressão.", "Os visitantes viam reflexos invertidos flutuando no espaço. Som e luz eram controlados por performances ao vivo.", "Ar dentro e fora: o espelho inflado e a névoa transformam o pavilhão num ambiente sem limites claros.", "1970 · E.A.T."],
+    ["Pepsi Pavilion", "A dome of mist with an air mirror inside", "The E.A.T. collective of artists and engineers wrapped the dome in Fujiko Nakaya’s fog and installed inside a huge spherical Mylar mirror held by a pressure difference.", "Visitors saw inverted reflections floating in space. Sound and light were controlled through live performances.", "Air inside and out: the inflated mirror and the fog turn the pavilion into a space without clear limits.", "1970 · E.A.T."], ['nakaya', 'pneumatica']);
+  R3('arcticCity', 'infl',
+    ["Arctic City", "Uma cidade inteira sob uma cúpula de ar", "Frei Otto, Kenzo Tange e a Arup estudaram uma cúpula pneumática de cerca de 2 km de diâmetro para abrigar 40 mil pessoas no Ártico, com clima interno controlado.", "Otto dirigia em Stuttgart o instituto de estruturas leves e organizou em 1967 o primeiro colóquio internacional sobre estruturas pneumáticas.", "A pneumática levada à escala urbana: o ar como envelope climático de uma cidade.", "1971 · Frei Otto, Kenzo Tange e Arup"],
+    ["Arctic City", "A whole city under an air dome", "Frei Otto, Kenzo Tange and Arup studied a pneumatic dome about 2 km across to house 40,000 people in the Arctic, with a controlled interior climate.", "Otto ran the institute for lightweight structures in Stuttgart and organised the first international colloquium on pneumatic structures in 1967.", "Pneumatics taken to urban scale: air as a city’s climatic envelope.", "1971 · Frei Otto, Kenzo Tange and Arup"], ['pneumatica', 'isolamento']);
+  R3('mullerM210', 'infl',
+    ["Casa M210", "Morar sob uma membrana inflada", "Hans-Walter Müller vive desde 1973 em La Ferté-Alais, na França, numa casa com um pavimento enterrado tradicional e um pavimento superior inflável, mantido por um ventilador.", "Müller começou com o Volux em 1968 e construiu igrejas, cenários e até um supermercado infláveis. Para ele, a arquitetura de ar é viva: respira, se move e reage ao clima.", "A prova de que se pode habitar o ar no dia a dia, por décadas.", "1973 · Hans-Walter Müller"],
+    ["House M210", "Living under an inflated membrane", "Since 1973 Hans-Walter Müller has lived in La Ferté-Alais, France, in a house with a conventional buried floor and an inflatable upper floor kept up by a fan.", "Müller began with the Volux in 1968 and built inflatable churches, stage sets and even a supermarket. For him, air architecture is alive: it breathes, moves and responds to climate.", "Proof that one can inhabit air day to day, for decades.", "1973 · Hans-Walter Müller"], ['pneumatica']);
+  R3('serpentine2006', 'infl',
+    ["Pavilhão Serpentine 2006", "Uma cobertura que sobe e desce com o tempo", "Rem Koolhaas e Cecil Balmond, com a Arup, criaram um balão translúcido em forma de ovo que flutuava sobre o pavilhão e subia ou descia conforme o clima.", "Abaixo do balão, um anel fechado abrigava debates e eventos. A cobertura inflável funcionava como abrigo e como sinal no parque.", "Uma cobertura de ar móvel, que reage ao vento e à chuva.", "2006 · Rem Koolhaas e Cecil Balmond"],
+    ["Serpentine Pavilion 2006", "A canopy that rises and falls with the weather", "Rem Koolhaas and Cecil Balmond, with Arup, created a translucent egg-shaped balloon that floated above the pavilion and rose or lowered with the weather.", "Beneath it, a closed ring hosted talks and events. The inflatable canopy acted as both shelter and a beacon in the park.", "A moving roof of air that responds to wind and rain.", "2006 · Rem Koolhaas and Cecil Balmond"], ['pneumatica', 'vento']);
+  R3('kitchenMonument', 'infl',
+    ["Kitchen Monument", "Uma sala inflável que sai de uma caixa", "O coletivo raumlabor guarda numa caixa de aço uma membrana que se infla em minutos e vira um salão para refeições, debates e festas sob viadutos e em praças.", "O projeto circulou por várias cidades europeias como espaço público temporário, criado com os moradores.", "O inflável como ferramenta de convivência urbana, rápido de montar e de levar embora.", "2006 · raumlabor"],
+    ["Kitchen Monument", "An inflatable room unfolding from a box", "The raumlabor collective keeps in a steel box a membrane that inflates in minutes into a hall for meals, debates and parties under flyovers and in squares.", "The project toured several European cities as a temporary public space created with residents.", "The inflatable as a tool for urban gathering, quick to set up and take away.", "2006 · raumlabor"], ['pneumatica']);
+  R3('kumaTeahouse', 'infl',
+    ["Casa de chá de Frankfurt", "Uma casa de chá de membrana dupla", "Kengo Kuma desenhou para o Museu de Artes Aplicadas de Frankfurt uma casa de chá de tecido técnico com duas membranas, infladas quando há cerimônia e guardadas no resto do tempo.", "A forma lembra um amendoim. Entre as duas peles, o ar isola e a luz atravessa suavemente.", "A tradição japonesa da casa de chá reinterpretada como envelope leve e temporário de ar.", "2007 · Kengo Kuma"],
+    ["Frankfurt Tea House", "A double-membrane tea house", "For Frankfurt’s Museum of Applied Arts, Kengo Kuma designed a tea house of technical fabric with two membranes, inflated for ceremonies and stored the rest of the time.", "Its shape recalls a peanut. Between the two skins, air insulates and light passes through softly.", "The Japanese tea-house tradition reinterpreted as a light, temporary envelope of air.", "2007 · Kengo Kuma"], ['pneumatica', 'isolamento']);
+  R3('waterCube', 'infl',
+    ["Water Cube", "Um edifício revestido de almofadas de ar", "O centro aquático de Pequim tem fachadas e cobertura de almofadas de ETFE infladas, com a geometria de bolhas de espuma. As almofadas isolam e captam calor do sol para aquecer a água.", "A estrutura segue a espuma de Weaire-Phelan, um modelo matemático de bolhas. O resultado é leve e muito translúcido.", "Mostra a almofada de ar como pele de um grande edifício.", "2008 · PTW Architects, CSCEC e Arup"],
+    ["Water Cube", "A building clad in air cushions", "Beijing’s aquatics centre has façades and roof of inflated ETFE cushions in the geometry of soap-foam bubbles. The cushions insulate and capture solar heat to warm the water.", "The structure follows the Weaire–Phelan foam, a mathematical model of bubbles. The result is light and highly translucent.", "It shows the air cushion as the skin of a large building.", "2008 · PTW Architects, CSCEC and Arup"], ['etfe', 'isolamento']);
+  R3('mediaTic', 'infl',
+    ["Edifício Media-TIC", "Uma fachada que faz a própria nuvem", "Em Barcelona, Enric Ruiz-Geli cobriu duas fachadas com almofadas de ETFE. Numa delas, uma camada interna se enche de nitrogênio e forma uma névoa que sombreia o interior.", "As almofadas mudam de posição e de opacidade com o sol, reduzindo o calor sem bloquear a luz.", "O ar usado como sombra variável: uma nuvem programada dentro da fachada.", "2010 · Cloud 9 (Enric Ruiz-Geli)"],
+    ["Media-TIC building", "A façade that makes its own cloud", "In Barcelona, Enric Ruiz-Geli clad two façades with ETFE cushions. In one, an inner layer fills with nitrogen to form a mist that shades the interior.", "The cushions change position and opacity with the sun, cutting heat without blocking light.", "Air used as variable shade: a programmed cloud inside the façade.", "2010 · Cloud 9 (Enric Ruiz-Geli)"], ['etfe', 'nuvem']);
+  R3('deller', 'infl',
+    ["Sacrilege", "Um Stonehenge inflável para pular", "Jeremy Deller fez uma réplica em tamanho real de Stonehenge como um brinquedo inflável. O público pode entrar e pular sobre o monumento.", "A obra estreou em Glasgow e viajou por cidades e parques, transformando um sítio arqueológico em espaço de brincadeira.", "O ar torna leve e acessível o que era pedra e solenidade.", "2012 · Jeremy Deller"],
+    ["Sacrilege", "A bouncy, inflatable Stonehenge", "Jeremy Deller made a life-size replica of Stonehenge as an inflatable bouncy castle. The public can climb in and jump on the monument.", "It premiered in Glasgow and toured cities and parks, turning an archaeological site into a playground.", "Air makes light and approachable what was stone and solemnity.", "2012 · Jeremy Deller"], ['pneumatica']);
+  R3('arkNova', 'infl',
+    ["Ark Nova", "Uma sala de concerto inflável e itinerante", "Arata Isozaki e Anish Kapoor criaram uma sala de concerto de membrana inflada para cerca de 500 pessoas, levada às regiões do Japão atingidas pelo terremoto e tsunami de 2011.", "A forma orgânica, de cor roxa, é atravessada por um túnel. Os assentos foram feitos com madeira das árvores derrubadas pelo tsunami.", "A arquitetura de ar como resposta cultural a uma catástrofe: chega dobrada e se ergue onde é preciso.", "2013 · Arata Isozaki e Anish Kapoor"],
+    ["Ark Nova", "An inflatable touring concert hall", "Arata Isozaki and Anish Kapoor created an inflated-membrane concert hall for about 500 people, taken to the regions of Japan hit by the 2011 earthquake and tsunami.", "The purple, organic form is pierced by a tunnel. Seats were made from trees felled by the tsunami.", "Air architecture as a cultural response to disaster: it arrives folded and rises where it is needed.", "2013 · Arata Isozaki and Anish Kapoor"], ['pneumatica']);
+  R3('bigAirPackage', 'infl',
+    ["Big Air Package", "Um pacote de ar dentro de um gasômetro", "Christo inflou dentro do antigo gasômetro de Oberhausen um envelope de tecido translúcido de cerca de 90 m de altura. O público entrava e via a luz atravessar a membrana.", "Foi a maior escultura inflável sem estrutura interna já feita, mantida por ventiladores e por eclusas de ar nas entradas.", "Ar e luz preenchem um volume industrial vazio, criando um espaço quase sem matéria.", "2013 · Christo"],
+    ["Big Air Package", "A package of air inside a gasholder", "Inside the former gasholder at Oberhausen, Christo inflated a translucent fabric envelope about 90 m high. Visitors went inside and saw light pass through the membrane.", "It was the largest inflatable sculpture without internal framework ever made, kept up by fans and airlocks at the entrances.", "Air and light fill an empty industrial volume, creating a space almost without matter.", "2013 · Christo"], ['pneumatica', 'empuxo']);
+  R3('spainExpo', 'infl',
+    ["Pavilhão da Espanha, Expo 2020 Dubai", "Cilindros de ar sobre uma praça sombreada", "Selgascano e FRPO cobriram a praça com nove cilindros infláveis de ETFE reciclado, de mais de 7 m de diâmetro, sustentados por uma estrutura leve de aço.", "Dois cilindros na frente podem se mover para se adaptar à luz, ao clima e aos eventos. Abaixo, espaços abertos e sombreados.", "A cobertura inflável como sombra urbana leve e reaproveitável.", "2021 · Selgascano e FRPO"],
+    ["Spanish Pavilion, Expo 2020 Dubai", "Air cylinders over a shaded plaza", "Selgascano and FRPO covered the plaza with nine inflatable cylinders of recycled ETFE, over 7 m in diameter, carried by a light steel frame.", "Two cylinders at the front can move to adapt to light, climate and events. Beneath them, open and shaded spaces.", "The inflatable roof as light, reusable urban shade.", "2021 · Selgascano and FRPO"], ['etfe', 'pneumatica']);
+
+  R3('botticelli', 'vento',
+    ["O Nascimento de Vênus", "O vento personificado empurra a deusa à terra", "Na pintura, Zéfiro, o vento oeste, sopra junto com a brisa Áura e leva Vênus sobre uma concha até a costa. O sopro aparece em linhas visíveis e em mantos e cabelos agitados.", "Na arte antiga e renascentista, os ventos eram figuras com nome e personalidade, como nos relevos da Torre dos Ventos de Atenas.", "Uma das imagens mais conhecidas de como a arte deu forma visível ao ar em movimento.", "c. 1485 · Sandro Botticelli"],
+    ["The Birth of Venus", "The personified wind drives the goddess ashore", "In the painting, Zephyr, the west wind, blows together with the breeze Aura and carries Venus on a shell to the shore. The breath appears as visible lines and in flying cloaks and hair.", "In ancient and Renaissance art, winds were figures with names and personalities, as on the reliefs of Athens’ Tower of the Winds.", "One of the best-known images of how art gave visible form to moving air.", "c. 1485 · Sandro Botticelli"], ['vento', 'torreVentos']);
+  R3('hokusai', 'vento',
+    ["Ejiri na província de Suruga", "O vento que leva os papéis de um viajante", "Na série Trinta e Seis Vistas do Monte Fuji, Hokusai mostra viajantes curvados por uma rajada que arranca chapéus e espalha folhas de papel pelo céu, com o Fuji ao fundo.", "O vento é invisível, mas Hokusai o desenha pelos efeitos: árvores curvadas, corpos inclinados, objetos em voo.", "Uma aula de como representar o ar pelo que ele move.", "c. 1832 · Katsushika Hokusai"],
+    ["Ejiri in Suruga Province", "The wind that carries off a traveller’s papers", "In the Thirty-Six Views of Mount Fuji, Hokusai shows travellers bent by a gust that tears off hats and scatters sheets of paper across the sky, with Fuji behind.", "The wind is invisible, but Hokusai draws it through its effects: bent trees, leaning bodies, flying objects.", "A lesson in depicting air through what it moves.", "c. 1832 · Katsushika Hokusai"], ['vento']);
+  R3('turner', 'vento',
+    ["Tempestade de neve", "Pintar de dentro do vento", "J. M. W. Turner pintou um barco a vapor no meio de uma tempestade de neve como um turbilhão de pinceladas. Ele dizia ter se amarrado ao mastro para observar a tempestade.", "A pintura foi criticada na época como confusa. Hoje é vista como antecipação da abstração: o ar em movimento vira a própria estrutura da imagem.", "O vórtice como forma: o ar e a água desmancham os contornos dos objetos.", "1842 · J. M. W. Turner"],
+    ["Snow Storm", "Painting from inside the wind", "J. M. W. Turner painted a steamboat in a snowstorm as a whirl of brushstrokes. He claimed to have had himself lashed to the mast to watch the storm.", "Critics found it confused at the time. Today it is seen as anticipating abstraction: moving air becomes the very structure of the image.", "The vortex as form: air and water dissolve the outlines of things.", "1842 · J. M. W. Turner"], ['vortice']);
+  R3('calder', 'vento',
+    ["Móbiles", "Esculturas que se movem com o ar da sala", "Alexander Calder suspendeu formas de chapa pintada em hastes equilibradas. Correntes de ar fazem as partes girarem e mudarem de posição sem motor.", "Marcel Duchamp chamou essas obras de “móbiles” em 1931. Calder fez depois os estábiles, fixos, e grandes móbiles para edifícios e aeroportos.", "O ar leve de um interior vira motor de uma escultura em movimento constante.", "Desde 1931 · Alexander Calder"],
+    ["Mobiles", "Sculptures moved by the air in a room", "Alexander Calder suspended shapes of painted sheet metal on balanced rods. Air currents turn the parts and shift their positions without any motor.", "Marcel Duchamp named these works “mobiles” in 1931. Calder later made fixed stabiles and large mobiles for buildings and airports.", "The light air of an interior becomes the engine of a sculpture in constant motion.", "Since 1931 · Alexander Calder"], ['conveccao', 'vento']);
+  R3('rickey', 'vento',
+    ["Esculturas cinéticas", "Lâminas de aço que oscilam com o vento", "George Rickey equilibrou longas lâminas de aço inoxidável sobre eixos de precisão. Um sopro leve basta para que se movam devagar, cruzando-se sem nunca se tocar.", "Rickey estudou o equilíbrio e os rolamentos para que as peças respondessem ao menor vento e resistissem a tempestades.", "O vento desenha, no tempo, trajetórias que a escultura parada não mostraria.", "Desde 1950 · George Rickey"],
+    ["Kinetic sculptures", "Steel blades that sway in the wind", "George Rickey balanced long stainless-steel blades on precision pivots. A light breath is enough to set them moving slowly, crossing without ever touching.", "Rickey studied balance and bearings so the pieces would respond to the slightest wind and withstand storms.", "Over time the wind draws trajectories that a still sculpture would never reveal.", "Since 1950 · George Rickey"], ['vento']);
+  R3('chillida', 'vento',
+    ["Peine del Viento", "Pentes de aço que penteiam o vento do mar", "Em San Sebastián, Eduardo Chillida fixou três esculturas de aço nas rochas da costa. Na praça desenhada com Luis Peña Ganchegui, as ondas empurram ar por furos no piso, que sopra e assobia.", "As peças enferrujadas enfrentam o vento e as ondas há décadas. A praça transforma a força do mar em jatos de ar audíveis.", "Arte e arquitetura juntas para tornar visíveis e audíveis o vento e o ar comprimido pelas ondas.", "1977 · Eduardo Chillida e Luis Peña Ganchegui"],
+    ["Comb of the Wind", "Steel combs that comb the sea wind", "In San Sebastián, Eduardo Chillida fixed three steel sculptures into the coastal rocks. In the plaza designed with Luis Peña Ganchegui, waves push air up through holes in the paving, which blow and whistle.", "The rusted pieces have faced wind and waves for decades. The plaza turns the force of the sea into audible jets of air.", "Art and architecture working together to make wind and wave-compressed air visible and audible.", "1977 · Eduardo Chillida and Luis Peña Ganchegui"], ['vento', 'arComprimido']);
+  R3('strandbeest', 'vento',
+    ["Strandbeest", "Criaturas de praia movidas pelo vento", "Theo Jansen constrói com tubos de PVC criaturas que andam sozinhas na praia, impulsionadas pelo vento em velas. Algumas guardam ar comprimido em garrafas para andar quando o vento para.", "As pernas usam uma articulação desenhada por Jansen para transformar giro em passo. Ele chama as criaturas de uma nova forma de vida.", "Engenharia e arte movidas só pelo vento, com memória de ar para os momentos de calma.", "Desde 1990 · Theo Jansen"],
+    ["Strandbeest", "Beach creatures powered by wind", "Theo Jansen builds creatures from PVC tubing that walk the beach on their own, driven by wind in sails. Some store compressed air in bottles to keep walking when the wind drops.", "The legs use a linkage Jansen designed to turn rotation into stepping. He calls the creatures a new form of life.", "Engineering and art moved by wind alone, with a memory of air for the calm moments.", "Since 1990 · Theo Jansen"], ['vento', 'arComprimido']);
+  R3('kahnTechnorama', 'vento',
+    ["Fachada do Technorama", "Uma parede que mostra o vento", "Ned Kahn cobriu a fachada do museu de ciência de Winterthur com milhares de pequenas placas de alumínio articuladas. Cada rajada cria ondas que atravessam a parede.", "Kahn faz obras que tornam visíveis fenômenos como vento, água e névoa, muitas delas integradas a edifícios.", "A fachada vira instrumento de leitura do vento, mudando a cada segundo.", "2002 · Ned Kahn"],
+    ["Technorama façade", "A wall that shows the wind", "Ned Kahn covered the façade of the Winterthur science museum with thousands of small hinged aluminium plates. Every gust sends waves across the wall.", "Kahn makes works that reveal phenomena such as wind, water and fog, many of them integrated into buildings.", "The façade becomes an instrument for reading the wind, changing every second.", "2002 · Ned Kahn"], ['vento', 'camadaLimite']);
+  R3('zephyrometer', 'vento',
+    ["Zephyrometer", "Uma agulha que se curva ao vento", "Na baía de Wellington, uma das cidades mais ventosas do mundo, Phil Price ergueu uma haste de cerca de 26 m que oscila com o vento sobre uma base articulada.", "A peça funciona como um medidor gigante: sua inclinação mostra de longe a força das rajadas.", "Escultura e instrumento ao mesmo tempo: o vento da cidade ganha uma forma pública.", "2004 · Phil Price"],
+    ["Zephyrometer", "A needle that bends in the wind", "On Wellington’s harbour, in one of the world’s windiest cities, Phil Price raised a 26 m spike that sways in the wind on a hinged base.", "The piece works as a giant gauge: its lean shows the strength of the gusts from afar.", "Sculpture and instrument at once: the city’s wind gets a public form.", "2004 · Phil Price"], ['vento']);
+  R3('seaOrgan', 'vento',
+    ["Órgão do Mar", "Degraus que tocam com o ar empurrado pelas ondas", "Em Zadar, na Croácia, Nikola Bašić construiu degraus de pedra sobre 35 tubos. As ondas comprimem o ar dentro deles, que sai por aberturas no piso em sons contínuos.", "A obra virou um ponto de encontro da cidade: as pessoas sentam nos degraus para ouvir o mar.", "O ar comprimido pela água transforma um cais em instrumento musical.", "2005 · Nikola Bašić"],
+    ["Sea Organ", "Steps that play with air pushed by the waves", "In Zadar, Croatia, Nikola Bašić built stone steps over 35 pipes. Waves compress the air inside, which escapes through openings in the paving as continuous sound.", "The work became a meeting place for the city: people sit on the steps to listen to the sea.", "Air compressed by water turns a quay into a musical instrument.", "2005 · Nikola Bašić"], ['arComprimido', 'flauta']);
+  R3('singingTree', 'vento',
+    ["Singing Ringing Tree", "Uma árvore de tubos que canta com o vento", "No alto de uma colina perto de Burnley, na Inglaterra, Tonkin Liu empilhou tubos de aço galvanizado em forma de árvore curvada pelo vento. O vento soprando nos tubos produz um coro grave.", "Alguns tubos foram cortados para afinar o som. A obra faz parte de uma série de marcos para a paisagem da região.", "Uma escultura que funciona como harpa eólica em escala de paisagem.", "2006 · Tonkin Liu"],
+    ["Singing Ringing Tree", "A tree of pipes that sings in the wind", "On a hilltop near Burnley, England, Tonkin Liu stacked galvanised steel pipes into the form of a wind-bent tree. Wind blowing across the pipes produces a low chorus.", "Some pipes were cut to tune the sound. The work is one of a series of landmarks for the region’s landscape.", "A sculpture that works as an Aeolian harp at landscape scale.", "2006 · Tonkin Liu"], ['flauta', 'vento']);
+  R3('bahrainWTC', 'vento',
+    ["Bahrain World Trade Center", "Torres que canalizam o vento para turbinas", "Duas torres em forma de vela aceleram o vento do mar entre elas, onde três turbinas de cerca de 29 m de diâmetro ficam presas a pontes.", "Foi um dos primeiros arranha-céus com geração eólica integrada em grande escala. A forma das torres foi estudada em túnel de vento.", "A forma do edifício funciona como um funil que concentra o vento, num Venturi entre torres.", "2008 · Atkins"],
+    ["Bahrain World Trade Center", "Towers that funnel wind into turbines", "Two sail-shaped towers speed up the sea wind between them, where three turbines about 29 m across hang from bridges.", "It was one of the first skyscrapers with large-scale integrated wind generation. The tower form was tested in a wind tunnel.", "The building’s form acts as a funnel that concentrates the wind, a Venturi between towers.", "2008 · Atkins"], ['venturi', 'moinho']);
+  R3('inujima', 'vento',
+    ["Museu Seirensho de Inujima", "Chaminés antigas viram motor de ventilação", "Hiroshi Sambuichi transformou uma refinaria de cobre abandonada num museu que se ventila sozinho. O ar entra fresco por galerias sob o solo e sobe pela velha chaminé, aquecida pelo sol.", "Sambuichi estuda por anos o vento, a água e o sol de cada lugar antes de projetar. O museu funciona quase sem ar-condicionado.", "A ruína industrial reaproveitada como máquina de ventilação natural.", "2008 · Hiroshi Sambuichi"],
+    ["Inujima Seirensho Art Museum", "Old chimneys become a ventilation engine", "Hiroshi Sambuichi turned an abandoned copper refinery into a museum that ventilates itself. Air enters cool through underground galleries and rises up the old sun-warmed chimney.", "Sambuichi spends years studying the wind, water and sun of each site before designing. The museum runs almost without air conditioning.", "Industrial ruin reused as a natural ventilation machine.", "2008 · Hiroshi Sambuichi"], ['chamine', 'poco']);
+  R3('rokko', 'vento',
+    ["Observatório Rokko Shidare", "Vento e gelo como ar-condicionado", "No alto do monte Rokko, Hiroshi Sambuichi fez um observatório de treliça de madeira. No inverno, gelo é guardado num depósito e, no verão, o vento passa por ele e resfria o espaço.", "A estrutura também acumula geada no inverno, formando uma imagem de árvore congelada. O projeto usa o clima do monte como recurso.", "Uma atualização do yakhchal persa: guardar o frio e usá-lo com o vento.", "2010 · Hiroshi Sambuichi"],
+    ["Rokko Shidare Observatory", "Wind and ice as air conditioning", "On top of Mount Rokko, Hiroshi Sambuichi built an observatory of timber lattice. In winter ice is stored in a chamber; in summer the wind passes over it and cools the space.", "The structure also gathers frost in winter, forming an image of a frozen tree. The design uses the mountain climate as a resource.", "An update of the Persian yakhchal: store the cold and use it with the wind.", "2010 · Hiroshi Sambuichi"], ['yakhchal', 'vento']);
+  R3('seedCathedral', 'vento',
+    ["Seed Cathedral", "Um pavilhão de hastes que balançam ao vento", "O pavilhão do Reino Unido na Expo de Xangai tinha cerca de 60 mil hastes de acrílico de 7,5 m, com sementes na ponta, atravessando as paredes. Por fora, as hastes se moviam com o vento.", "Por dentro, as hastes levavam a luz do dia até as sementes, criando um interior luminoso. Por fora, a superfície parecia um pelo vivo.", "Uma envoltória que reage ao vento como uma planta ou um animal.", "2010 · Heatherwick Studio"],
+    ["Seed Cathedral", "A pavilion of rods that sway in the wind", "The UK Pavilion at the Shanghai Expo had some 60,000 acrylic rods 7.5 m long, with seeds at their tips, piercing its walls. Outside, the rods moved with the wind.", "Inside, the rods carried daylight to the seeds, creating a glowing interior. Outside, the surface looked like living fur.", "An envelope that responds to wind like a plant or an animal.", "2010 · Heatherwick Studio"], ['vento', 'anemocoria']);
+  R3('burj', 'vento',
+    ["Burj Khalifa", "Uma torre desenhada para confundir o vento", "Os recuos em espiral do edifício mais alto do mundo mudam a forma a cada trecho de altura. Assim, os vórtices que o vento solta nas quinas não se organizam e a torre oscila menos.", "A forma foi ajustada em dezenas de ensaios em túnel de vento. A planta em Y também dá estabilidade à estrutura.", "No arranha-céu, o vento deixa de ser só carga e passa a desenhar a forma.", "2010 · SOM (Adrian Smith)"],
+    ["Burj Khalifa", "A tower shaped to confuse the wind", "The spiralling setbacks of the world’s tallest building change its shape at each stage of height. That way the vortices the wind sheds at the corners never organise, and the tower sways less.", "The form was tuned through dozens of wind-tunnel tests. The Y-shaped plan also gives the structure stability.", "In the skyscraper, wind stops being only a load and starts shaping the form.", "2010 · SOM (Adrian Smith)"], ['vortice', 'camadaLimite']);
+  R3('aeolus', 'vento',
+    ["Aeolus", "Um pavilhão que torna o vento audível", "Luke Jerram construiu um arco com 310 tubos de aço inoxidável. Cordas de nylon esticadas nos tubos vibram com o vento, como numa harpa eólica, e os tubos amplificam o som.", "O pavilhão percorreu a Inglaterra, passando pelo Eden Project e por Canary Wharf, em Londres. Olhando pelos tubos, a paisagem aparece multiplicada.", "O vento que não se vê vira som e imagem ao mesmo tempo.", "2011 · Luke Jerram"],
+    ["Aeolus", "A pavilion that makes wind audible", "Luke Jerram built an arch of 310 stainless-steel tubes. Nylon strings stretched along the tubes vibrate in the wind, like an Aeolian harp, and the tubes amplify the sound.", "The pavilion toured England, including the Eden Project and Canary Wharf in London. Looking through the tubes, the landscape appears multiplied.", "Unseen wind becomes sound and image at once.", "2011 · Luke Jerram"], ['som', 'flauta']);
+  R3('pearlRiver', 'vento',
+    ["Pearl River Tower", "Aberturas que levam o vento até turbinas", "Em Guangzhou, a fachada curva da torre conduz o vento para quatro aberturas em dois níveis técnicos, onde turbinas eólicas geram energia para o edifício.", "A forma foi pensada para acelerar o vento nessas aberturas e, ao mesmo tempo, reduzir a carga de vento sobre a estrutura.", "A fachada desenhada como um bocal que capta e concentra o vento.", "2011 · SOM"],
+    ["Pearl River Tower", "Openings that lead wind to turbines", "In Guangzhou, the tower’s curved façade guides wind into four openings on two mechanical floors, where wind turbines generate power for the building.", "The form was designed to speed up wind at these openings while reducing wind load on the structure.", "The façade designed as a nozzle that captures and concentrates wind.", "2011 · SOM"], ['venturi', 'moinho']);
+  R3('shanghaiTower', 'vento',
+    ["Shanghai Tower", "Um giro que reduz o vento sobre a torre", "A torre gira cerca de 120° ao subir e afina em direção ao topo. Essa forma reduziu em cerca de 24% a carga de vento em relação a uma torre retangular de mesma altura.", "Uma segunda pele de vidro envolve átrios em vários níveis, criando espaços intermediários com clima amortecido.", "A torção como resposta aerodinâmica, que também economiza estrutura.", "2015 · Gensler"],
+    ["Shanghai Tower", "A twist that eases the wind on the tower", "The tower rotates about 120° as it rises and tapers toward the top. This form cut wind load by about 24% compared with a rectangular tower of the same height.", "A second glass skin wraps atria at several levels, creating buffer spaces with a tempered climate.", "The twist as an aerodynamic answer that also saves structure.", "2015 · Gensler"], ['vortice', 'fachadaDupla']);
+
   /* ───────── indexes ───────── */
   const ROMAN = { 1: 'I', 2: 'II', 3: 'III' };
   const BY = {}; PLATES.forEach(p => BY[p.key] = p);
@@ -1676,7 +1979,9 @@ footer{padding-block:28px 48px;display:flex;justify-content:space-between;gap:16
   /* ───────── rendering ───────── */
   const $ = id => document.getElementById(id);
   const main = $('main'), nav = $('filters'), vols = $('vols'), dlg = $('dlg');
-  let view = 'v1', filter = 'all', openKey = null, dTab = 'art', dIdx = 0, phMsg = '';
+  let view = 'v1', filter = 'all', openKey = null, dTab = 'art', dIdx = 0, phMsg = '', sort3 = 'asc';
+  const listFor = v => { const l = VOL[v].slice(); if (v !== 3) return l; if (sort3 === 'desc') return l.reverse(); if (sort3 === 'grp') return l.sort((a, b) => ORDER[3].indexOf(a.dom) - ORDER[3].indexOf(b.dom)); return l; };
+  const yearLabel = p => tx(p, 5).split('·')[0].trim();
 
   const bm = '<svg class="bm" viewBox="0 0 10 13" aria-hidden="true"><path d="M1 1 H9 V12 L5 9 L1 12 Z"/></svg>';
   const svgFor = p => `<svg viewBox="0 0 240 180" role="img" aria-label="${tx(p, 0)}: ${tx(p, 1)}">${art[p.key]()}</svg>`;
@@ -1704,13 +2009,14 @@ footer{padding-block:28px 48px;display:flex;justify-content:space-between;gap:16
     const counts = {}; VOL[vn].forEach(p => counts[p.dom] = (counts[p.dom] || 0) + 1);
     nav.innerHTML = [['all', u('all'), VOL[vn].length], ...ORDER[vn].map(d => [d, pick(DOM[d]), counts[d]])]
       .map(([d, name, n]) => `<button type="button" id="f-${d}" data-dom="${d}" aria-pressed="${filter === d}">${name}<sup>${n}</sup></button>`).join('') +
+      (vn === 3 ? `<span class="cover-tg" role="group" aria-label="${u('order')}"><span>${u('order')}</span>${[['asc', u('oAsc')], ['desc', u('oDesc')], ['grp', u('oGrp')]].map(([v, t]) => `<button type="button" id="so-${v}" data-sort="${v}" aria-pressed="${sort3 === v}">${t}</button>`).join('')}</span>` : '') +
       `<span class="cover-tg" role="group" aria-label="${u('cover')}"><span>${u('cover')}</span><button type="button" id="cv-art" data-cover="art" aria-pressed="${coverMode === 'art'}">${u('coverArt')}</button><button type="button" id="cv-photo" data-cover="photo" aria-pressed="${coverMode === 'photo'}">${u('coverPhoto')}</button></span>`;
   }
 
   function plateCard(p) {
     const o = origins(p)[0] && BY[origins(p)[0]], n = photosOf(p.key).length;
     return `<article class="plate${isSaved(p.key) ? ' saved' : ''}" id="p-${p.key}" data-k="${p.key}" data-dom="${p.dom}" tabindex="-1" aria-labelledby="t-${p.key}"${filter !== 'all' && p.dom !== filter ? ' hidden' : ''}>
-      <div class="plate-head"><span>${u('plate')} ${p.num}</span><span>${pick(DOM[p.dom])}</span></div>
+      <div class="plate-head"><span>${u('plate')} ${p.num}${p.vol === 3 ? ` · ${yearLabel(p)}` : ''}</span><span>${pick(DOM[p.dom])}</span></div>
       <button type="button" class="open-fig art" data-act="open" data-k="${p.key}" data-slot="${p.key}" aria-label="${u('more')}: ${tx(p, 0)}">${figInner(p)}</button>
       <div class="plate-body">
         <h2 id="t-${p.key}">${tx(p, 0)}</h2>
@@ -1723,7 +2029,7 @@ footer{padding-block:28px 48px;display:flex;justify-content:space-between;gap:16
     </article>`;
   }
 
-  function renderGallery() { main.className = 'grid'; main.innerHTML = VOL[vnum()].map(plateCard).join(''); setFoot(); }
+  function renderGallery() { main.className = 'grid'; main.innerHTML = listFor(vnum()).map(plateCard).join(''); setFoot(); }
 
   function renderMural() {
     main.className = '';
@@ -1789,7 +2095,7 @@ footer{padding-block:28px 48px;display:flex;justify-content:space-between;gap:16
   function seqFor(k) {
     if (view === 'mural') return items.map(i => i.k);
     const p = BY[k];
-    return VOL[p.vol].filter(x => p.vol !== vnum() || filter === 'all' || x.dom === filter).map(x => x.key);
+    return listFor(p.vol).filter(x => p.vol !== vnum() || filter === 'all' || x.dom === filter).map(x => x.key);
   }
   function relSection(label, keys) {
     return keys.length ? `<div class="sec"><b>${label}</b><div class="rel">${keys.map(r => `<button type="button" class="origin" data-act="open" data-k="${r}">${BY[r].num} ${tx(BY[r], 0)}</button>`).join('')}</div></div>` : '';
@@ -1896,6 +2202,7 @@ footer{padding-block:28px 48px;display:flex;justify-content:space-between;gap:16
     const b = e.target.closest('button'); if (!b) { if (e.target === dlg) dlg.close(); return; }
     if (b.dataset.lang) { if (b.dataset.lang !== L) { L = b.dataset.lang; try { localStorage.setItem('air-lang', L); } catch (er) {} render(); } return; }
     if (b.dataset.view && (!b.dataset.act || b.dataset.act === 'view')) { if (b.dataset.view !== view) { view = b.dataset.view; filter = 'all'; render(); window.scrollTo({ top: 0 }); } return; }
+    if (b.dataset.sort) { sort3 = b.dataset.sort; nav.querySelectorAll('[data-sort]').forEach(x => x.setAttribute('aria-pressed', x === b)); renderGallery(); main.querySelectorAll('.plate').forEach(el => el.hidden = !(filter === 'all' || el.dataset.dom === filter)); return; }
     if (b.dataset.cover) { coverMode = b.dataset.cover; try { localStorage.setItem('air-cover', coverMode); } catch (er) {} nav.querySelectorAll('[data-cover]').forEach(x => x.setAttribute('aria-pressed', x === b)); refreshPhotos(); return; }
     if (b.dataset.dom && b.closest('#filters')) { filter = b.dataset.dom; nav.querySelectorAll('[data-dom]').forEach(x => x.setAttribute('aria-pressed', x === b)); main.querySelectorAll('.plate').forEach(el => el.hidden = !(filter === 'all' || el.dataset.dom === filter)); setFoot(); return; }
     const act = b.dataset.act, k = b.dataset.k;
