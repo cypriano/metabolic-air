@@ -13,6 +13,12 @@
    "author": "Captainm",
    "license": "CC BY-SA 4.0",
    "page": "https://commons.wikimedia.org/wiki/File:Silver_Clouds_Warhol_Musee_dArt_Moderne_ville_Paris.jpg"
+  },
+  {
+   "src": "img/silverClouds-2.jpg",
+   "author": "Sskerchief",
+   "license": "CC BY-SA 3.0",
+   "page": "https://commons.wikimedia.org/wiki/File:WarholClouds.jpg"
   }
  ],
  "weather": [
@@ -63,6 +69,12 @@
    "author": "Bernard Gagnon",
    "license": "CC BY-SA 3.0",
    "page": "https://commons.wikimedia.org/wiki/File:Gournah.jpg"
+  },
+  {
+   "src": "img/gourna-3.jpg",
+   "author": "Roland Unger",
+   "license": "CC BY-SA 3.0",
+   "page": "https://commons.wikimedia.org/wiki/File:NewQurnaMarket.jpg"
   }
  ],
  "pompeia": [
@@ -85,6 +97,12 @@
    "author": "CostaPPPR",
    "license": "CC BY-SA 3.0",
    "page": "https://commons.wikimedia.org/wiki/File:RedeSarah-ba.jpg"
+  },
+  {
+   "src": "img/sarah-2.jpg",
+   "author": "Agência Brasil",
+   "license": "CC BY 3.0 BR",
+   "page": "https://commons.wikimedia.org/wiki/File:Hospital_Sarah_Kubitschek.jpg"
   }
  ],
  "tjibaou": [
@@ -101,6 +119,12 @@
    "author": "Gunnar Klack",
    "license": "CC BY-SA 4.0",
    "page": "https://commons.wikimedia.org/wiki/File:2000-08-Expo-Hannover-Pavillon-Schweiz-02.jpg"
+  },
+  {
+   "src": "img/soundBox-2.jpg",
+   "author": "Gunnar Klack",
+   "license": "CC BY-SA 4.0",
+   "page": "https://commons.wikimedia.org/wiki/File:2000-08-Expo-Hannover-Pavillon-Schweiz-01.jpg"
   }
  ],
  "badgir": [
@@ -115,6 +139,12 @@
    "author": "Diego Delso",
    "license": "CC BY-SA 4.0",
    "page": "https://commons.wikimedia.org/wiki/File:Jard%C3%ADn_de_Dolat-Abad%2C_Yazd%2C_Ir%C3%A1n%2C_2016-09-21%2C_DD_42.jpg"
+  },
+  {
+   "src": "img/badgir-3.jpg",
+   "author": "Bernard Gagnon",
+   "license": "CC BY-SA 4.0",
+   "page": "https://commons.wikimedia.org/wiki/File:Dolat_Abad_Garden_-_Pavilion_01.jpg"
   }
  ],
  "cobogo": [
@@ -123,6 +153,12 @@
    "author": "Cataleirxs",
    "license": "CC BY-SA 4.0",
    "page": "https://commons.wikimedia.org/wiki/File:Cobog%C3%B3_2.jpg"
+  },
+  {
+   "src": "img/cobogo-2.jpg",
+   "author": "Mateus Hidalgo",
+   "license": "CC BY-SA 2.0",
+   "page": "https://commons.wikimedia.org/wiki/File:Cobog%C3%B3.jpg"
   }
  ],
  "muxarabi": [
@@ -137,6 +173,12 @@
    "author": "Dr.EOMR",
    "license": "CC BY-SA 4.0",
    "page": "https://commons.wikimedia.org/wiki/File:%22Mashrabiya%22_at_Al-Sadat_house_in_Cairo.jpg"
+  },
+  {
+   "src": "img/muxarabi-3.jpg",
+   "author": "The Metropolitan Museum of Art",
+   "license": "CC0",
+   "page": "https://commons.wikimedia.org/wiki/File:Mashrabiya_Screen_MET_DP155281.jpg"
   }
  ],
  "eastgate": [
@@ -159,6 +201,12 @@
    "author": "Roland Zumbühl",
    "license": "CC BY-SA 3.0",
    "page": "https://commons.wikimedia.org/wiki/File:Yverdon_Nuage.jpg"
+  },
+  {
+   "src": "img/blur-3.jpg",
+   "author": "Norbert Aepli",
+   "license": "CC BY 2.5",
+   "page": "https://commons.wikimedia.org/wiki/File:20020717_Expo_Yverdon_22.JPG"
   }
  ],
  "pilotis": [
@@ -263,6 +311,12 @@
    "author": "Jakub Hałun",
    "license": "CC BY 4.0",
    "page": "https://commons.wikimedia.org/wiki/File:Tower_of_the_Winds%2C_Athens%2C_20240531_1804_9858.jpg"
+  },
+  {
+   "src": "img/torreVentos-3.jpg",
+   "author": "Jakub Hałun",
+   "license": "CC BY 4.0",
+   "page": "https://commons.wikimedia.org/wiki/File:Tower_of_the_Winds%2C_Athens%2C_20240531_0912_9419.jpg"
   }
  ],
  "hipocausto": [
@@ -271,6 +325,18 @@
    "author": "Sindala",
    "license": "CC BY 4.0",
    "page": "https://commons.wikimedia.org/wiki/File:Pilae_in_Thermenmuseum_Heerlen.jpg"
+  },
+  {
+   "src": "img/hipocausto-2.jpg",
+   "author": "Oldchien.rb",
+   "license": "CC BY-SA 4.0",
+   "page": "https://commons.wikimedia.org/wiki/File:Hypocaust_at_Chedworth_Roman_Villa.jpg"
+  },
+  {
+   "src": "img/hipocausto-3.jpg",
+   "author": "Awinkler3",
+   "license": "CC0",
+   "page": "https://commons.wikimedia.org/wiki/File:Hypocaust_of_baths_in_Minturnae.jpg"
   }
  ],
  "panteao": [
@@ -285,6 +351,18 @@
    "author": "John Samuel",
    "license": "CC BY-SA 4.0",
    "page": "https://commons.wikimedia.org/wiki/File:Pantheon_%28Rome%29_-_Interior_05.jpg"
+  },
+  {
+   "src": "img/panteao-3.jpg",
+   "author": "Wilfredor",
+   "license": "CC0",
+   "page": "https://commons.wikimedia.org/wiki/File:Pantheon_%28Rome%29%2C_Dome_interior.jpg"
+  },
+  {
+   "src": "img/panteao-4.jpg",
+   "author": "Giovanni Paolo Panini",
+   "license": "Domínio público",
+   "page": "https://commons.wikimedia.org/wiki/File:Giovanni_Paolo_Panini_-_Interior_of_the_Pantheon%2C_Rome_-_Google_Art_Project.jpg"
   }
  ],
  "malqafEgito": [
@@ -313,6 +391,12 @@
    "author": "Tomergavish",
    "license": "CC BY-SA 4.0",
    "page": "https://commons.wikimedia.org/wiki/File:A_Bedouin_tent_2.jpg"
+  },
+  {
+   "src": "img/tenda-3.jpg",
+   "author": "James Emery",
+   "license": "CC BY 2.0",
+   "page": "https://commons.wikimedia.org/wiki/File:Inside_a_Bedouin_tent_1555_%28511040622%29.jpg"
   }
  ],
  "iglu": [
@@ -321,6 +405,12 @@
    "author": "Geoff Charles",
    "license": "CC BY-SA 4.0",
    "page": "https://commons.wikimedia.org/wiki/File:Children_building_an_igloo_in_the_snow_%281455636%29.jpg"
+  },
+  {
+   "src": "img/iglu-2.jpg",
+   "author": "Otto D. Goetze",
+   "license": "Domínio público",
+   "page": "https://commons.wikimedia.org/wiki/File:Eskimo_family_and_their_igloo_cph.3c36050.jpg"
   }
  ],
  "leonardo": [
@@ -329,6 +419,12 @@
    "author": "Leonardo da Vinci",
    "license": "Domínio público",
    "page": "https://commons.wikimedia.org/wiki/File:Leonardo_da_vinci%2C_Codex_on_the_flight_of_birds.jpg"
+  },
+  {
+   "src": "img/leonardo-2.jpg",
+   "author": "Leonardo da Vinci",
+   "license": "Domínio público",
+   "page": "https://commons.wikimedia.org/wiki/File:Codice_Volo_15R_mod.jpg"
   }
  ],
  "hawaMahal": [
@@ -337,6 +433,18 @@
    "author": "Chainwit.",
    "license": "CC BY-SA 4.0",
    "page": "https://commons.wikimedia.org/wiki/File:East_facade_Hawa_Mahal_Jaipur_from_ground_level_%28July_2022%29_-_img_01.jpg"
+  },
+  {
+   "src": "img/hawaMahal-2.jpg",
+   "author": "Marcin Białek",
+   "license": "CC BY-SA 4.0",
+   "page": "https://commons.wikimedia.org/wiki/File:Hawa_Mahal_2011.jpg"
+  },
+  {
+   "src": "img/hawaMahal-3.jpg",
+   "author": "Jakub Hałun",
+   "license": "CC BY-SA 4.0",
+   "page": "https://commons.wikimedia.org/wiki/File:Hawa_Mahal_%28The_Palace_of_Winds%29_in_Jaipur%2C_20191218_1201_9174.jpg"
   }
  ],
  "crystalPalace": [
@@ -345,6 +453,12 @@
    "author": "Dickinson Brothers",
    "license": "Domínio público",
    "page": "https://commons.wikimedia.org/wiki/File:Crystal_Palace_from_the_northeast_from_Dickinson%27s_Comprehensive_Pictures_of_the_Great_Exhibition_of_1851._1854.jpg"
+  },
+  {
+   "src": "img/crystalPalace-2.jpg",
+   "author": "Read & Co.",
+   "license": "Domínio público",
+   "page": "https://commons.wikimedia.org/wiki/File:The_Crystal_Palace_in_Hyde_Park_for_Grand_International_Exhibition_of_1851.jpg"
   }
  ],
  "blueSail": [
@@ -353,6 +467,12 @@
    "author": "Ed Schipul",
    "license": "CC BY-SA 2.0",
    "page": "https://commons.wikimedia.org/wiki/File:Hans_Haacke_-_Blue_Sail_1_9999999_%28167482977%29.jpg"
+  },
+  {
+   "src": "img/blueSail-2.jpg",
+   "author": "Ed Schipul",
+   "license": "CC BY-SA 2.0",
+   "page": "https://commons.wikimedia.org/wiki/File:Hans_Haacke_-_Blue_Sail_2_9999999_%28167482849%29.jpg"
   }
  ],
  "leviathan": [
@@ -397,6 +517,12 @@
    "author": "Bertie Mabootoo",
    "license": "CC BY 2.0",
    "page": "https://commons.wikimedia.org/wiki/File:NGA_Fog_sculpture_by_Fujiko_Nakaya_%28429173353%29.jpg"
+  },
+  {
+   "src": "img/nakaya-3.jpg",
+   "author": "Bertie Mabootoo",
+   "license": "CC BY 2.0",
+   "page": "https://commons.wikimedia.org/wiki/File:NGA_Fog_sculpture_by_Fujiko_Nakaya_%28429171780%29.jpg"
   }
  ],
  "pedregulho": [
@@ -421,6 +547,12 @@
    "author": "Enfo",
    "license": "CC BY-SA 3.0",
    "page": "https://commons.wikimedia.org/wiki/File:35_Edifici_Media-TIC%2C_c._Sancho_de_%C3%81vila.JPG"
+  },
+  {
+   "src": "img/mediaTic-2.jpg",
+   "author": "Matt Clark",
+   "license": "CC BY 2.0",
+   "page": "https://commons.wikimedia.org/wiki/File:Media-TIC_%28Barcelona%29.jpg"
   }
  ],
  "botticelli": [
@@ -445,6 +577,12 @@
    "author": "IH Havens",
    "license": "CC BY-SA 4.0",
    "page": "https://commons.wikimedia.org/wiki/File:George_Rickey_Kinetic_Sculpture_Downtown_South_Bend_2015.jpg"
+  },
+  {
+   "src": "img/rickey-2.jpg",
+   "author": "KimonBerlin",
+   "license": "CC BY-SA 2.0",
+   "page": "https://commons.wikimedia.org/wiki/File:George_Rickey_-_Peristyle_V_%2826684836161%29.jpg"
   }
  ],
  "chillida": [
@@ -461,6 +599,12 @@
    "author": "Luc Van Braekel",
    "license": "CC BY 2.0",
    "page": "https://commons.wikimedia.org/wiki/File:Theo_Jansen_at_CWF08_%283046346089%29.jpg"
+  },
+  {
+   "src": "img/strandbeest-2.jpg",
+   "author": "Axel Hindemith",
+   "license": "Domínio público",
+   "page": "https://commons.wikimedia.org/wiki/File:Jansen_Theo_Strandbeest_Oper.jpg"
   }
  ],
  "zephyrometer": [
@@ -469,6 +613,12 @@
    "author": "Lanma726",
    "license": "CC BY-SA 3.0",
    "page": "https://commons.wikimedia.org/wiki/File:Zephyrometer_Wellington.jpg"
+  },
+  {
+   "src": "img/zephyrometer-2.jpg",
+   "author": "Tom Ackroyd",
+   "license": "CC BY-SA 4.0",
+   "page": "https://commons.wikimedia.org/wiki/File:Zephyrometer.jpg"
   }
  ],
  "seaOrgan": [
@@ -485,6 +635,12 @@
    "author": "Childzy",
    "license": "CC BY 3.0",
    "page": "https://commons.wikimedia.org/wiki/File:Singing_Ringing_Tree_Stitch.jpg"
+  },
+  {
+   "src": "img/singingTree-2.jpg",
+   "author": "Benjamin Shaw",
+   "license": "CC BY-SA 3.0",
+   "page": "https://commons.wikimedia.org/wiki/File:Singing_Ringing_Tree_%2838586%29.jpg"
   }
  ],
  "bahrainWTC": [
@@ -493,6 +649,12 @@
    "author": "B.alotaby",
    "license": "CC BY-SA 4.0",
    "page": "https://commons.wikimedia.org/wiki/File:Bahrain_World_trade_Center_.jpg"
+  },
+  {
+   "src": "img/bahrainWTC-2.jpg",
+   "author": "Francisco Anzola",
+   "license": "CC BY 2.0",
+   "page": "https://commons.wikimedia.org/wiki/File:Bahrain_World_Trade_Center_%2830040380192%29.jpg"
   }
  ],
  "rokko": [
@@ -501,6 +663,12 @@
    "author": "そらみみ",
    "license": "CC BY-SA 4.0",
    "page": "https://commons.wikimedia.org/wiki/File:Rokko-Shidare_Observatory_from_Rokko_View_Palace.JPG"
+  },
+  {
+   "src": "img/rokko-2.jpg",
+   "author": "そらみみ",
+   "license": "CC BY-SA 4.0",
+   "page": "https://commons.wikimedia.org/wiki/File:Rokko-Shidare_Observatory_from_Miharashi_Tower_in_Rokko_Garden_Terrace.JPG"
   }
  ],
  "burj": [
@@ -517,6 +685,12 @@
    "author": "Editor5807",
    "license": "CC BY-SA 3.0",
    "page": "https://commons.wikimedia.org/wiki/File:Canary_Wharf_Aeolus_sculpture.JPG"
+  },
+  {
+   "src": "img/aeolus-2.jpg",
+   "author": "Editor5807",
+   "license": "CC BY-SA 3.0",
+   "page": "https://commons.wikimedia.org/wiki/File:Canary_Wharf_Aeolus_sculpture_2.JPG"
   }
  ],
  "pearlRiver": [
@@ -533,6 +707,12 @@
    "author": "Baycrest",
    "license": "CC BY-SA 2.5",
    "page": "https://commons.wikimedia.org/wiki/File:Shanghai_Tower_2015.jpg"
+  },
+  {
+   "src": "img/shanghaiTower-2.jpg",
+   "author": "Ermell",
+   "license": "CC0",
+   "page": "https://commons.wikimedia.org/wiki/File:Shanghai_Shanghai_Tower_5166304.jpg"
   }
  ],
  "montgolfier": [
@@ -565,6 +745,72 @@
    "author": "Arnoldius",
    "license": "CC BY-SA 4.0",
    "page": "https://commons.wikimedia.org/wiki/File:Gasometer_OB_Big_Air_Package.jpg"
+  },
+  {
+   "src": "img/bigAirPackage-2.jpg",
+   "author": "Sebastian “sebrem”",
+   "license": "CC BY-SA 3.0",
+   "page": "https://commons.wikimedia.org/wiki/File:Big_Air_Package_-_panoramio.jpg"
+  }
+ ],
+ "hokusai": [
+  {
+   "src": "img/hokusai-1.jpg",
+   "author": "Katsushika Hokusai",
+   "license": "Domínio público",
+   "page": "https://commons.wikimedia.org/wiki/File:Ejiri_in_the_Suruga_province.jpg"
+  }
+ ],
+ "turner": [
+  {
+   "src": "img/turner-1.jpg",
+   "author": "J. M. W. Turner",
+   "license": "Domínio público",
+   "page": "https://commons.wikimedia.org/wiki/File:Joseph_Mallord_William_Turner_-_Snow_Storm_-_Steam-Boat_off_a_Harbour%27s_Mouth_-_WGA23178.jpg"
+  }
+ ],
+ "gando": [
+  {
+   "src": "img/gando-1.jpg",
+   "author": "Helge Fahrnberger",
+   "license": "CC BY-SA 3.0",
+   "page": "https://commons.wikimedia.org/wiki/File:Gando-School-Burkina-Faso.JPG"
+  },
+  {
+   "src": "img/gando-2.jpg",
+   "author": "Kéré Architecture",
+   "license": "CC BY-SA 3.0",
+   "page": "https://commons.wikimedia.org/wiki/File:Gando_school_garden.jpg"
+  }
+ ],
+ "radome": [
+  {
+   "src": "img/radome-1.jpg",
+   "author": "All Hands magazine",
+   "license": "Domínio público",
+   "page": "https://commons.wikimedia.org/wiki/File:Navy-Radome.jpg"
+  }
+ ],
+ "waterCube": [
+  {
+   "src": "img/waterCube-1.jpg",
+   "author": "angus_mac_123",
+   "license": "CC BY 2.0",
+   "page": "https://commons.wikimedia.org/wiki/File:Beijing_National_Aquatics_Center_September_16%2C_2006.jpg"
+  },
+  {
+   "src": "img/waterCube-2.jpg",
+   "author": "假墙",
+   "license": "CC BY-SA 2.5",
+   "page": "https://commons.wikimedia.org/wiki/File:Construction_of_Beijing_National_Aquatics_Center_%28gold%29.jpg"
+  }
+ ],
+ "inujima": [
+  {
+   "src": "img/inujima-1.jpg",
+   "author": "KimonBerlin",
+   "license": "CC BY-SA 2.0",
+   "page": "https://commons.wikimedia.org/wiki/File:Inujima_Seirensho_Art_Museum_%288918114910%29.jpg"
   }
  ]
 }

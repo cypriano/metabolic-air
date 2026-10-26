@@ -138,6 +138,12 @@ figure.has-photo{padding:0;border-bottom:1px solid var(--line)}
 .seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
 .seg button:hover:not([aria-pressed="true"]){background:var(--hover)}
 .seg button:focus-visible{outline:2px solid var(--ink);outline-offset:2px;position:relative}
+.pmain{position:relative}
+.pnav{position:absolute;top:50%;transform:translateY(-50%);width:38px;height:38px;border:1px solid var(--ink);background:var(--paper);color:var(--ink);font:400 22px/1 var(--display);cursor:pointer}
+.pnav:hover{background:var(--ink);color:var(--paper)}
+.pnav:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.pprev{left:8px}.pnext{right:8px}
+.pcount{position:absolute;right:8px;bottom:8px;background:var(--paper);color:var(--ink);font:500 10px/1 var(--mono);letter-spacing:.1em;padding:5px 7px}
 .pmain img{display:block;width:100%;max-height:58vh;object-fit:contain;filter:grayscale(1) contrast(1.04);background:var(--hover)}
 .pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(64px,1fr));gap:6px}
 .pthumb{all:unset;cursor:pointer;display:block;border:1px solid var(--line)}
@@ -153,6 +159,11 @@ figure.has-photo{padding:0;border-bottom:1px solid var(--line)}
 .vh:focus-visible + .upl{outline:2px solid var(--ink);outline-offset:2px}
 .ptag{font:500 11px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--mute)}
 .pempty{margin:0;border:1px dashed var(--line);padding:28px 18px;text-align:center;color:var(--mute);font-size:14px}
+.links{display:flex;flex-wrap:wrap}
+.glink{border:1px solid var(--ink);margin:0 -1px -1px 0;padding:9px 12px;font:500 11px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink);text-decoration:none}
+.glink:hover{background:var(--ink);color:var(--paper)}
+.glink:focus-visible{outline:2px solid var(--ink);outline-offset:2px;position:relative}
+.glabel{margin:6px 0 0;font:400 11px/1.4 var(--mono);color:var(--mute)}
 .credit{margin:0;font:400 11px/1.45 var(--mono);color:var(--mute)}
 .credit a{color:var(--ink);text-underline-offset:3px}
 .pmsg{margin:0;font:400 12px/1.4 var(--mono)}
@@ -1147,7 +1158,7 @@ footer{padding-block:28px 48px;display:flex;justify-content:space-between;gap:16
   ORDER[3] = ['arte', 'exp', 'arq'];
   Object.assign(UI.pt, {
     v3: ['Referências', 'O ar na arte e na arquitetura.', 'O terceiro volume reúne obras e projetos que fizeram do ar o seu material: instalações, pavilhões experimentais e edifícios. Cada prancha traz ano, autoria e os fenômenos e dispositivos dos volumes anteriores que a obra explora.', 'Cada prancha aceita fotos, que podem virar a capa na galeria'],
-    photoBy: 'Foto:', yc: 'Ano · Autoria', about: 'Sobre a obra', airIn: 'O ar na obra', related: 'Fenômenos e dispositivos', refs: 'Em obras de referência',
+    search: 'Pesquisar em nova aba', gImages: 'Google Imagens', photoBy: 'Foto:', yc: 'Ano · Autoria', about: 'Sobre a obra', airIn: 'O ar na obra', related: 'Fenômenos e dispositivos', refs: 'Em obras de referência',
     photos: 'Fotos', illus: 'Ilustração', cover: 'Capa', coverArt: 'Ilustração', coverPhoto: 'Foto', auto: 'Automática',
     addPhotos: 'Adicionar fotos', uploading: n => `Enviando ${n} ${n === 1 ? 'foto' : 'fotos'}…`, uploaded: 'Fotos adicionadas.', setCover: 'Usar como capa', isCover: 'Capa atual', removePhoto: 'Remover foto', removed: 'Foto removida.',
     noPhotosEdit: 'Nenhuma foto ainda. Adicione imagens do projeto: elas ficam guardadas na página, aparecem para todos que a abrem e são exibidas em preto e branco.',
@@ -1156,7 +1167,7 @@ footer{padding-block:28px 48px;display:flex;justify-content:space-between;gap:16
   });
   Object.assign(UI.en, {
     v3: ['References', 'Air in art and architecture.', 'The third volume gathers works and projects that made air their material: installations, experimental pavilions and buildings. Each plate gives year, authorship and the phenomena and devices from earlier volumes that the work explores.', 'Every plate accepts photos, which can become its cover in the gallery'],
-    photoBy: 'Photo:', yc: 'Year · Creators', about: 'About the work', airIn: 'Air in the work', related: 'Phenomena and devices', refs: 'In reference works',
+    search: 'Search in a new tab', gImages: 'Google Images', photoBy: 'Photo:', yc: 'Year · Creators', about: 'About the work', airIn: 'Air in the work', related: 'Phenomena and devices', refs: 'In reference works',
     photos: 'Photos', illus: 'Illustration', cover: 'Cover', coverArt: 'Illustration', coverPhoto: 'Photo', auto: 'Automatic',
     addPhotos: 'Add photos', uploading: n => `Uploading ${n} ${n === 1 ? 'photo' : 'photos'}…`, uploaded: 'Photos added.', setCover: 'Use as cover', isCover: 'Current cover', removePhoto: 'Remove photo', removed: 'Photo removed.',
     noPhotosEdit: 'No photos yet. Add images of the project: they are stored with the page, shown to everyone who opens it and displayed in black and white.',
@@ -1989,6 +2000,8 @@ footer{padding-block:28px 48px;display:flex;justify-content:space-between;gap:16
   const saveBtn = k => `<button type="button" data-act="save" data-k="${k}" aria-pressed="${isSaved(k)}">${bm}<span>${isSaved(k) ? u('saved') : u('save')}</span></button>`;
   const webQuery = p => p.vol === 3 ? `${p.pt[0]} ${p.pt[5].split('·').pop().trim()}` : p.pt[0];
   const webUrl = p => `https://commons.wikimedia.org/w/index.php?search=${encodeURIComponent(webQuery(p))}&title=Special:MediaSearch&type=image`;
+  const gQuery = p => p.vol === 3 ? `${p[L][0]} ${p.pt[5].split('·').pop().trim()}` : p.vol === 2 ? `${p[L][0]} ${L === 'en' ? 'architecture' : 'arquitetura'}` : `${p[L][0]} ${L === 'en' ? 'air' : 'ar'}`;
+  const searchLinks = p => { const q = encodeURIComponent(gQuery(p)); return `<div class="sec"><b>${u('search')}</b><div class="links"><a class="glink" href="https://www.google.com/search?q=${q}" target="_blank" rel="noopener noreferrer">Google ↗</a><a class="glink" href="https://www.google.com/search?q=${q}&tbm=isch" target="_blank" rel="noopener noreferrer">${u('gImages')} ↗</a><a class="glink" href="${webUrl(p)}" target="_blank" rel="noopener noreferrer">Wikimedia Commons ↗</a></div><p class="glabel">“${esc(gQuery(p))}”</p></div>`; };
 
   function renderHeader() {
     document.documentElement.lang = L === 'en' ? 'en' : 'pt-BR';
@@ -2106,7 +2119,8 @@ footer{padding-block:28px 48px;display:flex;justify-content:space-between;gap:16
     let h = '';
     if (ps.length) {
       const cur = ps[dIdx];
-      h += `<div class="pmain"><img class="ph-big" data-k="${p.key}" src="${esc(cur.src)}" alt="${tx(p, 0)} · ${dIdx + 1}/${ps.length}"></div>`;
+      const nv = ps.length > 1 ? `<button type="button" class="pnav pprev" data-act="pick" data-i="${(dIdx - 1 + ps.length) % ps.length}" aria-label="${u('prev')}">‹</button><button type="button" class="pnav pnext" data-act="pick" data-i="${(dIdx + 1) % ps.length}" aria-label="${u('next')}">›</button><span class="pcount">${dIdx + 1} / ${ps.length}</span>` : '';
+      h += `<div class="pmain"><img class="ph-big" data-k="${p.key}" src="${esc(cur.src)}" alt="${tx(p, 0)} · ${dIdx + 1}/${ps.length}">${nv}</div>`;
       if (cur.cur) h += `<p class="credit">${u('photoBy')} ${esc(cur.cur.author)} · ${esc(cur.cur.license)} · <a href="${esc(cur.cur.page)}" target="_blank" rel="noopener noreferrer">Wikimedia Commons ↗</a></p>`;
       if (ps.length > 1) h += `<div class="pgrid">${ps.map((x, i) => `<button type="button" class="pthumb" data-act="pick" data-i="${i}" aria-pressed="${i === dIdx}" aria-label="${i + 1}/${ps.length}"><img src="${esc(x.src)}" alt="" loading="lazy"></button>`).join('')}</div>`;
       if (canEdit) h += `<div class="ptools">${dIdx === 0 ? `<span class="ptag">${u('isCover')}</span>` : `<button type="button" data-act="setcover">${u('setCover')}</button>`}${cur.id ? `<button type="button" data-act="rmphoto">${u('removePhoto')}</button>` : ''}</div>`;
@@ -2150,11 +2164,12 @@ footer{padding-block:28px 48px;display:flex;justify-content:space-between;gap:16
           <div class="sec"><b>${lab[0]}</b><p>${tx(p, 3)}</p></div>
           <div class="sec"><b>${lab[1]}</b><p>${tx(p, 4)}</p></div>
           ${rels}
+          ${searchLinks(p)}
           <div class="acts">${saveBtn(k)}</div>
         </div>
       </div>`;
   }
-  function openDetail(k, tab) { if (!k || !BY[k]) return; if (tab) dTab = tab; else if (openKey !== k && !dlg.open) dTab = 'art'; renderDetail(k); if (!dlg.open) dlg.showModal(); }
+  function openDetail(k, tab) { if (!k || !BY[k]) return; if (tab) dTab = tab; else if (openKey !== k) dTab = photosOf(k).length ? 'photos' : 'art'; renderDetail(k); if (!dlg.open) dlg.showModal(); }
 
   function goTo(k) {
     const p = BY[k]; if (!p) return;
@@ -2228,6 +2243,12 @@ footer{padding-block:28px 48px;display:flex;justify-content:space-between;gap:16
       [items[i], items[j]] = [items[j], items[i]]; persist(); renderMural();
       const nb = main.querySelector(`[data-act="mv"][data-k="${k}"][data-d="${b.dataset.d}"]`); if (nb && !nb.disabled) nb.focus();
     }
+  });
+  dlg.addEventListener('keydown', e => {
+    if (!openKey || dTab !== 'photos' || (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight')) return;
+    if (e.target.closest && e.target.closest('input,textarea')) return;
+    const n = photosOf(openKey).length; if (n < 2) return;
+    e.preventDefault(); dIdx = (dIdx + (e.key === 'ArrowRight' ? 1 : -1) + n) % n; renderDetail(openKey);
   });
   dlg.addEventListener('change', e => { if (e.target.id === 'ph-input' && openKey) { uploadFiles(openKey, Array.from(e.target.files || [])); e.target.value = ''; } });
   main.addEventListener('input', e => {
