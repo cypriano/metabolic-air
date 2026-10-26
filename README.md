@@ -4,7 +4,7 @@
 
 - **Volume I — O estado gasoso:** 63 pranchas sobre fenômenos do ar na natureza, física, química, biologia, microbiologia, fauna, flora e técnica.
 - **Volume II — O ar no edifício:** 26 dispositivos e estratégias de projeto, cada um ligado ao fenômeno de origem.
-- **Volume III — Referências:** 24 obras de arte e arquitetura que usam o ar como material, com ano, autoria e fotos.
+- **Volume III — Referências:** 51 obras de arte e arquitetura que usam o ar como material, em ordem cronológica — da Torre dos Ventos de Atenas e do Panteão às instalações e edifícios contemporâneos — com ano, autoria e fotos.
 
 O site é bilíngue (PT/EN), tem fichas detalhadas por prancha e um mural pessoal de pranchas salvas.
 

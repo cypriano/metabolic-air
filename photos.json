@@ -21,6 +21,12 @@
    "author": "wonderferret",
    "license": "CC BY 2.0",
    "page": "https://commons.wikimedia.org/wiki/File:The_Weather_Project.jpg"
+  },
+  {
+   "src": "img/weather-2.jpg",
+   "author": "Bryan Ledgard",
+   "license": "CC BY 2.0",
+   "page": "https://commons.wikimedia.org/wiki/File:Tate_Modern_weather_project_%2870520263%29.jpg"
   }
  ],
  "kleinRuhnau": [
@@ -147,6 +153,12 @@
    "author": "Norbert Aepli",
    "license": "CC BY 2.5",
    "page": "https://commons.wikimedia.org/wiki/File:20020717_Expo_Yverdon_23.JPG"
+  },
+  {
+   "src": "img/blur-2.jpg",
+   "author": "Roland Zumbühl",
+   "license": "CC BY-SA 3.0",
+   "page": "https://commons.wikimedia.org/wiki/File:Yverdon_Nuage.jpg"
   }
  ],
  "pilotis": [
@@ -199,6 +211,12 @@
    "author": "Jürgen Matern",
    "license": "CC BY-SA 2.5",
    "page": "https://commons.wikimedia.org/wiki/File:Eden_Project_geodesic_domes_panorama.jpg"
+  },
+  {
+   "src": "img/etfe-2.jpg",
+   "author": "Ian Capper",
+   "license": "CC BY-SA 2.0",
+   "page": "https://commons.wikimedia.org/wiki/File:Eden_Project_Biomes_-_geograph.org.uk_-_5664499.jpg"
   }
  ],
  "fachadaDupla": [
@@ -231,6 +249,152 @@
    "author": "Saud",
    "license": "CC BY-SA 4.0",
    "page": "https://commons.wikimedia.org/wiki/File:Roof_Turbine_Ventilator.jpg"
+  }
+ ],
+ "torreVentos": [
+  {
+   "src": "img/torreVentos-1.jpg",
+   "author": "Andreas Trepte",
+   "license": "CC BY-SA 2.5",
+   "page": "https://commons.wikimedia.org/wiki/File:Tower_of_the_Winds_Athen.jpg"
+  }
+ ],
+ "hipocausto": [
+  {
+   "src": "img/hipocausto-1.jpg",
+   "author": "Sindala",
+   "license": "CC BY 4.0",
+   "page": "https://commons.wikimedia.org/wiki/File:Pilae_in_Thermenmuseum_Heerlen.jpg"
+  }
+ ],
+ "panteao": [
+  {
+   "src": "img/panteao-1.jpg",
+   "author": "T. Le Berre",
+   "license": "CC BY-SA 4.0",
+   "page": "https://commons.wikimedia.org/wiki/File:Interior_oculus_of_the_Rome_Pantheon.jpg"
+  },
+  {
+   "src": "img/panteao-2.jpg",
+   "author": "John Samuel",
+   "license": "CC BY-SA 4.0",
+   "page": "https://commons.wikimedia.org/wiki/File:Pantheon_%28Rome%29_-_Interior_05.jpg"
+  }
+ ],
+ "malqafEgito": [
+  {
+   "src": "img/malqafEgito-1.jpg",
+   "author": "Keith Schengili-Roberts",
+   "license": "CC BY-SA 3.0",
+   "page": "https://commons.wikimedia.org/wiki/File:AncientEgyptianModelOfAHouse-ROM.png"
+  },
+  {
+   "src": "img/malqafEgito-2.jpg",
+   "author": "Autor desconhecido",
+   "license": "CC BY-SA 3.0",
+   "page": "https://commons.wikimedia.org/wiki/File:Ancient_Egyptian_House_miniature_showing_windcatchers.jpg"
+  }
+ ],
+ "tenda": [
+  {
+   "src": "img/tenda-1.jpg",
+   "author": "John Singer Sargent (pintura)",
+   "license": "CC0",
+   "page": "https://commons.wikimedia.org/wiki/File:Bedouin_Tent_MET_APS3594.jpg"
+  }
+ ],
+ "iglu": [
+  {
+   "src": "img/iglu-1.jpg",
+   "author": "Geoff Charles",
+   "license": "CC BY-SA 4.0",
+   "page": "https://commons.wikimedia.org/wiki/File:Children_building_an_igloo_in_the_snow_%281455636%29.jpg"
+  }
+ ],
+ "leonardo": [
+  {
+   "src": "img/leonardo-1.jpg",
+   "author": "Leonardo da Vinci",
+   "license": "Domínio público",
+   "page": "https://commons.wikimedia.org/wiki/File:Leonardo_da_vinci%2C_Codex_on_the_flight_of_birds.jpg"
+  }
+ ],
+ "hawaMahal": [
+  {
+   "src": "img/hawaMahal-1.jpg",
+   "author": "Chainwit.",
+   "license": "CC BY-SA 4.0",
+   "page": "https://commons.wikimedia.org/wiki/File:East_facade_Hawa_Mahal_Jaipur_from_ground_level_%28July_2022%29_-_img_01.jpg"
+  }
+ ],
+ "crystalPalace": [
+  {
+   "src": "img/crystalPalace-1.jpg",
+   "author": "Dickinson Brothers",
+   "license": "Domínio público",
+   "page": "https://commons.wikimedia.org/wiki/File:Crystal_Palace_from_the_northeast_from_Dickinson%27s_Comprehensive_Pictures_of_the_Great_Exhibition_of_1851._1854.jpg"
+  }
+ ],
+ "blueSail": [
+  {
+   "src": "img/blueSail-1.jpg",
+   "author": "Ed Schipul",
+   "license": "CC BY-SA 2.0",
+   "page": "https://commons.wikimedia.org/wiki/File:Hans_Haacke_-_Blue_Sail_1_9999999_%28167482977%29.jpg"
+  }
+ ],
+ "leviathan": [
+  {
+   "src": "img/leviathan-1.jpg",
+   "author": "Mbop",
+   "license": "CC BY-SA 4.0",
+   "page": "https://commons.wikimedia.org/wiki/File:Anish_Kapoor-Leviathan-int.jpg"
+  }
+ ],
+ "cloudscapes": [
+  {
+   "src": "img/cloudscapes-1.jpg",
+   "author": "Fulvio Spada",
+   "license": "CC BY-SA 2.0",
+   "page": "https://commons.wikimedia.org/wiki/File:Cloudscapes%2C_Transsolar_%26_Tetsuo_Kondo_Architects%2C_Architecture_Biennale_%285177886133%29.jpg"
+  }
+ ],
+ "ch2": [
+  {
+   "src": "img/ch2-1.jpg",
+   "author": "Nick Carson",
+   "license": "CC BY-SA 3.0",
+   "page": "https://commons.wikimedia.org/wiki/File:Council_House_2_Melbourne_east_and_turbine_detail.JPG"
+  },
+  {
+   "src": "img/ch2-2.jpg",
+   "author": "Nick Carson",
+   "license": "CC BY-SA 3.0",
+   "page": "https://commons.wikimedia.org/wiki/File:Council_House_2_Melbourne_Shutter_Detail.JPG"
+  }
+ ],
+ "nakaya": [
+  {
+   "src": "img/nakaya-1.jpg",
+   "author": "Pascal Vuylsteker",
+   "license": "CC BY-SA 2.0",
+   "page": "https://commons.wikimedia.org/wiki/File:NGA_Fog_sculpture_by_Fujiko_Nakaya_%283070821894%29.jpg"
+  }
+ ],
+ "pedregulho": [
+  {
+   "src": "img/pedregulho-1.jpg",
+   "author": "Ann Chou",
+   "license": "CC BY-SA 2.0",
+   "page": "https://commons.wikimedia.org/wiki/File:Conjunto_Residencial_Mendes_de_Moraes_%28Pedregulho%29.jpg"
+  }
+ ],
+ "airCon": [
+  {
+   "src": "img/airCon-1.jpg",
+   "author": "Art & Language",
+   "license": "CC BY-SA 4.0",
+   "page": "https://commons.wikimedia.org/wiki/File:Art_language_air_conditioning_show_conceptual_contemporary_art.jpg"
   }
  ]
 }

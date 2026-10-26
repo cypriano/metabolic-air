@@ -1362,12 +1362,231 @@ footer{padding-block:28px 48px;display:flex;justify-content:space-between;gap:16
     ["Conjunto Pedregulho", "Habitação moderna ventilada", "Affonso Eduardo Reidy desenhou um bloco sinuoso que acompanha o morro, com cobogós, brises e um andar livre no meio que deixa o vento e a vista atravessarem o edifício.", "O conjunto, no Rio de Janeiro, reunia moradias, escola, ginásio e posto de saúde. É um marco da habitação social moderna no Brasil.", "Reúne vários dispositivos do Volume II num só edifício: cobogó, brise e pilotis a serviço da ventilação.", "1947–1958 · Affonso Eduardo Reidy"],
     ["Pedregulho Housing", "Ventilated modern housing", "Affonso Eduardo Reidy designed a sinuous block following the hillside, with cobogós, louvres and an open middle floor that lets wind and views pass through the building.", "The complex in Rio de Janeiro combined housing, a school, a gym and a health post. It is a landmark of modern social housing in Brazil.", "It brings several Volume II devices together in one building: cobogó, brise-soleil and pilotis serving ventilation.", "1947–1958 · Affonso Eduardo Reidy"], ['cobogo', 'pilotis']);
 
+  /* ───────── Volume III, second layer: ancient to contemporary ───────── */
+  Object.assign(DOM, { his: 'História e vernáculo|History and vernacular' });
+  ORDER[3] = ['his', 'arte', 'exp', 'arq'];
+  UI.pt.v3[2] = 'O terceiro volume reúne obras que fizeram do ar o seu material, das construções antigas e vernaculares às instalações e edifícios contemporâneos. As pranchas seguem a ordem do tempo; cada uma traz ano, autoria e os fenômenos e dispositivos dos volumes anteriores que explora.';
+  UI.en.v3[2] = 'The third volume gathers works that made air their material, from ancient and vernacular buildings to contemporary installations and architecture. Plates follow the order of time; each gives year, authorship and the phenomena and devices from earlier volumes that it explores.';
+
+  Object.assign(art, {
+    torreVentos: () =>
+      `<path d="M84 48 L120 24 L156 48 Z"/><rect x="90" y="48" width="60" height="102"/><rect class="h" x="90" y="52" width="60" height="10"/>` +
+      `<line class="thin" x1="110" y1="62" x2="110" y2="150"/><line class="thin" x1="130" y1="62" x2="130" y2="150"/><line x1="120" y1="24" x2="120" y2="8"/>` +
+      A('M106 8 L136 8', '') + `<line x1="10" y1="150" x2="230" y2="150"/>` + A('M10 76 L82 76') + A('M232 100 L160 100') + A('M14 120 L82 112') +
+      T(120, 172, 'oito ventos, um cata-vento|eight winds, one vane', 'middle'),
+    hipocausto: () => {
+      let s = `<rect class="h" x="40" y="78" width="180" height="10"/><rect x="10" y="88" width="30" height="44"/><line x1="10" y1="132" x2="230" y2="132"/>`;
+      for (let x = 52; x <= 204; x += 19) s += `<rect x="${x}" y="88" width="8" height="44"/>`;
+      s += `<path class="f" d="M25 128 C18 120 22 110 26 104 C28 112 32 112 32 106 C36 114 34 124 25 128 Z"/><path d="M214 132 V20 M224 132 V20"/>`;
+      return s + A('M42 110 L206 110') + A('M219 126 L219 18') + person(130, 78, .9) + T(14, 150, 'fornalha|furnace') + T(120, 172, 'ar quente sob o piso|hot air under the floor', 'middle');
+    },
+    panteao: () =>
+      `<path d="M50 90 A70 70 0 0 1 112 20.5"/><path d="M128 20.5 A70 70 0 0 1 190 90"/><path d="M50 90 V150 M190 90 V150"/><line x1="10" y1="150" x2="230" y2="150"/>` +
+      `<path class="dash" d="M112 22 L104 150 M128 22 L136 150"/><ellipse class="thin" cx="120" cy="150" rx="18" ry="3"/>` + A('M120 128 L120 6') +
+      T(150, 14, 'óculo · 8,2 m|oculus · 8.2 m') + T(120, 172, 'luz entra, ar quente sai|light in, warm air out', 'middle'),
+    malqafEgito: () =>
+      `<rect x="50" y="76" width="140" height="74"/><line x1="10" y1="150" x2="230" y2="150"/>` +
+      `<path d="M78 76 V44 L104 32 V76"/><path d="M146 76 V44 L172 32 V76"/>` + [96, 120, 144, 168].map(x => `<rect class="thin" x="${x - 6}" y="110" width="12" height="16"/>`).join('') +
+      A('M232 26 L180 34', '') + A('M94 44 V104') + A('M162 44 V104') + T(120, 172, 'captadores no telhado da casa|scoops on the house roof', 'middle'),
+    tenda: () =>
+      `<line x1="6" y1="140" x2="234" y2="140"/><path class="h" d="M20 140 L40 74 L80 92 L120 66 L160 92 L200 74 L220 140"/><path d="M20 140 L40 74 L80 92 L120 66 L160 92 L200 74 L220 140"/>` +
+      `<path d="M40 74 V140 M120 66 V140 M200 74 V140"/>` + A('M8 120 L232 120') + sun(214, 22) +
+      T(120, 172, 'tecido de pelo de cabra respira|goat-hair cloth breathes', 'middle'),
+    iglu: () => {
+      let s = `<path d="M10 130 H60 V150 H96 V130 H230"/><path d="M60 130 A60 60 0 0 1 180 130" transform="translate(0 0)"/>`;
+      for (const r of [44, 28]) s += `<path class="thin" d="M${120 - Math.sqrt(3600 - r * r)} ${130 - r} H${120 + Math.sqrt(3600 - r * r)}"/>`;
+      s += `<rect class="h" x="120" y="114" width="56" height="16"/>` + dots(16, 104, 150, 76, 98, 1.2, 261);
+      return s + A('M40 120 L78 140', '') + T(10, 112, 'ar frio desce|cold air sinks') + T(150, 72, 'ar morno|warm air') + T(120, 172, 'neve compacta isola|packed snow insulates', 'middle');
+    },
+    hawaMahal: () => {
+      let s = `<line x1="10" y1="152" x2="230" y2="152"/>`;
+      for (let r = 0; r < 6; r++) { const n = 9 - r, w = 20, y = 132 - r * 20, x0 = 120 - n * w / 2; for (let i = 0; i < n; i++) { const x = x0 + i * w; s += `<path d="M${x + 3} ${y + 18} V${y + 8} Q${x + 10} ${y} ${x + 17} ${y + 8} V${y + 18}"/>`; } }
+      return s + A('M10 40 L44 70', '') + A('M230 40 L196 70', '') + T(120, 172, '953 janelas em treliça|953 latticed windows', 'middle');
+    },
+    montgolfier: () => {
+      let s = `<path d="M120 14 C170 14 186 60 166 98 C156 116 142 126 136 136 H104 C98 126 84 116 74 98 C54 60 70 14 120 14 Z"/>`;
+      for (const y of [34, 58, 82, 106]) s += `<line class="thin" x1="${y < 60 ? 72 : 78}" y1="${y}" x2="${y < 60 ? 168 : 162}" y2="${y}"/>`;
+      s += `<ellipse cx="120" cy="140" rx="20" ry="4"/><path class="f" d="M120 158 C114 152 116 146 120 142 C124 146 126 152 120 158 Z"/>`;
+      return s + A('M120 128 L120 52', 'bold') + T(120, 176, 'ar quente sobe, 1783|hot air rises, 1783', 'middle');
+    },
+    leonardo: () => {
+      let s = `<path d="M60 96 C90 70 140 50 214 40"/>`;
+      for (const [x, y] of [[100, 128], [130, 124], [160, 116], [190, 100], [212, 72]]) s += `<path class="thin" d="M60 96 L${x} ${y}"/><path d="M${x} ${y} Q${(x + 60) / 2 + 6} ${(y + 96) / 2 - 4} ${x - 26} ${y - 8}"/>`;
+      return s + `<circle cx="56" cy="96" r="5"/>` + A('M10 140 C80 150 160 150 232 136') + T(14, 30, 'estudo da asa|wing study') + T(120, 172, 'como as aves usam o ar|how birds use the air', 'middle');
+    },
+    crystalPalace: () => {
+      let s = `<line x1="6" y1="150" x2="234" y2="150"/><path d="M80 60 A40 40 0 0 1 160 60"/><rect x="20" y="60" width="200" height="90"/>`;
+      for (let x = 30; x < 220; x += 12) s += `<line class="thin" x1="${x}" y1="60" x2="${x}" y2="150"/>`;
+      s += `<line class="thin" x1="20" y1="90" x2="220" y2="90"/><line class="thin" x1="20" y1="120" x2="220" y2="120"/>`;
+      s += `<line x1="120" y1="150" x2="120" y2="116"/><circle class="knock" cx="120" cy="104" r="14"/>`;
+      return s + A('M4 140 L40 140') + A('M120 76 L120 6') + T(130, 14, 'venezianas no alto|high louvres') + T(120, 172, 'ventilação de um palácio de vidro|ventilating a glass palace', 'middle');
+    },
+    duchamp: () =>
+      `<path d="M120 26 C122 40 126 46 136 54 C170 78 164 140 120 146 C76 140 70 78 104 54 C114 46 118 40 120 26 Z"/><path class="thin" d="M100 80 C96 100 98 120 108 132"/>` +
+      `<line x1="80" y1="156" x2="160" y2="156"/>` + T(120, 106, 'ar de Paris|Paris air', 'middle') + T(120, 174, 'uma ampola de 50 cc|a 50 cc glass ampoule', 'middle'),
+    blueSail: () =>
+      `<line x1="10" y1="152" x2="230" y2="152"/><circle cx="120" cy="140" r="10"/><path class="thin" d="M120 130 V150 M110 140 H130"/>` +
+      `<path class="h" d="M40 112 C60 40 180 40 200 112 C170 96 70 96 40 112 Z"/><path d="M40 112 C60 40 180 40 200 112 C170 96 70 96 40 112 Z"/>` +
+      `<circle class="f" cx="40" cy="116" r="3"/><circle class="f" cx="200" cy="116" r="3"/>` + A('M120 128 L120 74') + T(120, 174, 'chiffon sobre um ventilador|chiffon over a fan', 'middle'),
+    christoPackage: () => {
+      let s = `<line x1="10" y1="156" x2="230" y2="156"/><path d="M104 156 C96 120 98 40 108 18 Q120 6 132 18 C142 40 144 120 136 156 Z"/>`;
+      for (let y = 30; y < 150; y += 16) s += `<path class="thin" d="M100 ${y} L140 ${y + 12} M140 ${y} L100 ${y + 12}"/>`;
+      return s + `<path class="thin" d="M108 18 L40 156 M132 18 L200 156"/>` + person(170, 156, .5) + T(150, 60, '85 m') + T(120, 176, 'um pacote de 5.600 m³ de ar|a 5,600 m³ package of air', 'middle');
+    },
+    olympicRainbow: () => {
+      let s = `<line x1="6" y1="156" x2="234" y2="156"/><path class="h" d="M150 156 L170 136 L200 146 L224 132 L230 156 Z"/>`;
+      for (let i = 0; i < 5; i++) s += `<path d="M${14 + i * 8} 156 C${50 + i * 6} ${30 + i * 10} ${150 - i * 4} ${20 + i * 10} ${206 - i * 6} ${140 - i * 2}"/>`;
+      return s + T(14, 24, 'tubos de hélio|helium tubes') + T(120, 176, 'arco-íris inflável, Munique|inflatable rainbow, Munich', 'middle');
+    },
+    parreno: () => {
+      let s = `<line x1="10" y1="16" x2="230" y2="16"/>`;
+      for (const [x, y, r] of [[40, 34, 16], [86, 30, 18], [134, 36, 16], [180, 30, 20], [62, 70, 14], [118, 74, 16], [168, 70, 14], [210, 58, 12]]) s += `<ellipse class="h" cx="${x}" cy="${y}" rx="${r}" ry="${r * .7}"/><ellipse cx="${x}" cy="${y}" rx="${r}" ry="${r * .7}"/><path d="M${x - 4} ${y + r * .66} L${x - 8} ${y + r * .7 + 8} L${x + 2} ${y + r * .68}"/>`;
+      return s + person(80, 156, .8) + person(150, 156, .8) + `<line x1="10" y1="156" x2="230" y2="156"/>` + T(120, 176, 'balões de hélio no teto|helium balloons on the ceiling', 'middle');
+    },
+    leviathan: () =>
+      `<path d="M10 150 V70 A110 66 0 0 1 230 70 V150"/><line x1="10" y1="150" x2="230" y2="150"/>` +
+      [[80, 104, 42], [140, 96, 50], [186, 116, 30]].map(([x, y, r]) => `<circle class="knock" cx="${x}" cy="${y}" r="${r}"/>`).join('') +
+      person(30, 150, .6) + T(120, 172, 'membrana inflada sob a nave|membrane inflated under the nave', 'middle'),
+    nimbus: () =>
+      `<rect x="40" y="20" width="160" height="120"/><path class="thin" d="M40 140 L14 162 M200 140 L226 162 M40 20 L14 4 M200 20 L226 4"/>` +
+      [[100, 80, 14], [118, 72, 18], [138, 78, 14], [128, 88, 12], [108, 90, 10]].map(([x, y, r]) => `<circle class="knock" cx="${x}" cy="${y}" r="${r}"/>`).join('') +
+      T(120, 172, 'uma nuvem dentro da sala|a cloud inside the room', 'middle'),
+    janssens: () =>
+      `<rect x="20" y="20" width="200" height="130"/>` + dots(150, 22, 218, 22, 148, .8, 271) +
+      `<line class="dash" x1="86" y1="20" x2="86" y2="150"/><line class="dash" x1="154" y1="20" x2="154" y2="150"/>` + person(120, 150, .8) +
+      T(53, 172, 'amarelo|yellow', 'middle') + T(120, 172, 'azul|blue', 'middle') + T(187, 172, 'rosa|pink', 'middle'),
+    cloudscapes: () =>
+      `<rect x="20" y="20" width="200" height="130"/>` + dots(70, 24, 216, 70, 96, 1, 281) +
+      `<path d="M40 150 L200 120 L60 90 L190 54 L120 24"/>` + T(26, 40, 'quente e úmido|warm and humid') + T(26, 140, 'fresco e seco|cool and dry') +
+      T(120, 172, 'atravessar uma nuvem por uma rampa|crossing a cloud on a ramp', 'middle'),
+    antFarm: () =>
+      `<line x1="10" y1="150" x2="230" y2="150"/><path d="M50 150 C50 70 190 70 190 150"/>` + dots(40, 8, 232, 20, 70, 1.3, 291) + dots(26, 8, 46, 70, 148, 1.3, 292) + dots(26, 194, 232, 70, 148, 1.3, 293) +
+      person(100, 150, .8) + person(140, 150, .8) + T(120, 172, 'uma bolha de ar limpo|a bubble of clean air', 'middle'),
+    masdar: () =>
+      `<line x1="10" y1="150" x2="230" y2="150"/><path d="M108 150 V30 H132 V150"/>` + [40, 48, 56].map(y => `<line class="thin" x1="132" y1="${y}" x2="140" y2="${y - 6}"/>`).join('') +
+      dots(30, 110, 130, 60, 100, .8, 301) + A('M232 34 L142 34', '') + A('M120 40 L120 140') + A('M126 146 L200 146') + A('M114 146 L40 146') +
+      T(140, 80, 'névoa|mist') + T(120, 172, 'torre de vento contemporânea|a contemporary windcatcher', 'middle'),
+    ch2: () => {
+      let s = `<rect x="40" y="30" width="160" height="120"/><line x1="10" y1="150" x2="230" y2="150"/>`;
+      for (const x of [56, 80, 104]) s += `<rect x="${x - 6}" y="34" width="12" height="112" rx="6"/>` + dots(8, x - 4, x + 4, 40, 140, .8, x);
+      for (const x of [140, 170]) s += `<circle cx="${x}" cy="20" r="8"/><line x1="${x}" y1="28" x2="${x}" y2="30"/>`;
+      return s + A('M130 60 L190 60', '') + A('M190 120 L130 120') + T(30, 172, 'torres de chuveiro|shower towers') + T(150, 104, 'noite: ar fresco|night: cool air');
+    },
+    gando: () => {
+      let s = `<line x1="10" y1="150" x2="230" y2="150"/><rect class="h" x="40" y="80" width="12" height="70"/><rect class="h" x="188" y="80" width="12" height="70"/><line class="dash" x1="52" y1="80" x2="188" y2="80"/><path class="bold" d="M20 64 L120 40 L220 64"/>`;
+      return s + A('M120 120 L120 84') + A('M124 76 C150 66 180 62 220 70') + A('M8 72 L40 66') + T(120, 172, 'teto perfurado sob telhado alto|perforated ceiling under a raised roof', 'middle');
+    },
+    latapie: () =>
+      `<line x1="10" y1="150" x2="230" y2="150"/><rect class="h" x="30" y="70" width="80" height="80"/><path d="M110 150 V60 L210 40 V150"/><path class="dash" d="M110 60 L210 40"/>` +
+      `<path d="M190 44 L206 30"/>` + sun(30, 28) + A('M160 130 C160 100 180 70 200 36') + T(120, 172, 'meia casa, meia estufa|half house, half greenhouse', 'middle'),
+    silves: () =>
+      `<line x1="10" y1="150" x2="230" y2="150"/><path class="bold" d="M10 96 L104 30 H136 L230 96"/><path class="dash" d="M104 30 V22 H136 V30"/>` +
+      `<path d="M40 96 V150 M200 96 V150 M90 96 V150 M150 96 V150"/>` + A('M6 124 L234 124') + A('M120 100 L120 14') +
+      T(120, 172, 'cobertura alta, salões abertos|high roof, open halls', 'middle'),
+    tubeHouse: () =>
+      `<line x1="10" y1="150" x2="230" y2="150"/><path d="M30 150 V60 L170 22 V150"/><path class="dash" d="M150 30 V20 H176 V28"/>` +
+      `<path class="thin" d="M30 110 H90 M90 110 V90 H150 M150 90 V70 H170"/>` + [118, 128, 138].map(y => `<line class="thin" x1="26" y1="${y}" x2="34" y2="${y + 4}"/>`).join('') +
+      A('M6 132 L36 132') + A('M40 136 C90 132 120 110 160 32') + T(120, 172, 'seção que funciona como chaminé|a section that acts as a chimney', 'middle'),
+    bakerCDS: () => {
+      let s = `<path d="M30 150 V30 H210 V150"/><line x1="10" y1="150" x2="230" y2="150"/>`;
+      for (let i = 0; i < 9; i++) for (let j = 0; j < 6; j++) { const x = 44 + i * 19, y = 44 + j * 18; s += `<path d="M${x} ${y - 6} L${x + 6} ${y} L${x} ${y + 6} L${x - 6} ${y} Z"/>`; }
+      return s + A('M6 90 L234 90') + T(120, 172, 'jali de tijolo: luz, sombra e brisa|brick jali: light, shade and breeze', 'middle');
+    }
+  });
+
+  R3('torreVentos', 'his',
+    ["Torre dos Ventos", "Um relógio do ar no centro de Atenas", "Torre octogonal de mármore na Ágora Romana. Cada face traz em relevo um dos oito ventos personificados, e no topo um cata-vento em forma de Tritão apontava qual deles soprava.", "Além do cata-vento, a torre tinha relógios de sol nas fachadas e um relógio de água no interior. Era um instrumento público para ler o tempo e o clima.", "Uma das primeiras arquiteturas dedicadas a tornar o vento visível e legível para a cidade.", "c. 50 a.C. · Andronikos de Kyrrhos"],
+    ["Tower of the Winds", "An air clock in the heart of Athens", "An octagonal marble tower in the Roman Agora. Each face carries a relief of one of the eight personified winds, and on top a Triton-shaped vane pointed to whichever was blowing.", "Besides the vane, the tower had sundials on its faces and a water clock inside. It was a public instrument for reading time and weather.", "One of the first works of architecture devoted to making the wind visible and legible to the city.", "c. 50 BC · Andronikos of Kyrrhos"], ['vento']);
+  R3('hipocausto', 'his',
+    ["Hipocausto", "Aquecer um edifício com ar quente sob o piso", "Nos banhos e casas romanas, uma fornalha soltava ar quente e fumaça num vão sob o piso, apoiado em pilhas de tijolos. O ar subia depois por dutos nas paredes, aquecendo os ambientes por baixo e pelos lados.", "Plínio atribui a invenção a Sergius Orata. As termas tinham salas em sequência de temperatura, do frigidário ao caldário, organizadas pela distância da fornalha.", "O primeiro sistema de calefação por ar distribuído de que se tem registro: estrutura e climatização num só desenho.", "c. 80 a.C. · Sergius Orata (atribuído)"],
+    ["Hypocaust", "Heating a building with hot air under the floor", "In Roman baths and houses, a furnace sent hot air and smoke into a void beneath the floor, raised on brick stacks. The air then rose through ducts in the walls, warming rooms from below and the sides.", "Pliny credits Sergius Orata with the invention. Baths arranged rooms in a sequence of temperatures, from frigidarium to caldarium, by their distance from the furnace.", "The earliest recorded system of distributed air heating: structure and climate control in a single design.", "c. 80 BC · Sergius Orata (attributed)"], ['conveccao', 'combustao']);
+  R3('panteao', 'his',
+    ["Panteão", "Uma cúpula aberta para o céu", "A maior cúpula de concreto não armado do mundo tem no topo um óculo aberto. Por ele entram luz e chuva, e sai o ar quente que sobe dentro do grande volume.", "A cúpula mede cerca de 43 m de diâmetro, a mesma medida da altura interna. O piso levemente inclinado e com drenos escoa a água que cai pelo óculo.", "Um único vazio funciona como janela, chaminé e relógio de luz: o volume interno inteiro respira por ele.", "c. 125 d.C. · Imperador Adriano"],
+    ["Pantheon", "A dome open to the sky", "The world’s largest unreinforced concrete dome has an open oculus at its crown. Light and rain come in through it, and warm air rising in the great volume escapes.", "The dome spans about 43 m, the same as the interior height. The gently sloped floor with drains carries away water falling through the oculus.", "A single void acts as window, chimney and light clock: the whole interior volume breathes through it.", "c. 125 AD · Emperor Hadrian"], ['chamine', 'empuxo']);
+  R3('malqafEgito', 'his',
+    ["Malqaf faraônico", "Captadores de vento no Egito antigo", "Pinturas em tumbas de Tebas mostram casas com aberturas inclinadas no telhado, voltadas para o vento norte do Nilo. É a representação mais antiga conhecida de um captador de vento.", "O malqaf atravessou séculos de arquitetura egípcia e árabe. Hassan Fathy o retomou no século XX, em Nova Gourna, como dispositivo de baixo custo.", "Mostra que captar o vento no alto e levá-lo para dentro é uma das técnicas climáticas mais antigas da arquitetura.", "c. 1300 a.C. · Egito, Novo Império"],
+    ["Pharaonic malqaf", "Windcatchers in ancient Egypt", "Paintings in Theban tombs show houses with slanted roof openings facing the Nile’s north wind. It is the oldest known depiction of a windcatcher.", "The malqaf ran through centuries of Egyptian and Arab architecture. Hassan Fathy revived it in the 20th century at New Gourna as a low-cost device.", "It shows that catching wind up high and bringing it inside is among architecture’s oldest climatic techniques.", "c. 1300 BC · Egypt, New Kingdom"], ['badgir', 'vento']);
+  R3('tenda', 'his',
+    ["Tenda beduína", "Uma casa de tecido que respira", "O tecido de pelo de cabra é tramado de forma aberta: no calor seco deixa o ar passar e filtra a luz; com chuva, as fibras incham e a trama se fecha. As laterais se abrem ou fecham conforme o vento.", "A tenda é leve, desmontável e ajustada ao deserto: sombra densa no alto, ventilação baixa e laterais que viram para o lado do vento.", "Uma envoltória que regula ar, luz e água sozinha, só pelo comportamento do material.", "Tradicional · povos beduínos"],
+    ["Bedouin tent", "A fabric house that breathes", "Goat-hair cloth is loosely woven: in dry heat it lets air through and filters light; in rain the fibres swell and the weave closes. The sides open or close with the wind.", "The tent is light, portable and tuned to the desert: dense shade above, low ventilation and sides that turn toward the wind.", "An envelope that regulates air, light and water on its own, purely through the behaviour of its material.", "Traditional · Bedouin peoples"], ['higroscopia', 'cruzada']);
+  R3('iglu', 'his',
+    ["Iglu", "Neve e ar parado contra o frio", "Blocos de neve compacta formam uma cúpula cheia de bolsões de ar, que isolam muito bem. A entrada fica abaixo do piso de dormir, para que o ar frio se acumule ali e não suba.", "O calor do corpo e de uma lamparina mantém o interior dezenas de graus mais quente que o exterior. Uma pequena abertura no alto renova o ar.", "Um tratado de estratificação: o corte separa o ar frio, que desce, do ar morno, que fica no alto onde se dorme.", "Tradicional · povos inuit"],
+    ["Igloo", "Snow and still air against the cold", "Blocks of packed snow form a dome full of air pockets, which insulate very well. The entrance sits below the sleeping platform so cold air collects there instead of rising.", "Body heat and a lamp keep the interior tens of degrees warmer than outside. A small opening at the top renews the air.", "A treatise on stratification: the section separates sinking cold air from warm air that stays up where people sleep.", "Traditional · Inuit peoples"], ['isolamento', 'empuxo']);
+  R3('leonardo', 'his',
+    ["Códice sobre o voo dos pássaros", "Desenhar o ar a partir das aves", "Leonardo da Vinci observou como as aves usam o vento e as correntes para voar e esboçou máquinas com asas articuladas. Os cadernos tratam o ar como um fluido com peso e resistência.", "Ele percebeu que o ar se comprime sob a asa e que a ave se apoia nele, ideias próximas da aerodinâmica moderna, séculos antes de ela existir.", "O desenho como instrumento para tornar o ar visível, uma ponte entre arte, ciência e projeto.", "c. 1505 · Leonardo da Vinci"],
+    ["Codex on the Flight of Birds", "Drawing air through birds", "Leonardo da Vinci watched how birds use wind and currents to fly and sketched machines with articulated wings. The notebooks treat air as a fluid with weight and resistance.", "He saw that air compresses under the wing and that the bird rests on it, ideas close to modern aerodynamics centuries before it existed.", "Drawing as a tool for making air visible, a bridge between art, science and design.", "c. 1505 · Leonardo da Vinci"], ['voo', 'formacaoV']);
+  R3('montgolfier', 'his',
+    ["Balão Montgolfier", "O primeiro voo humano foi feito de ar quente", "Os irmãos Montgolfier encheram um grande envelope de papel e tecido com o ar de uma fogueira. Em novembro de 1783, em Paris, ele levou duas pessoas ao céu pela primeira vez.", "O voo tripulado foi feito por Pilâtre de Rozier e pelo marquês d’Arlandes. Os irmãos acreditavam inicialmente que a fumaça continha um gás especial; o efeito era só o ar mais leve.", "O empuxo do ar quente transformado em objeto, espetáculo e engenharia, origem de toda a arquitetura inflável.", "1783 · Joseph-Michel e Jacques-Étienne Montgolfier"],
+    ["Montgolfier balloon", "The first human flight was made of hot air", "The Montgolfier brothers filled a large paper-and-cloth envelope with air from a fire. In November 1783, in Paris, it carried two people into the sky for the first time.", "The crewed flight was made by Pilâtre de Rozier and the Marquis d’Arlandes. The brothers first believed the smoke held a special gas; the effect was simply lighter air.", "Hot-air buoyancy turned into object, spectacle and engineering, the origin of all inflatable architecture.", "1783 · Joseph-Michel and Jacques-Étienne Montgolfier"], ['empuxo']);
+  R3('hawaMahal', 'his',
+    ["Hawa Mahal", "O Palácio dos Ventos", "A fachada de arenito rosa em Jaipur tem centenas de pequenas janelas com treliça. Elas deixavam as mulheres da corte ver a rua sem serem vistas e conduziam a brisa para dentro.", "A fachada tem cerca de cinco andares, mas pouca profundidade: funciona quase como uma tela. As pequenas aberturas aceleram o ar que passa por elas.", "Uma fachada inteira pensada como filtro de ar, olhar e luz, parente do muxarabi.", "1799 · Lal Chand Ustad"],
+    ["Hawa Mahal", "The Palace of Winds", "The pink sandstone façade in Jaipur has hundreds of small latticed windows. They let the women of the court watch the street unseen and drew the breeze inside.", "The façade is about five storeys high but shallow: it works almost as a screen. The small openings speed up the air passing through them.", "A whole façade conceived as a filter for air, gaze and light, a relative of the mashrabiya.", "1799 · Lal Chand Ustad"], ['venturi', 'muxarabi']);
+  R3('crystalPalace', 'his',
+    ["Crystal Palace", "Ventilar um palácio de vidro", "O pavilhão da Grande Exposição de Londres foi montado com peças padronizadas de ferro e vidro. Para não superaquecer, tinha venezianas reguláveis junto ao chão e no alto, toldos de lona e árvores dentro.", "Joseph Paxton, jardineiro e construtor de estufas, levou a técnica das estufas à escala de um edifício público de mais de 500 m de comprimento.", "Mostra cedo o problema e a resposta de toda arquitetura de vidro: ventilar pelo efeito chaminé e sombrear por fora.", "1851 · Joseph Paxton"],
+    ["Crystal Palace", "Ventilating a glass palace", "The pavilion for London’s Great Exhibition was assembled from standardised iron and glass parts. To avoid overheating it had adjustable louvres at floor level and up high, canvas awnings and trees inside.", "Joseph Paxton, gardener and greenhouse builder, took greenhouse technique to the scale of a public building more than 500 m long.", "It shows early the problem and the answer of all glass architecture: ventilate through the stack effect and shade from outside.", "1851 · Joseph Paxton"], ['chamine', 'conveccao']);
+
+  R3('duchamp', 'arte',
+    ["Air de Paris", "Um pouco de ar como obra de arte", "Marcel Duchamp pediu a um farmacêutico que esvaziasse uma ampola de vidro e a fechasse de novo, guardando o ar de Paris. Levou-a de presente a um colecionador em Nova York.", "É um ready-made: um objeto comum escolhido e nomeado pelo artista. A original quebrou e foi substituída por uma réplica com o ar de outro lugar.", "O ar, invisível e banal, passa a ser objeto de coleção e de memória de um lugar.", "1919 · Marcel Duchamp"],
+    ["Air de Paris", "A little air as a work of art", "Marcel Duchamp asked a pharmacist to empty a glass ampoule and seal it again, keeping the air of Paris. He took it as a gift to a collector in New York.", "It is a readymade: an ordinary object chosen and named by the artist. The original broke and was replaced by a replica holding air from somewhere else.", "Air, invisible and ordinary, becomes a collected object and a memory of a place.", "1919 · Marcel Duchamp"], ['composicao']);
+  R3('blueSail', 'arte',
+    ["Blue Sail", "O vento de um ventilador tornado visível", "Um grande pano de chiffon azul fica preso por pesos nos cantos e um ventilador sopra por baixo. O tecido flutua, ondula e muda de forma sem parar.", "Como em outros sistemas de Hans Haacke, a obra é um processo: ela depende de correntes de ar que o artista não controla totalmente.", "Uma membrana leve desenha as correntes de ar de um ambiente, como um instrumento de medição poético.", "1964–1965 · Hans Haacke"],
+    ["Blue Sail", "A fan’s wind made visible", "A large sheet of blue chiffon is held by weights at the corners while a fan blows from below. The fabric floats, ripples and changes shape continuously.", "Like Hans Haacke’s other systems, the work is a process: it depends on air currents the artist does not fully control.", "A light membrane traces the air currents in a room, like a poetic measuring instrument.", "1964–1965 · Hans Haacke"], ['vento', 'camadaLimite']);
+  R3('christoPackage', 'arte',
+    ["5.600 m³ Package", "Uma escultura de ar de 85 metros", "Christo e Jeanne-Claude ergueram em Kassel um envelope de tecido cheio de ar, amarrado por cordas, com cerca de 85 m de altura. Guindastes e cabos o mantinham de pé.", "Foi apresentado na documenta 4 e exigiu várias tentativas até ficar de pé. O ar era o único conteúdo do “pacote”.", "O ar ganha escala de edifício e presença de monumento, contido apenas por uma pele.", "1968 · Christo e Jeanne-Claude"],
+    ["5,600 Cubicmeter Package", "An 85-metre sculpture of air", "In Kassel, Christo and Jeanne-Claude raised a fabric envelope filled with air and tied with ropes, about 85 m tall. Cranes and cables held it upright.", "It was shown at documenta 4 and took several attempts to raise. Air was the package’s only content.", "Air takes on the scale of a building and the presence of a monument, held only by a skin.", "1968 · Christo and Jeanne-Claude"], ['pneumatica', 'gases']);
+  R3('olympicRainbow', 'arte',
+    ["Olympic Rainbow", "Um arco-íris inflado sobre o estádio", "Otto Piene ergueu cinco tubos de polietileno cheios de hélio, nas cores olímpicas, que se arqueavam por centenas de metros no céu de Munique no encerramento dos Jogos.", "Piene, do grupo ZERO, criou a ideia de Sky Art: obras que usam o céu, o vento e a luz como suporte.", "O ar como meio para desenhar no céu urbano, em escala de paisagem.", "1972 · Otto Piene"],
+    ["Olympic Rainbow", "An inflated rainbow over the stadium", "Otto Piene raised five helium-filled polyethylene tubes in the Olympic colours, arching hundreds of metres across the Munich sky at the closing of the Games.", "Piene, of the ZERO group, developed the idea of Sky Art: works that use sky, wind and light as their medium.", "Air as a medium for drawing in the urban sky, at landscape scale.", "1972 · Otto Piene"], ['empuxo']);
+  R3('parreno', 'arte',
+    ["Speech Bubbles", "Balões de fala que ficam no teto", "Philippe Parreno encheu com hélio centenas de balões em forma de balão de fala de história em quadrinhos. Eles se acumulam contra o teto, vazios de texto.", "Os balões foram criados para uma manifestação sindical, para que os participantes escrevessem neles suas reivindicações. Na galeria, ficam em branco.", "O ar que sobe vira suporte para a fala que não foi dita: uma sala ocupada por volumes leves.", "1997 · Philippe Parreno"],
+    ["Speech Bubbles", "Speech balloons that gather on the ceiling", "Philippe Parreno filled hundreds of balloons shaped like comic-strip speech bubbles with helium. They gather against the ceiling, empty of text.", "The balloons were made for a trade-union demonstration, so participants could write their demands on them. In the gallery they stay blank.", "Rising air becomes a support for unspoken speech: a room occupied by light volumes.", "1997 · Philippe Parreno"], ['empuxo']);
+  R3('leviathan', 'arte',
+    ["Leviathan", "Um corpo inflado dentro de uma nave de vidro", "Anish Kapoor encheu a nave do Grand Palais com uma membrana de PVC inflada, com três grandes lóbulos e cerca de 35 m de altura. Por dentro, o visitante entra num espaço vermelho e translúcido.", "A obra foi feita para a série Monumenta. Por fora, ela empurra a arquitetura de ferro e vidro; por dentro, a luz atravessa a pele e tinge o ar.", "A arquitetura pneumática usada como escultura: o ar sob pressão cria um interior novo dentro de um interior existente.", "2011 · Anish Kapoor"],
+    ["Leviathan", "An inflated body inside a glass nave", "Anish Kapoor filled the nave of the Grand Palais with an inflated PVC membrane of three great lobes, about 35 m high. Inside, visitors enter a red, translucent space.", "It was made for the Monumenta series. Outside, it presses against the iron-and-glass architecture; inside, light passes through the skin and colours the air.", "Pneumatic architecture used as sculpture: pressurised air creates a new interior inside an existing one.", "2011 · Anish Kapoor"], ['pneumatica']);
+  R3('nimbus', 'arte',
+    ["Nimbus", "Nuvens que duram segundos dentro de salas", "Berndnaut Smilde cria pequenas nuvens dentro de igrejas, museus e salões, controlando umidade, temperatura e luz, e as fotografa antes que se desfaçam.", "Cada nuvem existe por poucos segundos. A obra final é a fotografia, registro de um clima produzido e perdido no mesmo instante.", "O ar interior vira matéria escultórica: uma imagem precisa de condensação num lugar que não deveria tê-la.", "Desde 2010 · Berndnaut Smilde"],
+    ["Nimbus", "Clouds lasting seconds inside rooms", "Berndnaut Smilde makes small clouds inside churches, museums and halls by controlling humidity, temperature and light, and photographs them before they dissolve.", "Each cloud exists for a few seconds. The final work is the photograph, a record of a climate produced and lost in the same instant.", "Indoor air becomes sculptural matter: a precise image of condensation in a place that should not have it.", "Since 2010 · Berndnaut Smilde"], ['nuvem', 'orvalho']);
+  R3('janssens', 'arte',
+    ["Yellowbluepink", "Salas de névoa colorida", "Ann Veronica Janssens enche salas de névoa e luz colorida. O visitante perde as bordas do espaço e vê as cores se misturarem conforme caminha.", "Ela trabalha a névoa há décadas, em instalações que tornam a percepção instável: o espaço parece infinito e o próprio corpo some na luz.", "O ar carregado de gotículas apaga as paredes: a arquitetura passa a ser feita só de luz e névoa.", "2015 · Ann Veronica Janssens"],
+    ["Yellowbluepink", "Rooms of coloured mist", "Ann Veronica Janssens fills rooms with mist and coloured light. Visitors lose the edges of the space and see colours blend as they walk.", "She has worked with mist for decades, in installations that make perception unstable: space seems endless and one’s own body dissolves in light.", "Droplet-laden air erases the walls: architecture becomes made of light and mist alone.", "2015 · Ann Veronica Janssens"], ['nuvem', 'miragem']);
+
+  R3('antFarm', 'exp',
+    ["Clean Air Pod", "Uma bolha de ar limpo como protesto", "O coletivo Ant Farm inflou na Universidade da Califórnia em Berkeley uma bolha de plástico onde as pessoas podiam se abrigar do ar poluído, vestidas como em um laboratório.", "O grupo produziu estruturas infláveis baratas e um manual, o Inflatocookbook, para que qualquer um construísse a sua.", "A arquitetura inflável como crítica ambiental: o ar limpo como bem a proteger.", "1970 · Ant Farm"],
+    ["Clean Air Pod", "A bubble of clean air as protest", "The Ant Farm collective inflated a plastic bubble at the University of California, Berkeley, where people could shelter from polluted air, dressed as if in a laboratory.", "The group produced cheap inflatable structures and a manual, the Inflatocookbook, so anyone could build their own.", "Inflatable architecture as environmental critique: clean air as a good to protect.", "1970 · Ant Farm"], ['pneumatica', 'composicao']);
+  R3('cloudscapes', 'exp',
+    ["Cloudscapes", "Atravessar uma nuvem por dentro", "Num pavilhão da Bienal de Arquitetura de Veneza, uma nuvem artificial pairava no meio do espaço. Uma rampa em espiral levava o visitante de baixo, fresco e seco, para cima, quente e úmido, atravessando a nuvem.", "O projeto foi feito com os engenheiros climáticos da Transsolar, que controlaram temperatura e umidade de cada camada de ar para que a nuvem se mantivesse estável.", "A estratificação do ar vira espaço arquitetônico: o percurso é uma travessia de climas.", "2010 · Tetsuo Kondo e Transsolar"],
+    ["Cloudscapes", "Walking through a cloud", "In a pavilion at the Venice Architecture Biennale, an artificial cloud hovered in the middle of the space. A spiral ramp took visitors from the cool, dry bottom to the warm, humid top, through the cloud.", "It was made with the climate engineers of Transsolar, who controlled the temperature and humidity of each air layer to keep the cloud stable.", "Air stratification becomes architectural space: the route is a passage through climates.", "2010 · Tetsuo Kondo and Transsolar"], ['nuvem', 'orvalho']);
+
+  R3('tubeHouse', 'arq',
+    ["Tube House", "Uma casa cuja seção é uma chaminé", "Charles Correa desenhou em Ahmedabad uma casa estreita e longa com um corte inclinado: o ar entra pelas venezianas no nível da rua e sobe pelos pavimentos até uma abertura no alto.", "O projeto venceu um concurso de habitação de baixo custo. Sem ar-condicionado, a forma da seção cria a ventilação no clima quente e seco.", "Uma lição de que o corte, e não só a planta, pode ser o principal instrumento climático do projeto.", "1962 · Charles Correa"],
+    ["Tube House", "A house whose section is a chimney", "In Ahmedabad, Charles Correa designed a long, narrow house with a sloping section: air enters through louvres at street level and rises through the floors to an opening at the top.", "It won a low-cost housing competition. Without air conditioning, the shape of the section creates ventilation in the hot, dry climate.", "A lesson that the section, not only the plan, can be a project’s main climatic tool.", "1962 · Charles Correa"], ['chamine', 'cruzada']);
+  R3('bakerCDS', 'arq',
+    ["Centro de Estudos do Desenvolvimento", "Paredes de tijolo vazado", "Laurie Baker construiu o campus em Trivandrum com tijolos assentados em treliça, os jalis, que deixam passar brisa e luz difusa e dispensam janelas de vidro em muitos espaços.", "Baker defendia construir com material local e pouco dinheiro. As paredes curvas e vazadas também economizam tijolos.", "A parede inteira funciona como filtro climático, numa versão indiana e artesanal do cobogó.", "1971–1975 · Laurie Baker"],
+    ["Centre for Development Studies", "Walls of pierced brick", "Laurie Baker built the campus in Trivandrum with bricks laid as lattice screens, jalis, which let breeze and diffuse light through and do away with glass windows in many spaces.", "Baker argued for building with local materials and little money. The curved, pierced walls also save bricks.", "The whole wall works as a climatic filter, an Indian, handcrafted version of the cobogó.", "1971–1975 · Laurie Baker"], ['cobogo', 'cruzada']);
+  R3('silves', 'arq',
+    ["Pousada Ilha de Silves", "Uma grande cobertura ventilada na Amazônia", "Severiano Mário Porto desenhou a pousada com madeira regional e uma cobertura alta e ampla sobre espaços abertos, que sombreia e deixa o ar quente sair pelo alto.", "Porto construiu muito na Amazônia, adaptando técnicas locais ao clima quente e úmido, com estruturas leves e grande ventilação.", "No clima úmido, a ventilação constante é a principal estratégia: a cobertura vira o edifício.", "1983 · Severiano Mário Porto"],
+    ["Ilha de Silves Lodge", "A great ventilated roof in the Amazon", "Severiano Mário Porto designed the lodge in regional timber with a high, broad roof over open spaces, which shades them and lets warm air out at the top.", "Porto built widely in the Amazon, adapting local techniques to the hot, humid climate with light structures and generous ventilation.", "In a humid climate, constant ventilation is the main strategy: the roof becomes the building.", "1983 · Severiano Mário Porto"], ['telhado', 'cruzada']);
+  R3('latapie', 'arq',
+    ["Casa Latapie", "Metade casa, metade estufa", "Lacaton & Vassal construíram uma casa barata em que metade é um volume fechado e metade uma estufa de policarbonato. A estufa aquece no inverno e se abre por inteiro no verão.", "Painéis e aberturas no teto da estufa deixam o ar quente sair nos dias quentes. O espaço a mais, quase sem custo, muda com as estações.", "Um espaço intermediário que usa o efeito estufa e a ventilação em vez de equipamentos.", "1993 · Lacaton & Vassal"],
+    ["Latapie House", "Half house, half greenhouse", "Lacaton & Vassal built a low-cost house in which half is a closed volume and half a polycarbonate greenhouse. The greenhouse warms up in winter and opens fully in summer.", "Panels and roof openings in the greenhouse let warm air out on hot days. The extra space, at almost no cost, changes with the seasons.", "An intermediate space that uses the greenhouse effect and ventilation instead of equipment.", "1993 · Lacaton & Vassal"], ['conveccao', 'isolamento']);
+  R3('gando', 'arq',
+    ["Escola Primária de Gando", "Um telhado que flutua sobre o calor", "Diébédo Francis Kéré construiu a escola com tijolos de terra feitos na própria aldeia, um forro perfurado e um telhado de metal elevado. O ar quente sobe pelo forro e escapa pelo vão sob o telhado.", "A comunidade participou da construção. A obra recebeu o Prêmio Aga Khan de Arquitetura em 2004.", "Uma solução simples de dupla cobertura que separa sombra e chuva da massa que guarda o fresco.", "2001 · Diébédo Francis Kéré"],
+    ["Gando Primary School", "A roof floating above the heat", "Diébédo Francis Kéré built the school from earth bricks made in the village, a perforated ceiling and a raised metal roof. Warm air rises through the ceiling and escapes through the gap under the roof.", "The community took part in construction. The building received the Aga Khan Award for Architecture in 2004.", "A simple double-roof solution that separates shade and rain from the mass that keeps the cool.", "2001 · Diébédo Francis Kéré"], ['telhado', 'conveccao']);
+  R3('ch2', 'arq',
+    ["Council House 2", "Um escritório que imita um cupinzeiro", "Em Melbourne, torres de tecido com chuveiros de água resfriam o ar na fachada sul, turbinas no telhado ajudam a exaustão e janelas abrem à noite para lavar o calor do concreto.", "O projeto da prefeitura de Melbourne contou com Mick Pearce, o arquiteto do Eastgate Centre, e retomou a mesma lógica de massa térmica e ventilação noturna.", "Junta resfriamento evaporativo, efeito chaminé e ventilação noturna num edifício de escritórios contemporâneo.", "2006 · Prefeitura de Melbourne, com Mick Pearce"],
+    ["Council House 2", "An office that imitates a termite mound", "In Melbourne, fabric towers with water showers cool air on the south façade, rooftop turbines aid exhaust and windows open at night to flush heat from the concrete.", "The City of Melbourne’s project involved Mick Pearce, architect of the Eastgate Centre, and took up the same logic of thermal mass and night ventilation.", "It combines evaporative cooling, stack effect and night ventilation in a contemporary office building.", "2006 · City of Melbourne, with Mick Pearce"], ['noturna', 'torreDescendente']);
+  R3('masdar', 'arq',
+    ["Torre de vento de Masdar", "Um badgir do século XXI", "No Instituto Masdar, em Abu Dhabi, uma torre de cerca de 45 m capta o vento no alto com aletas móveis e o resfria com névoa, mandando ar fresco para uma praça sombreada.", "A torre faz parte de um conjunto que usa ruas estreitas, sombra e orientação ao vento para reduzir a temperatura sentida no espaço público.", "Mostra a tradição do badgir reinterpretada com sensores e controle automático.", "2010 · Foster + Partners"],
+    ["Masdar wind tower", "A 21st-century badgir", "At the Masdar Institute in Abu Dhabi, a tower about 45 m tall catches wind up high with movable vanes and cools it with mist, sending fresh air down to a shaded plaza.", "The tower belongs to a scheme that uses narrow streets, shade and wind orientation to lower felt temperature in public space.", "It shows the badgir tradition reinterpreted with sensors and automatic control.", "2010 · Foster + Partners"], ['badgir', 'torreDescendente']);
+
+  const yearOf = p => { const s = p.pt[5]; if (/Tradicional/.test(s)) return -5000; const m = s.match(/(\d{1,4})/); if (!m) return 9999; return /a\.C\./.test(s) ? -(+m[1]) : +m[1]; };
+
   /* ───────── indexes ───────── */
   const ROMAN = { 1: 'I', 2: 'II', 3: 'III' };
   const BY = {}; PLATES.forEach(p => BY[p.key] = p);
   const VOL = {};
   for (const v of [1, 2, 3]) {
-    VOL[v] = PLATES.filter(p => p.vol === v).sort((a, b) => ORDER[v].indexOf(a.dom) - ORDER[v].indexOf(b.dom));
+    VOL[v] = PLATES.filter(p => p.vol === v).sort((a, b) => v === 3 ? (yearOf(a) - yearOf(b)) || (ORDER[3].indexOf(a.dom) - ORDER[3].indexOf(b.dom)) : ORDER[v].indexOf(a.dom) - ORDER[v].indexOf(b.dom));
     VOL[v].forEach((p, i) => p.num = `${ROMAN[v]}·${String(i + 1).padStart(2, '0')}`);
   }
   const origins = p => (Array.isArray(p.orig) ? p.orig : p.orig ? [p.orig] : []).filter(k => BY[k]);
