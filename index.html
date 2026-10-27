@@ -50,7 +50,7 @@ h1{margin:0;font:400 clamp(96px,22vw,250px)/.82 var(--display);letter-spacing:-.
 .lede span{color:var(--mute)}
 
 /* views: two volumes + board */
-.vols{display:grid;grid-template-columns:1fr 1fr 1fr .8fr;border:1px solid var(--ink)}
+.vols{display:grid;grid-template-columns:1fr 1fr 1fr .8fr .8fr;border:1px solid var(--ink)}
 .vols button{all:unset;box-sizing:border-box;cursor:pointer;padding:16px 18px;display:grid;grid-template-columns:auto 1fr;gap:4px 16px;align-items:baseline;min-width:0}
 .vols button + button{border-left:1px solid var(--ink)}
 .vols .num{font:400 44px/1 var(--display);grid-row:span 2}
@@ -207,8 +207,58 @@ dialog::backdrop{background:var(--shade)}
 
 footer{padding-block:28px 48px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font:400 11px/1.5 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
 
+
+/* wind panel */
+.vols .wico{width:34px;height:44px;grid-row:span 2;align-self:center}
+.wpanel{border-top:1px solid var(--ink)}
+.winfo{position:sticky;top:0;z-index:3;background:var(--paper);display:grid;grid-template-columns:200px minmax(0,1fr) 160px;gap:18px 24px;padding:18px 0;border-bottom:1px solid var(--ink);max-height:min(460px,60vh);overflow:auto}
+.winfo.idle{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px 24px}
+.whint{font:italic 400 21px/1.3 var(--display);margin:0;max-width:60ch}
+.wcount{font:500 11px/1.5 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--mute);margin:0}
+.wfig{border:1px solid var(--line);align-self:start}
+.wsym{display:flex;align-items:center;justify-content:center;aspect-ratio:4/3;font:italic 400 46px/1 var(--display)}
+.wkick{font:500 10.5px/1.3 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--mute);margin:0 0 8px}
+.wtxt h3{font:italic 400 30px/1.1 var(--display);margin:0 0 8px}
+.wtrait{margin:0 0 12px;max-width:72ch}
+.wchain{font:400 11.5px/1.7 var(--mono);margin:0 0 12px}
+.wchain b,.wrel b{display:block;font:500 10px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--mute);margin-bottom:7px}
+.wlink{all:unset;cursor:pointer;border-bottom:1px solid var(--line)}
+.wlink:hover{border-bottom-color:var(--ink)}
+.wlink:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.wrel{margin-bottom:12px}
+.acts.wacts{flex-direction:column;margin:0;gap:0;align-self:start}
+.acts.wacts button + button{border-left:1px solid var(--ink);border-top:0}
+.wscroll{overflow-x:auto;padding-block:14px 6px}
+.wmap{display:block;width:100%;min-width:920px;height:auto}
+.wmap text{fill:var(--ink)}
+.wmap .tn{font:400 12.5px var(--body)}
+.wmap .tt{font:500 10.5px var(--mono);letter-spacing:.1em}
+.wmap .tr{font:400 34px var(--display)}
+.wmap .th{font:italic 400 28px var(--display)}
+.wmap .hd{font:500 10px var(--mono);letter-spacing:.14em;fill:var(--mute)}
+.wmap .hdl{stroke:var(--line);stroke-width:1}
+.wmap .mk{fill:var(--ink)}
+.wmap .mk.o{fill:var(--paper);stroke:var(--ink);stroke-width:1.4}
+.wmap .e{fill:none;stroke:var(--ink);stroke-opacity:.2;stroke-width:.9;transition:stroke-opacity .15s}
+.wmap .wn{cursor:pointer;transition:opacity .15s}
+.wmap .wn:focus{outline:none}
+.wmap .hl{fill:transparent}
+.wmap .wn:hover .hl{fill:var(--hover)}
+.wmap .wn:focus-visible .hl{stroke:var(--ink);stroke-width:1.5}
+.wmap.focus .wn{opacity:.18}
+.wmap.focus .wn.on{opacity:1}
+.wmap.focus .e{stroke-opacity:.05}
+.wmap.focus .e.on{stroke-opacity:.9;stroke-width:1.5}
+.wmap .wn.sel .hl{fill:var(--ink)}
+.wmap .wn.sel text{fill:var(--paper)}
+.wmap .wn.sel .mk.o{fill:var(--ink)}
+
 @media (max-width:860px){
   .vols{grid-template-columns:1fr 1fr}
+  .vols button:last-child:nth-child(odd){grid-column:1/-1}
+  .winfo{grid-template-columns:150px minmax(0,1fr)}
+  .acts.wacts{grid-column:1/-1;flex-direction:row}
+  .acts.wacts button + button{border-left:0;border-top:1px solid var(--ink)}
   .vols button:nth-child(odd){border-left:0}
   .vols button:nth-child(n+3){border-top:1px solid var(--ink)}
   .dlg-body{grid-template-columns:1fr}
@@ -220,8 +270,12 @@ footer{padding-block:28px 48px;display:flex;justify-content:space-between;gap:16
   .vols{grid-template-columns:1fr}
   .vols button + button{border-left:0;border-top:1px solid var(--ink)}
   .dlg-fig,.dlg-text{padding:18px}
+  .vols button:last-child:nth-child(odd){grid-column:auto}
+  .winfo{grid-template-columns:1fr;max-height:48vh;padding:14px 0}
+  .wfig{display:none}
+  .wtxt h3{font-size:24px}
 }
-@media (prefers-reduced-motion: reduce){.cur,.flow,.bub,.plate.flash{animation:none!important}}
+@media (prefers-reduced-motion: reduce){.cur,.flow,.bub,.plate.flash{animation:none!important}.wmap .e,.wmap .wn{transition:none}}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -274,6 +328,12 @@ footer{padding-block:28px 48px;display:flex;justify-content:space-between;gap:16
       remote: 'Guardado na sua conta', local: 'Guardado só neste navegador', filterBy: 'Filtrar por domínio', views: 'Volumes e mural',
       v1: ['O estado gasoso', 'O ar como matéria e mecanismo.', 'Antes de tratar o ar como elemento arquitetônico, este volume cataloga como ele age na atmosfera, nas reações químicas, nos corpos e nas plantas. Cada prancha isola um fenômeno do estado gasoso.', 'Próximo: Volume II, o ar no edifício'],
       v2: ['O ar no edifício', 'O ar como material de projeto.', 'O segundo volume leva os mecanismos do primeiro para dentro da arquitetura: torres, vazios, filtros, cavidades e estruturas em que o ar é o principal material. Cada prancha indica de qual fenômeno deriva.', 'Cada prancha remete ao fenômeno de origem no Volume I'],
+      vw: ['Painel do vento', 'Do ar ao vento.', 'Um mapa que parte do ar e do vento e liga, por tema, os fenômenos do Volume I, os dispositivos do Volume II e as obras do Volume III que trabalham com o ar em movimento. Toque num elemento para ver o caminho que o liga ao vento.', 'Air_ · painel do vento'],
+      wind: 'Painel do vento', wElems: n => `${n} elementos`, wViews: 'Volumes, painel e mural',
+      wCols: ['Ar · Vento', 'Temas', 'I · Fenômenos', 'II · Dispositivos', 'III · Referências'],
+      wHint: 'Toque num elemento para ver de onde ele vem e o que ele liga. Passe o mouse para seguir as linhas.',
+      wCount: (a, b, c, d) => `${d} temas · ${a} fenômenos · ${b} dispositivos · ${c} referências`,
+      wChain: 'Caminho', wFrom: 'Vem de', wTo: 'Liga a', wTheme: 'Tema', wClear: 'Limpar', wAllT: 'Todos',
       vm: ['Meu mural', 'Seu mural de referências.', 'As pranchas que você salvou ficam aqui, com suas anotações. Reordene, comente e use como painel de pesquisa para o projeto.', 'Air_ · mural pessoal']
     },
     en: {
@@ -286,6 +346,12 @@ footer{padding-block:28px 48px;display:flex;justify-content:space-between;gap:16
       remote: 'Stored in your account', local: 'Stored in this browser only', filterBy: 'Filter by domain', views: 'Volumes and board',
       v1: ['The gaseous state', 'Air as matter and mechanism.', 'Before treating air as an architectural element, this volume catalogues how it behaves in the atmosphere, in chemical reactions, in bodies and in plants. Each plate isolates one phenomenon of the gaseous state.', 'Next: Volume II, air in the building'],
       v2: ['Air in the building', 'Air as a design material.', 'The second volume carries the mechanisms of the first into architecture: towers, voids, filters, cavities and structures in which air is the main material. Each plate shows which phenomenon it derives from.', 'Each plate points back to its source phenomenon in Volume I'],
+      vw: ['Wind panel', 'From air to wind.', 'A map that starts from air and wind and links, by theme, the phenomena of Volume I, the devices of Volume II and the works of Volume III that work with moving air. Tap an element to see the path that ties it to the wind.', 'Air_ · wind panel'],
+      wind: 'Wind panel', wElems: n => `${n} elements`, wViews: 'Volumes, panel and board',
+      wCols: ['Air · Wind', 'Themes', 'I · Phenomena', 'II · Devices', 'III · References'],
+      wHint: 'Tap an element to see where it comes from and what it links to. Hover to follow the lines.',
+      wCount: (a, b, c, d) => `${d} themes · ${a} phenomena · ${b} devices · ${c} references`,
+      wChain: 'Path', wFrom: 'Comes from', wTo: 'Links to', wTheme: 'Theme', wClear: 'Clear', wAllT: 'All',
       vm: ['My board', 'Your reference board.', 'The plates you save collect here with your notes. Reorder, annotate and use it as a research board for the project.', 'Air_ · personal board']
     }
   };
@@ -1909,6 +1975,53 @@ footer{padding-block:28px 48px;display:flex;justify-content:space-between;gap:16
   const vnum = () => view === 'v1' ? 1 : view === 'v2' ? 2 : view === 'v3' ? 3 : 0;
   const dataLabel = p => p.vol === 1 ? u('data') : p.vol === 2 ? u('ref') : u('yc');
 
+  /* ───────── wind panel: air → wind → themes → plates ───────── */
+  const WT = [
+    { id: 'motor', pt: 'O que move o ar', en: 'What moves air', ks: ['vento', 'pressao', 'conveccao', 'brisa', 'foehn', 'ilhaCalor', 'chamine'],
+      dpt: 'Diferenças de pressão e temperatura põem o ar em movimento: do chão aquecido pelo sol às brisas, ao foehn e ao efeito chaminé.',
+      den: 'Differences in pressure and temperature set air moving: from sun-warmed ground to breezes, the foehn and the stack effect.' },
+    { id: 'fluxo', pt: 'Forma do fluxo', en: 'Shape of flow', ks: ['vortice', 'venturi', 'coanda', 'camadaLimite'],
+      dpt: 'Ao encontrar formas, o fluxo acelera, gira, cola nas superfícies e cria camadas: uma geometria que a arquitetura pode desenhar.',
+      den: 'Meeting forms, the flow speeds up, spins, clings to surfaces and builds layers: a geometry architecture can draw.' },
+    { id: 'vida', pt: 'Vento e vida', en: 'Wind and life', ks: ['voo', 'formacaoV', 'toca', 'cupinzeiro', 'colmeia', 'anemocoria', 'polinizacao'],
+      dpt: 'Aves, cupins, roedores, abelhas e plantas usam o vento para voar, ventilar ninhos e espalhar sementes e pólen.',
+      den: 'Birds, termites, rodents, bees and plants use the wind to fly, ventilate nests and spread seeds and pollen.' },
+    { id: 'som', pt: 'Vento que soa', en: 'Wind that sounds', ks: ['som', 'flauta', 'helmholtz'],
+      dpt: 'O ar que passa por bordas e cavidades vibra: flautas, ressonadores e as obras que fazem o vento cantar.',
+      den: 'Air passing edges and cavities vibrates: flutes, resonators and the works that make the wind sing.' },
+    { id: 'forca', pt: 'Força do vento', en: 'Wind power', ks: ['vela', 'moinho', 'pipa', 'arComprimido'],
+      dpt: 'Velas, moinhos e pipas transformam o empurrão do vento em trabalho, energia que também move edifícios e esculturas.',
+      den: 'Sails, mills and kites turn the push of the wind into work, energy that also drives buildings and sculptures.' },
+    { id: 'frescor', pt: 'Vento que refresca', en: 'Wind that cools', ks: ['evaporativo'],
+      dpt: 'Ar em movimento sobre água ou terra fresca resfria: a base das torres de vento, dos muxarabis e das geleiras persas.',
+      den: 'Moving air over water or cool earth chills: the basis of wind towers, mashrabiyas and Persian ice houses.' }
+  ];
+  const W2 = ['cruzada', 'pilotis', 'quebraVento', 'badgir', 'cobogo', 'chamineSolar', 'atrio', 'fachadaDupla', 'exaustor', 'deslocamento', 'cortina', 'telhado', 'noturna', 'poco', 'muxarabi', 'yakhchal', 'torreDescendente', 'taichung', 'eastgate'];
+  const W3 = ['torreVentos', 'malqafEgito', 'hawaMahal', 'leonardo', 'panteao', 'crystalPalace', 'tenda', 'gourna', 'masdar', 'ch2', 'soundBox', 'pompeia', 'magney', 'bakerCDS', 'silves', 'tubeHouse', 'tjibaou', 'pedregulho', 'sarah', 'ishigami', 'serpentine2006', 'kleinRuhnau'];
+  const WX = { deslocamento: ['chamine'], poco: ['@t:frescor'] };
+  const WROOT = {
+    '@ar': { pt: 'Ar', en: 'Air', dpt: 'O ponto de partida: a mistura de gases que nos envolve. Quando ganha movimento, vira vento.', den: 'The starting point: the mix of gases around us. When it starts to move, it becomes wind.' },
+    '@vento': { pt: 'Vento', en: 'Wind', dpt: 'Ar em movimento. Daqui saem seis temas que ligam fenômenos, dispositivos de projeto e obras de arte e arquitetura.', den: 'Air in motion. Six themes branch from here, linking phenomena, design devices and works of art and architecture.' }
+  };
+  function buildW() {
+    const N = {}, order = [];
+    const add = (id, col, o) => { if (N[id]) return; N[id] = Object.assign({ id, col, par: [], kid: [] }, o); order.push(id); };
+    const link = (a, b) => { if (!N[a] || !N[b] || a === b || N[b].par.includes(a)) return; N[b].par.push(a); N[a].kid.push(b); };
+    add('@ar', 0, { r: WROOT['@ar'] }); add('@vento', 1, { r: WROOT['@vento'] }); link('@ar', '@vento');
+    WT.forEach(t => { const id = '@t:' + t.id; add(id, 2, { t }); link('@vento', id); t.ks.forEach(k => { if (BY[k]) { add(k, 3, { p: BY[k] }); link(id, k); } }); });
+    W2.forEach(k => BY[k] && add(k, 4, { p: BY[k] }));
+    VOL[3].filter(p => p.dom === 'vento' || W3.includes(p.key)).forEach(p => add(p.key, 5, { p }));
+    order.filter(id => N[id].col >= 4).forEach(id => {
+      origins(BY[id]).filter(o => N[o] && N[o].col < N[id].col).concat(WX[id] || []).forEach(o => link(o, id));
+      if (!N[id].par.length) link('@vento', id);
+    });
+    return { N, order };
+  }
+  const WG = buildW();
+  const wLabel = n => n.p ? tx(n.p, 0) : n.t ? n.t[L].toUpperCase() : n.r[L];
+  const wName = id => { const n = WG.N[id]; return n.p ? tx(n.p, 0) : n.t ? n.t[L] : n.r[L]; };
+  const W_KEYS = WG.order.filter(id => WG.N[id].p);
+
   /* ───────── saved board state (per viewer) ───────── */
   let items = [];
   let mode = 'local';
@@ -2006,17 +2119,24 @@ footer{padding-block:28px 48px;display:flex;justify-content:space-between;gap:16
   function renderHeader() {
     document.documentElement.lang = L === 'en' ? 'en' : 'pt-BR';
     $('lang-pt').setAttribute('aria-pressed', L === 'pt'); $('lang-en').setAttribute('aria-pressed', L === 'en');
-    const vn = vnum(), V = vn ? u('v' + vn) : u('vm');
-    $('eb-left').textContent = vn ? `${u('almanac')} · ${u('vol')} ${ROMAN[vn]}` : `${u('almanac')} · ${u('board')}`;
+    const vn = vnum(), V = vn ? u('v' + vn) : view === 'painel' ? u('vw') : u('vm');
+    $('eb-left').textContent = vn ? `${u('almanac')} · ${u('vol')} ${ROMAN[vn]}` : `${u('almanac')} · ${view === 'painel' ? u('wind') : u('board')}`;
     $('lede-t').textContent = V[1]; $('lede-s').textContent = V[2]; $('foot-r').textContent = V[3];
-    vols.setAttribute('aria-label', u('views')); nav.setAttribute('aria-label', u('filterBy'));
+    vols.setAttribute('aria-label', u('wViews')); nav.setAttribute('aria-label', u('filterBy'));
     vols.innerHTML =
       [1, 2, 3].map(v => `<button type="button" id="view-v${v}" data-view="v${v}" aria-pressed="${view === 'v' + v}"><span class="num">${ROMAN[v]}</span><span class="nm">${u('v' + v)[0]}</span><span class="ct">${VOL[v].length} ${u('plates')}</span></button>`).join('') +
+      `<button type="button" id="view-painel" data-view="painel" aria-pressed="${view === 'painel'}"><svg class="wico" viewBox="0 0 34 44" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 15 H22 a5 5 0 1 0 -5 -5"/><path d="M2 23 H29"/><path d="M2 31 H20 a5 5 0 1 1 -5 5"/></svg><span class="nm">${u('wind')}</span><span class="ct">${u('wElems')(WG.order.length)}</span></button>` +
       `<button type="button" id="view-mural" data-view="mural" aria-pressed="${view === 'mural'}"><svg class="pin" viewBox="0 0 30 44" aria-hidden="true"><circle cx="15" cy="9" r="7" fill="currentColor"/><line x1="15" y1="16" x2="15" y2="42" stroke="currentColor" stroke-width="1.6"/></svg><span class="nm">${u('board')}</span><span class="ct" id="mural-ct">${u('boardCt')(items.length)}</span></button>`;
   }
 
   function renderFilters() {
     const vn = vnum();
+    if (view === 'painel') {
+      nav.hidden = false;
+      nav.innerHTML = [['', u('wAllT'), WG.order.length], ...WT.map(t => ['@t:' + t.id, t[L], wReach('@t:' + t.id).size - 3])]
+        .map(([id, name, n]) => `<button type="button" data-wsel="${id}" aria-pressed="${(wSel || '') === id}">${esc(name)}<sup>${n}</sup></button>`).join('');
+      return;
+    }
     if (!vn) { nav.hidden = true; nav.innerHTML = ''; return; }
     nav.hidden = false;
     const counts = {}; VOL[vn].forEach(p => counts[p.dom] = (counts[p.dom] || 0) + 1);
@@ -2072,8 +2192,104 @@ footer{padding-block:28px 48px;display:flex;justify-content:space-between;gap:16
     setFoot();
   }
 
+  /* ───────── wind panel rendering ───────── */
+  let wSel = null, wHover = null, wCtx = null;
+  const W_FONT = { 0: '400 34px "Bodoni Moda", Georgia, serif', 1: 'italic 400 28px "Bodoni Moda", Georgia, serif', 2: '500 10.5px "IBM Plex Mono", ui-monospace, monospace', n: '400 12.5px "IBM Plex Sans", Arial, sans-serif' };
+  function wMeasure(s, col) {
+    if (!wCtx) { try { wCtx = document.createElement('canvas').getContext('2d'); } catch (e) {} }
+    if (!wCtx) return s.length * (col === 0 ? 18 : col === 1 ? 14 : 7);
+    wCtx.font = W_FONT[col] || W_FONT.n;
+    return wCtx.measureText(s).width + (col === 2 ? s.length * 1.05 : 0);
+  }
+  function layoutW() {
+    const N = WG.N, ids = WG.order, cols = [0, 1, 2, 3, 4, 5].map(c => ids.filter(id => N[id].col === c));
+    ids.forEach(id => { N[id].w = wMeasure(wLabel(N[id]), N[id].col); });
+    const OFF = 13, GAP = [26, 46, 60, 60, 60];
+    const x = [14];
+    for (let c = 0; c < 5; c++) x.push(x[c] + OFF + Math.max(...cols[c].map(id => N[id].w)) + GAP[c]);
+    const top = 48, bot = 18, row = 25, tgap = 0.9;
+    const u3 = cols[3].length + (WT.length - 1) * tgap;
+    const H = top + bot + Math.max(u3, cols[4].length, cols[5].length) * row, av = H - top - bot;
+    let y = top, s = av / u3; y += s / 2;
+    WT.forEach((t, i) => { N['@t:' + t.id].kid.filter(k => N[k].col === 3).forEach(k => { N[k].y = y; y += s; }); y += i < WT.length - 1 ? tgap * s : 0; });
+    cols[2].forEach(id => { const ks = N[id].kid.filter(k => N[k].col === 3); N[id].y = ks.reduce((a, k) => a + N[k].y, 0) / ks.length; });
+    N['@vento'].y = N['@ar'].y = cols[2].reduce((a, id) => a + N[id].y, 0) / cols[2].length;
+    [4, 5].forEach(c => {
+      const bary = id => N[id].par.reduce((a, p) => a + N[p].y, 0) / N[id].par.length;
+      cols[c].sort((a, b) => bary(a) - bary(b) || ids.indexOf(a) - ids.indexOf(b));
+      const sc = av / cols[c].length; cols[c].forEach((id, i) => { N[id].y = top + sc * (i + 0.5); });
+    });
+    ids.forEach(id => { N[id].x = x[N[id].col]; });
+    return { W: Math.ceil(x[5] + OFF + Math.max(...cols[5].map(id => N[id].w)) + 18), H: Math.ceil(H), x, OFF, cols };
+  }
+  const wMarker = (c, x, y) => c === 0 ? `<circle class="mk" cx="${x}" cy="${y}" r="7"/>`
+    : c === 1 ? `<circle class="mk o" cx="${x}" cy="${y}" r="6.5"/><circle class="mk" cx="${x}" cy="${y}" r="2.3"/>`
+    : c === 2 ? `<rect class="mk" x="${x - 4.6}" y="${y - 4.6}" width="9.2" height="9.2" transform="rotate(45 ${x} ${y})"/>`
+    : c === 3 ? `<circle class="mk" cx="${x}" cy="${y}" r="3.6"/>`
+    : c === 4 ? `<circle class="mk o" cx="${x}" cy="${y}" r="4"/>`
+    : `<rect class="mk" x="${x - 3.4}" y="${y - 3.4}" width="6.8" height="6.8"/>`;
+  function wSvg() {
+    const N = WG.N, G = layoutW(), f = v => Math.round(v * 10) / 10;
+    const heads = [[0, 0], [1, 2], [2, 3], [3, 4], [4, 5]].map(([i, c]) => `<g>${c ? wMarker(c, G.x[c], 15) : ''}<text class="hd" x="${c ? G.x[c] + 11 : G.x[0] - 6}" y="15" dy=".35em">${u('wCols')[i].toUpperCase()}</text></g>`).join('');
+    const edges = [];
+    WG.order.forEach(b => N[b].par.forEach(a => {
+      const A = N[a], B = N[b], sx = A.x + G.OFF + A.w + 7, ex = B.x - 8, mx = (sx + ex) / 2;
+      edges.push(`<path class="e" data-a="${a}" data-b="${b}" d="M${f(sx)} ${f(A.y)}C${f(mx)} ${f(A.y)} ${f(mx)} ${f(B.y)} ${f(ex)} ${f(B.y)}"/>`);
+    }));
+    const nodes = WG.order.map(id => {
+      const n = N[id], c = n.col, h = c === 0 ? 42 : c === 1 ? 36 : 20, lx = n.x + G.OFF;
+      const cls = c === 0 ? 'tr' : c === 1 ? 'th' : c === 2 ? 'tt' : 'tn';
+      const kick = n.p ? `${u('plate')} ${n.p.num}. ` : n.t ? `${u('wTheme')}. ` : '';
+      return `<g class="wn" data-wn="${id}" tabindex="0" role="button" aria-label="${esc(kick + wName(id))}"><rect class="hl" x="${f(lx - 5)}" y="${f(n.y - h / 2)}" width="${f(n.w + 10)}" height="${h}"/>${wMarker(c, f(n.x), f(n.y))}<text class="${cls}" x="${f(lx)}" y="${f(n.y)}" dy=".35em">${esc(wLabel(n))}</text></g>`;
+    }).join('');
+    return `<svg class="wmap" id="wmap" viewBox="0 0 ${G.W} ${G.H}" style="min-width:${Math.round(G.W * 0.76)}px" role="group" aria-label="${esc(u('wind'))}"><line class="hdl" x1="0" x2="${G.W}" y1="30" y2="30"/>${heads}<g>${edges.join('')}</g><g>${nodes}</g></svg>`;
+  }
+  function wReach(id) {
+    const N = WG.N, s = new Set([id]);
+    const walk = (start, dir) => { const st = [start]; while (st.length) { const n = st.pop(); N[n][dir].forEach(m => { if (!s.has(m)) { s.add(m); st.push(m); } }); } };
+    walk(id, 'par'); walk(id, 'kid');
+    return s;
+  }
+  function wCounts() { const c = [3, 4, 5, 2].map(k => WG.order.filter(id => WG.N[id].col === k).length); return u('wCount')(...c); }
+  function wInfo() {
+    const box = $('winfo'); if (!box) return;
+    const N = WG.N, n = wSel && N[wSel];
+    if (!n) { box.className = 'winfo idle'; box.innerHTML = `<p class="whint">${u('wHint')}</p><p class="wcount">${wCounts()}</p>`; return; }
+    const chain = [wSel]; while (N[chain[0]].par.length) chain.unshift(N[chain[0]].par[0]);
+    const btns = list => `<div class="rel">${list.map(k => `<button type="button" class="origin" data-wsel="${k}">${N[k].p ? N[k].p.num + ' ' : ''}${esc(wName(k))}</button>`).join('')}</div>`;
+    const p = n.p, kick = p ? `${u('plate')} ${p.num} · ${pick(DOM[p.dom])}${p.vol === 3 ? ` · ${yearLabel(p)}` : ''}` : n.t ? u('wTheme') : 'Air_';
+    const trait = p ? tx(p, 1) : n.t ? n.t[L === 'en' ? 'den' : 'dpt'] : n.r[L === 'en' ? 'den' : 'dpt'];
+    box.className = 'winfo';
+    box.innerHTML = `<div class="wfig">${p ? `<button type="button" class="open-fig art" data-act="open" data-k="${p.key}" data-slot="${p.key}" aria-label="${u('more')}: ${esc(tx(p, 0))}">${figInner(p)}</button>` : `<div class="wsym" aria-hidden="true">${n.t ? '◆' : esc(wName(wSel))}</div>`}</div>
+      <div class="wtxt"><p class="wkick">${kick}</p><h3>${esc(wName(wSel))}</h3><p class="wtrait">${trait}</p>
+        <p class="wchain"><b>${u('wChain')}</b>${chain.map(k => k === wSel ? `<span>${esc(wName(k))}</span>` : `<button type="button" class="wlink" data-wsel="${k}">${esc(wName(k))}</button>`).join(' → ')}</p>
+        ${n.par.length > 1 ? `<div class="wrel"><b>${u('wFrom')} · ${n.par.length}</b>${btns(n.par)}</div>` : ''}
+        ${n.kid.length ? `<div class="wrel"><b>${u('wTo')} · ${n.kid.length}</b>${btns(n.kid)}</div>` : ''}
+      </div>
+      <div class="acts wacts">${p ? `<button type="button" data-act="open" data-k="${p.key}">${u('more')}</button>${saveBtn(p.key)}` : ''}<button type="button" data-wsel="">${u('wClear')}</button></div>`;
+  }
+  function wPaint() {
+    const svg = $('wmap'); if (!svg) return;
+    const id = wHover || wSel, on = id ? wReach(id) : null;
+    svg.classList.toggle('focus', !!on);
+    svg.querySelectorAll('[data-wn]').forEach(g => { g.classList.toggle('on', !!on && on.has(g.dataset.wn)); g.classList.toggle('sel', g.dataset.wn === wSel); });
+    svg.querySelectorAll('.e').forEach(e => e.classList.toggle('on', !!on && on.has(e.dataset.a) && on.has(e.dataset.b)));
+  }
+  function wSelect(id, focusNode) {
+    wSel = id && WG.N[id] ? id : null; wHover = null;
+    wInfo(); wPaint();
+    nav.querySelectorAll('[data-wsel]').forEach(b => b.setAttribute('aria-pressed', b.dataset.wsel === (wSel || '')));
+    if (focusNode && wSel) { const g = document.querySelector(`#wmap [data-wn="${wSel}"]`); if (g) { g.focus({ preventScroll: true }); g.scrollIntoView({ block: 'nearest', inline: 'nearest' }); } }
+  }
+  function renderPainel() {
+    main.className = 'wpanel';
+    main.innerHTML = `<div class="winfo idle" id="winfo" aria-live="polite"></div><div class="wscroll">${wSvg()}</div>`;
+    wInfo(); wPaint(); setFoot();
+  }
+
   function setFoot() {
     const vn = vnum();
+    if (view === 'painel') { $('foot-l').textContent = `Air_ · ${u('wind')} · ${u('wElems')(WG.order.length)}`; return; }
     if (!vn) { $('foot-l').textContent = `Air_ · ${u('boardCt')(items.length)}`; return; }
     const n = VOL[vn].filter(p => filter === 'all' || p.dom === filter).length;
     $('foot-l').textContent = `Air_ · ${u('vol')} ${ROMAN[vn]} · ${n} ${u('plates')}`;
@@ -2082,7 +2298,7 @@ footer{padding-block:28px 48px;display:flex;justify-content:space-between;gap:16
 
   function render() {
     renderHeader(); renderFilters();
-    if (view === 'mural') renderMural(); else renderGallery();
+    if (view === 'mural') renderMural(); else if (view === 'painel') renderPainel(); else renderGallery();
     if (openKey && dlg.open) renderDetail(openKey);
   }
 
@@ -2093,6 +2309,7 @@ footer{padding-block:28px 48px;display:flex;justify-content:space-between;gap:16
       const b = el.querySelector('[data-act="save"]'); if (b) { b.setAttribute('aria-pressed', s); b.querySelector('span').textContent = s ? u('saved') : u('save'); }
     });
     if (dlg.open && openKey) { const b = dlg.querySelector('[data-act="save"]'); if (b) { const s = isSaved(openKey); b.setAttribute('aria-pressed', s); b.querySelector('span').textContent = s ? u('saved') : u('save'); } }
+    if (view === 'painel') wInfo();
     if (view === 'mural') { const typing = document.activeElement && document.activeElement.tagName === 'TEXTAREA'; if (!typing) renderMural(); else updateStoreNote(); }
     setFoot();
   }
@@ -2107,6 +2324,7 @@ footer{padding-block:28px 48px;display:flex;justify-content:space-between;gap:16
   /* ───────── detail sheet ───────── */
   function seqFor(k) {
     if (view === 'mural') return items.map(i => i.k);
+    if (view === 'painel' && W_KEYS.includes(k)) return W_KEYS;
     const p = BY[k];
     return listFor(p.vol).filter(x => p.vol !== vnum() || filter === 'all' || x.dom === filter).map(x => x.key);
   }
@@ -2215,6 +2433,7 @@ footer{padding-block:28px 48px;display:flex;justify-content:space-between;gap:16
   /* ───────── events ───────── */
   document.addEventListener('click', e => {
     const b = e.target.closest('button'); if (!b) { if (e.target === dlg) dlg.close(); return; }
+    if (b.dataset.wsel !== undefined) { wSelect(b.dataset.wsel, !!b.closest('#winfo')); return; }
     if (b.dataset.lang) { if (b.dataset.lang !== L) { L = b.dataset.lang; try { localStorage.setItem('air-lang', L); } catch (er) {} render(); } return; }
     if (b.dataset.view && (!b.dataset.act || b.dataset.act === 'view')) { if (b.dataset.view !== view) { view = b.dataset.view; filter = 'all'; render(); window.scrollTo({ top: 0 }); } return; }
     if (b.dataset.sort) { sort3 = b.dataset.sort; nav.querySelectorAll('[data-sort]').forEach(x => x.setAttribute('aria-pressed', x === b)); renderGallery(); main.querySelectorAll('.plate').forEach(el => el.hidden = !(filter === 'all' || el.dataset.dom === filter)); return; }
@@ -2244,6 +2463,25 @@ footer{padding-block:28px 48px;display:flex;justify-content:space-between;gap:16
       const nb = main.querySelector(`[data-act="mv"][data-k="${k}"][data-d="${b.dataset.d}"]`); if (nb && !nb.disabled) nb.focus();
     }
   });
+  main.addEventListener('click', e => {
+    if (view !== 'painel') return;
+    const g = e.target.closest('[data-wn]');
+    if (g) wSelect(g.dataset.wn === wSel ? null : g.dataset.wn);
+    else if (e.target.closest('.wmap')) wSelect(null);
+  });
+  main.addEventListener('keydown', e => {
+    if (view !== 'painel') return;
+    const g = e.target.closest('[data-wn]');
+    if (g && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); wSelect(g.dataset.wn); }
+    else if (e.key === 'Escape' && wSel) wSelect(null);
+  });
+  main.addEventListener('pointerover', e => {
+    if (view !== 'painel' || e.pointerType !== 'mouse') return;
+    const g = e.target.closest('[data-wn]'), id = g ? g.dataset.wn : null;
+    if (id !== wHover) { wHover = id; wPaint(); }
+  });
+  main.addEventListener('pointerleave', () => { if (wHover) { wHover = null; wPaint(); } });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { if (view === 'painel') renderPainel(); }).catch(() => {});
   dlg.addEventListener('keydown', e => {
     if (!openKey || dTab !== 'photos' || (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight')) return;
     if (e.target.closest && e.target.closest('input,textarea')) return;
