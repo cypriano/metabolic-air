@@ -4,7 +4,8 @@
 
 - **Volume I — O estado gasoso:** 63 pranchas sobre fenômenos do ar na natureza, física, química, biologia, microbiologia, fauna, flora e técnica.
 - **Volume II — O ar no edifício:** 26 dispositivos e estratégias de projeto, cada um ligado ao fenômeno de origem.
-- **Volume III — Referências:** 91 obras de arte e arquitetura que usam o ar como material, em ordem cronológica — da Torre dos Ventos de Atenas e do Panteão às instalações e edifícios contemporâneos — com ano, autoria e fotos. Inclui grupos dedicados a arquitetura inflável e ao vento na arte e na arquitetura, e pode ser ordenado por data.
+- **Volume III — Referências:** 112 obras de arte e arquitetura que usam o ar como material, em ordem cronológica — da Torre dos Ventos de Atenas e do Panteão às instalações, edifícios e cápsulas espaciais infláveis — com ano, autoria e fotos. Inclui grupos dedicados a infláveis, espaço e vento, e pode ser ordenado por data.
+- **Painéis:** mapas que partem do ar e ligam fenômenos, dispositivos e referências por tema — o Painel do vento e o Painel do inflável — em dois diagramas (linhas ou imagens em círculos), com zoom.
 
 O site é bilíngue (PT/EN), tem fichas detalhadas por prancha e um mural pessoal de pranchas salvas.
 

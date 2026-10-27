@@ -252,6 +252,16 @@ footer{padding-block:28px 48px;display:flex;justify-content:space-between;gap:16
 .wmap .wn.sel .hl{fill:var(--ink)}
 .wmap .wn.sel text{fill:var(--paper)}
 .wmap .wn.sel .mk.o{fill:var(--ink)}
+.wzoom{position:relative}
+.wzctl{position:absolute;top:22px;right:8px;z-index:2;display:flex;align-items:center;pointer-events:none}
+.wzctl > *{pointer-events:auto}
+.wzctl button{font:500 13px/1 var(--mono);background:var(--paper);color:var(--ink);border:1px solid var(--ink);margin-left:-1px;min-width:38px;height:36px;padding:0 10px;cursor:pointer}
+.wzctl button:hover{background:var(--ink);color:var(--paper)}
+.wzctl button:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.wzctl span{font:500 11px/36px var(--mono);letter-spacing:.08em;background:var(--paper);border:1px solid var(--ink);border-left:0;border-right:0;height:36px;padding:0 10px;box-sizing:border-box;min-width:58px;text-align:center}
+.wscroll.zoomed{height:min(78vh,1100px);overflow:auto;cursor:grab;border:1px solid var(--line)}
+.wscroll.zoomed.grabbing{cursor:grabbing;user-select:none}
+.wzhint{font:400 10.5px/1.4 var(--mono);letter-spacing:.06em;color:var(--mute);margin:6px 0 0;text-align:right}
 .wimg .gd{fill:none;stroke:var(--line);stroke-width:1}
 .wimg .e{stroke-opacity:.26}
 .wimg .bg{fill:var(--paper)}
@@ -261,6 +271,8 @@ footer{padding-block:28px 48px;display:flex;justify-content:space-between;gap:16
 .wimg .lb{font:400 12px var(--body)}
 .wimg .k3 .lb,.wimg .k4 .lb{opacity:0;transition:opacity .15s}
 .wimg .wn:hover .lb,.wimg .wn:focus-visible .lb,.wimg.focus .wn.on .lb{opacity:1}
+.wscroll.zoomed .wimg .lb{opacity:1}
+.wscroll.zoomed .wimg.focus .wn:not(.on) .lb{opacity:.35}
 .wmap.wimg .tl{font:500 8.5px var(--mono);letter-spacing:.08em;fill:var(--paper)}
 .wmap.wimg .ti{font:400 32px var(--display);fill:var(--paper)}
 .wimg .vr{fill:none;stroke:var(--ink);stroke-width:1.5}
@@ -353,6 +365,8 @@ footer{padding-block:28px 48px;display:flex;justify-content:space-between;gap:16
       wHint: 'Toque num elemento para ver de onde ele vem e o que ele liga. Passe o mouse para seguir as linhas.',
       wCount: (a, b, c, d) => `${d} temas · ${a} fenômenos · ${b} dispositivos · ${c} referências`,
       wDiag: 'Diagrama', wLines: 'Linhas', wImgs: 'Imagens', wRing: n => `anel ${n}`,
+      wPanels: 'Painéis', wPanelsCt: n => `${n} painéis`, wPan: 'Painel', wPV: 'Vento', wPI: 'Inflável', windI: 'Painel do inflável', wZoomIn: 'Aproximar', wZoomOut: 'Afastar', wFit: 'Ajustar', wZoomHint: 'Arraste para mover · Ctrl + rolagem ou pinça para zoom',
+      vi: ['Painel do inflável', 'Do ar ao inflável.', 'Um mapa que parte do ar preso numa membrana e liga, por tema, a física da pressão e do empuxo, as estruturas pneumáticas e as obras infláveis, das cúpulas dos anos 1960 às cápsulas espaciais. Toque num elemento para ver o seu caminho.', 'Air_ · painel do inflável'],
       wChain: 'Caminho', wFrom: 'Vem de', wTo: 'Liga a', wTheme: 'Tema', wClear: 'Limpar', wAllT: 'Todos',
       vm: ['Meu mural', 'Seu mural de referências.', 'As pranchas que você salvou ficam aqui, com suas anotações. Reordene, comente e use como painel de pesquisa para o projeto.', 'Air_ · mural pessoal']
     },
@@ -372,6 +386,8 @@ footer{padding-block:28px 48px;display:flex;justify-content:space-between;gap:16
       wHint: 'Tap an element to see where it comes from and what it links to. Hover to follow the lines.',
       wCount: (a, b, c, d) => `${d} themes · ${a} phenomena · ${b} devices · ${c} references`,
       wDiag: 'Diagram', wLines: 'Lines', wImgs: 'Images', wRing: n => `ring ${n}`,
+      wPanels: 'Panels', wPanelsCt: n => `${n} panels`, wPan: 'Panel', wPV: 'Wind', wPI: 'Inflatable', windI: 'Inflatable panel', wZoomIn: 'Zoom in', wZoomOut: 'Zoom out', wFit: 'Fit', wZoomHint: 'Drag to move · Ctrl + scroll or pinch to zoom',
+      vi: ['Inflatable panel', 'From air to the inflatable.', 'A map that starts from air trapped in a membrane and links, by theme, the physics of pressure and buoyancy, pneumatic structures and inflatable works, from 1960s domes to space capsules. Tap an element to see its path.', 'Air_ · inflatable panel'],
       wChain: 'Path', wFrom: 'Comes from', wTo: 'Links to', wTheme: 'Theme', wClear: 'Clear', wAllT: 'All',
       vm: ['My board', 'Your reference board.', 'The plates you save collect here with your notes. Reorder, annotate and use it as a research board for the project.', 'Air_ · personal board']
     }
@@ -1984,6 +2000,125 @@ footer{padding-block:28px 48px;display:flex;justify-content:space-between;gap:16
 
   /* ───────── indexes ───────── */
   const ROMAN = { 1: 'I', 2: 'II', 3: 'III' };
+  /* ───────── Volume III, fourth layer: more inflatables and space capsules ───────── */
+  Object.assign(DOM, { esp: 'Espaço|Space' });
+  ORDER[3] = ['his', 'arte', 'exp', 'arq', 'infl', 'esp', 'vento'];
+  R3('echo1', 'esp',
+    ["Echo 1", "Um satélite que era um balão", "A NASA lançou uma esfera de Mylar aluminizado de 30 m que se inflava em órbita com o gás de pós que sublimavam. Ela refletia sinais de rádio de um ponto a outro da Terra e brilhava no céu à noite.", "Antes do lançamento, a esfera foi testada inflada dentro de um hangar de dirigíveis na Carolina do Norte. O sucessor, Echo 2, subiu em 1964.", "O ar como forma mínima: uma película finíssima vira um objeto do tamanho de um edifício quando a pressão de fora desaparece.", "1960 · NASA"],
+    ["Echo 1", "A satellite that was a balloon", "NASA launched a 30 m sphere of aluminised Mylar that inflated in orbit with gas from subliming powders. It bounced radio signals from one point on Earth to another and shone in the night sky.", "Before launch, the sphere was test-inflated inside an airship hangar in North Carolina. Its successor, Echo 2, went up in 1964.", "Air as minimal form: a very thin film becomes an object the size of a building once outside pressure disappears.", "1960 · NASA"], ['gases', 'pressao']);
+  R3('goodyearStation', 'esp',
+    ["Estação espacial inflável", "Um anel de borracha para morar em órbita", "O Centro de Pesquisa Langley da NASA e a Goodyear testaram o modelo de uma estação em forma de anel, feita de tecido emborrachado que seria inflado e girado no espaço para criar gravidade artificial.", "O modelo, de cerca de 7 m de diâmetro, viajaria dobrado e foi um dos primeiros estudos sérios de habitat expansível.", "O inflável como solução de transporte: levar pouco volume e abrir muito espaço no destino.", "1961 · NASA Langley e Goodyear"],
+    ["Inflatable space station", "A rubber ring to live in orbit", "NASA’s Langley Research Center and Goodyear tested a model of a ring-shaped station made of rubberised fabric, to be inflated and spun in space to create artificial gravity.", "The model, about 7 m across, would travel folded and was one of the first serious studies of an expandable habitat.", "The inflatable as a transport solution: carry little volume and open up a lot of space on arrival.", "1961 · NASA Langley and Goodyear"], ['pneumatica', 'pressao']);
+  R3('inflatoplane', 'infl',
+    ["Inflatoplane", "Um avião que se enche de ar", "A Goodyear construiu um pequeno avião de tecido emborrachado que, inflado, ficava rígido o bastante para voar. Dobrado, cabia num contêiner e poderia ser lançado de paraquedas para pilotos abatidos.", "Vários protótipos voaram nos anos 1950 e 1960 para as forças armadas dos EUA, mas o projeto não entrou em produção.", "A pressão do ar fazendo o papel da estrutura: asas sem longarinas, só membrana tensionada.", "1956 · Goodyear Aircraft"],
+    ["Inflatoplane", "A plane you fill with air", "Goodyear built a small plane of rubberised fabric that, once inflated, was stiff enough to fly. Folded, it fitted into a container and could be dropped by parachute to downed pilots.", "Several prototypes flew in the 1950s and 1960s for the US armed forces, but the project never went into production.", "Air pressure doing the job of structure: wings without spars, only tensioned membrane.", "1956 · Goodyear Aircraft"], ['pneumatica', 'voo']);
+  R3('transhab', 'esp',
+    ["TransHab", "Uma casa de tecido para ir a Marte", "A NASA desenvolveu um módulo habitável que viajaria dobrado e se expandiria em órbita até um cilindro de três andares, protegido por dezenas de camadas de tecidos como Kevlar e espumas contra detritos.", "O programa foi cancelado pelo Congresso dos EUA em 2000, e a tecnologia passou para a Bigelow Aerospace.", "A parede como sanduíche de camadas e ar: a pressão interna dá a forma, as camadas dão a proteção.", "1997 · NASA, William Schneider"],
+    ["TransHab", "A fabric house to go to Mars", "NASA developed a habitation module that would travel folded and expand in orbit into a three-storey cylinder, shielded by dozens of layers of fabrics such as Kevlar and foams against debris.", "The programme was cancelled by the US Congress in 2000 and the technology passed to Bigelow Aerospace.", "The wall as a sandwich of layers and air: internal pressure gives the form, the layers give protection.", "1997 · NASA, William Schneider"], ['pneumatica', 'isolamento']);
+  R3('genesis', 'esp',
+    ["Genesis I e II", "Os primeiros habitats infláveis em órbita", "A Bigelow Aerospace lançou dois módulos experimentais que se expandiram no espaço e levaram câmeras, sensores e objetos enviados por clientes para testar materiais e vedação ao longo de anos.", "Os módulos seguem em órbita, sem tripulação, como prova de que a ideia do TransHab funcionava fora da Terra.", "A arquitetura inflável como protótipo comercial: espaço pressurizado vendido por volume.", "2006 · Bigelow Aerospace"],
+    ["Genesis I and II", "The first inflatable habitats in orbit", "Bigelow Aerospace launched two experimental modules that expanded in space, carrying cameras, sensors and objects sent by customers to test materials and sealing over the years.", "The modules remain in orbit, uncrewed, as proof that the TransHab idea worked beyond Earth.", "Inflatable architecture as a commercial prototype: pressurised space sold by volume.", "2006 · Bigelow Aerospace"], ['pneumatica', 'pressao']);
+  R3('beam', 'esp',
+    ["BEAM", "Um cômodo inflável na Estação Espacial", "O Bigelow Expandable Activity Module foi acoplado à Estação Espacial Internacional e inflado aos poucos até cerca de 16 m³. Dentro dele, os astronautas medem radiação, temperatura e impactos de detritos.", "Planejado para dois anos de teste, o módulo continuou acoplado e passou a ser usado também como depósito.", "O primeiro cômodo inflável ocupado por pessoas no espaço, entre paredes de tecido e ar respirável.", "2016 · Bigelow Aerospace e NASA"],
+    ["BEAM", "An inflatable room on the Space Station", "The Bigelow Expandable Activity Module was berthed to the International Space Station and slowly inflated to about 16 m³. Inside, astronauts measure radiation, temperature and debris impacts.", "Planned for a two-year test, the module stayed attached and is also used for storage.", "The first inflatable room entered by people in space, between fabric walls and breathable air.", "2016 · Bigelow Aerospace and NASA"], ['pneumatica', 'composicao']);
+  R3('marsAirbags', 'esp',
+    ["Airbags da Mars Pathfinder", "Pousar quicando em Marte", "Para tocar o solo, a sonda se envolveu em bolsas de ar infladas segundos antes do impacto e quicou várias vezes pela superfície até parar. Depois esvaziou os airbags e se abriu como uma flor.", "O mesmo sistema levou os robôs Spirit e Opportunity a Marte em 2004.", "O ar como amortecedor: gás comprimido que absorve a energia do choque e protege o que está dentro.", "1997 · NASA JPL"],
+    ["Mars Pathfinder airbags", "Landing on Mars with a bounce", "To reach the ground, the probe wrapped itself in air bags inflated seconds before impact and bounced several times across the surface until it stopped. Then it deflated the bags and opened like a flower.", "The same system carried the Spirit and Opportunity rovers to Mars in 2004.", "Air as a shock absorber: compressed gas that takes up the energy of impact and protects what is inside.", "1997 · NASA JPL"], ['arComprimido', 'pressao']);
+  R3('marsIceHome', 'esp',
+    ["Mars Ice Home", "Uma casa de gelo inflada em Marte", "Num conceito para Marte, uma membrana inflável em forma de cúpula é preenchida com água congelada. O gelo protege da radiação e deixa a luz entrar, e o ar entre as camadas isola o interior.", "O estudo foi feito pelo Centro Langley da NASA com os escritórios Clouds AO e SEArch+.", "O inflável como fôrma de uma arquitetura feita com o material que existe no lugar.", "2016 · NASA Langley, Clouds AO e SEArch+"],
+    ["Mars Ice Home", "An inflated ice house on Mars", "In a concept for Mars, a dome-shaped inflatable membrane is filled with frozen water. The ice shields from radiation and lets light in, while the air between layers insulates the interior.", "The study was carried out by NASA’s Langley Research Center with the offices Clouds AO and SEArch+.", "The inflatable as formwork for an architecture made from the material found on site.", "2016 · NASA Langley, Clouds AO and SEArch+"], ['pneumatica', 'isolamento']);
+  R3('loftid', 'esp',
+    ["LOFTID", "Um escudo térmico que se infla", "A NASA testou, na volta da órbita, um escudo de reentrada de 6 m feito de anéis de tubo inflado e tecido resistente ao calor, que se abre como um cone e freia a cápsula na atmosfera.", "O voo de teste terminou com o escudo recuperado no oceano Pacífico, quase intacto.", "O ar preso enfrentando o ar em alta velocidade: uma estrutura inflável que trabalha contra a camada limite.", "2022 · NASA"],
+    ["LOFTID", "A heat shield that inflates", "On a return from orbit, NASA tested a 6 m reentry shield made of rings of inflated tube and heat-resistant fabric, which opens into a cone and slows the capsule in the atmosphere.", "The test flight ended with the shield recovered from the Pacific Ocean, almost intact.", "Trapped air facing air at high speed: an inflatable structure working against the boundary layer.", "2022 · NASA"], ['pneumatica', 'camadaLimite']);
+  R3('lunarHab', 'esp',
+    ["Habitat lunar na Antártica", "Ensaiar a Lua no gelo", "A NASA, a ILC Dover e a Fundação Nacional de Ciência dos EUA montaram um habitat inflável na estação McMurdo para testar durante um ano como ele resistia ao frio, ao vento e ao uso diário.", "A ILC Dover é a empresa que também fabricou os trajes espaciais do programa Apollo.", "O inflável testado no lugar mais parecido com outro planeta: abrigo leve, rápido e isolado.", "2008 · NASA, ILC Dover e NSF"],
+    ["Lunar habitat in Antarctica", "Rehearsing the Moon on the ice", "NASA, ILC Dover and the US National Science Foundation set up an inflatable habitat at McMurdo Station to test for a year how it stood up to cold, wind and daily use.", "ILC Dover is also the company that made the Apollo programme’s spacesuits.", "The inflatable tested in the place most like another planet: light, quick, insulated shelter.", "2008 · NASA, ILC Dover and NSF"], ['pneumatica', 'isolamento']);
+  R3('binishell', 'infl',
+    ["Binishell", "Concreto erguido pelo ar", "Dante Bini espalhava concreto e armadura sobre uma membrana deitada no chão e a inflava, levantando a casca ainda fresca até a forma de cúpula. Depois da cura, a membrana era retirada e reaproveitada.", "Bini construiu cerca de 1.600 cúpulas assim em 23 países, de escolas na Austrália a casas na Itália.", "O ar como fôrma: não fica no edifício, mas é ele que dá forma ao material pesado.", "Anos 1960 · Dante Bini"],
+    ["Binishell", "Concrete raised by air", "Dante Bini spread concrete and reinforcement over a membrane lying on the ground and inflated it, lifting the still-wet shell into a dome. Once cured, the membrane was removed and reused.", "Bini built about 1,600 such domes in 23 countries, from schools in Australia to houses in Italy.", "Air as formwork: it does not stay in the building, but it gives the heavy material its form.", "1960s · Dante Bini"], ['pneumatica', 'pressao']);
+  R3('hausRucker', 'infl',
+    ["Mind Expander", "Uma cápsula para ampliar a percepção", "O grupo vienense Haus-Rucker-Co criou assentos e capacetes envoltos por bolhas de plástico inflado, como o Mind Expander e o Gelbes Herz, cápsulas para uma ou duas pessoas que alteravam luz, som e espaço.", "O mesmo grupo instalou o Oase Nr. 7 na fachada do Fridericianum, em Kassel, em 1972.", "A bolha como extensão do corpo e da mente: arquitetura do tamanho de um abraço.", "1967 · Haus-Rucker-Co"],
+    ["Mind Expander", "A capsule to widen perception", "The Viennese group Haus-Rucker-Co made seats and helmets wrapped in inflated plastic bubbles, such as the Mind Expander and Gelbes Herz, capsules for one or two people that altered light, sound and space.", "The same group installed Oase Nr. 7 on the façade of the Fridericianum in Kassel in 1972.", "The bubble as an extension of body and mind: architecture the size of a hug.", "1967 · Haus-Rucker-Co"], ['pneumatica', 'sino']);
+  R3('cushicle', 'infl',
+    ["Cushicle", "Uma casa que se veste", "Michael Webb, do Archigram, desenhou uma mochila com estrutura dobrável e envoltório inflável que se abria em abrigo com assento, comida, água, rádio e televisão para uma pessoa.", "O projeto dialoga com o Suitaloon, do mesmo autor, uma roupa que vira habitação.", "O nômade urbano levando a própria bolha de ar como casa.", "1966 · Michael Webb (Archigram)"],
+    ["Cushicle", "A house you wear", "Michael Webb of Archigram designed a backpack with a folding frame and inflatable skin that opened into a shelter with seat, food, water, radio and television for one person.", "The project pairs with Suitaloon, by the same author, a suit that becomes a dwelling.", "The urban nomad carrying their own air bubble as a home.", "1966 · Michael Webb (Archigram)"], ['pneumatica']);
+  R3('instantCity', 'infl',
+    ["Instant City", "Uma cidade inflada por estudantes", "Para um congresso internacional de design em Ibiza, José Miguel de Prada Poole projetou uma cidade de módulos infláveis de plástico que os próprios estudantes montaram e ocuparam por semanas.", "A cidade crescia e mudava com os ocupantes e virou símbolo da arquitetura efêmera e participativa dos anos 1970.", "O ar como infraestrutura de uma comunidade temporária, barata e coletiva.", "1971 · José Miguel de Prada Poole"],
+    ["Instant City", "A city inflated by students", "For an international design congress in Ibiza, José Miguel de Prada Poole designed a city of inflatable plastic modules that the students themselves assembled and lived in for weeks.", "The city grew and changed with its occupants and became a symbol of the ephemeral, participatory architecture of the 1970s.", "Air as the infrastructure of a temporary, cheap and collective community.", "1971 · José Miguel de Prada Poole"], ['pneumatica']);
+  R3('fujiPavilion', 'infl',
+    ["Pavilhão Fuji, Expo ’70", "Arcos feitos de tubos de ar", "Yutaka Murata e o engenheiro Mamoru Kawaguchi ergueram o pavilhão com 16 tubos de ar de cerca de 4 m de diâmetro, curvados em arco e amarrados lado a lado. A pressão interna era ajustada conforme o vento.", "Murata também projetou o Teatro Flutuante da Expo e foi um dos principais pesquisadores de estruturas pneumáticas no Japão.", "A pressão como estrutura que responde ao clima: mais ar quando o vento aperta.", "1970 · Yutaka Murata"],
+    ["Fuji Pavilion, Expo ’70", "Arches made of air tubes", "Yutaka Murata and engineer Mamoru Kawaguchi raised the pavilion from 16 air tubes about 4 m across, bent into arches and tied side by side. The internal pressure was adjusted to the wind.", "Murata also designed the Expo’s Floating Theatre and was one of Japan’s leading researchers in pneumatic structures.", "Pressure as a structure that responds to the weather: more air when the wind picks up.", "1970 · Yutaka Murata"], ['pneumatica', 'pressao']);
+  R3('desertCloud', 'infl',
+    ["Desert Cloud", "Uma nuvem de sombra no deserto", "Graham Stevens desenhou uma grande vela inflável e prateada que, aquecida pelo sol, flutuaria sobre o deserto projetando sombra sobre quem estivesse embaixo.", "Stevens é um dos pioneiros das esculturas pneumáticas que reagem ao vento, à água e ao calor.", "O inflável como microclima móvel: sombra feita de ar aquecido.", "1974 · Graham Stevens"],
+    ["Desert Cloud", "A cloud of shade over the desert", "Graham Stevens designed a large silvery inflatable sail that, warmed by the sun, would float over the desert casting shade on anyone below.", "Stevens is one of the pioneers of pneumatic sculptures that respond to wind, water and heat.", "The inflatable as a moving microclimate: shade made of warmed air.", "1974 · Graham Stevens"], ['empuxo', 'conveccao']);
+  R3('luminarium', 'infl',
+    ["Luminários", "Catedrais de ar e luz colorida", "O grupo Architects of Air, fundado por Alan Parkinson, monta labirintos infláveis de PVC colorido em que a luz do dia atravessa as paredes e tinge o ar de cada cúpula.", "As estruturas viajam pelo mundo e são mantidas de pé por ventiladores enquanto o público caminha dentro delas.", "O ar como espaço de luz: a membrana filtra o sol e o ar dá corpo às cúpulas.", "1992 · Architects of Air, Alan Parkinson"],
+    ["Luminaria", "Cathedrals of air and coloured light", "The group Architects of Air, founded by Alan Parkinson, builds inflatable labyrinths of coloured PVC in which daylight passes through the walls and tints the air of each dome.", "The structures tour the world and are kept up by fans while visitors walk inside them.", "Air as a space of light: the membrane filters the sun and air gives the domes their body.", "1992 · Architects of Air, Alan Parkinson"], ['pneumatica']);
+  R3('eden', 'infl',
+    ["Eden Project", "Biomas sob bolhas de ar", "Nicholas Grimshaw cobriu uma antiga mina de argila na Cornualha com cúpulas geodésicas de almofadas de ETFE infladas, que deixam passar a luz e guardam o calor de florestas tropicais e mediterrâneas.", "As almofadas pesam uma fração do vidro e podem ser trocadas uma a uma.", "O ar como vidro: camadas de plástico separadas por ar criam o clima de outro continente.", "2001 · Grimshaw Architects"],
+    ["Eden Project", "Biomes under air bubbles", "Nicholas Grimshaw covered a former clay pit in Cornwall with geodesic domes of inflated ETFE cushions that let light through and hold the warmth of tropical and Mediterranean forests.", "The cushions weigh a fraction of glass and can be replaced one by one.", "Air as glass: layers of plastic separated by air create the climate of another continent.", "2001 · Grimshaw Architects"], ['etfe', 'isolamento']);
+  R3('allianz', 'infl',
+    ["Allianz Arena", "Um estádio de almofadas que mudam de cor", "Herzog & de Meuron revestiram o estádio de Munique com quase 2.900 almofadas de ETFE infladas por ventiladores, que podem ser iluminadas de branco, vermelho ou azul.", "Um sistema de ar seco mantém a pressão das almofadas e evita a condensação entre as camadas.", "A fachada inflável como pele leve e luminosa de um volume enorme.", "2005 · Herzog & de Meuron"],
+    ["Allianz Arena", "A stadium of colour-changing cushions", "Herzog & de Meuron clad the Munich stadium in almost 2,900 ETFE cushions inflated by fans, which can be lit white, red or blue.", "A dry-air system keeps the cushions pressurised and prevents condensation between the layers.", "The inflatable façade as a light, glowing skin for a huge volume.", "2005 · Herzog & de Meuron"], ['etfe', 'pressao']);
+  R3('rubberDuck', 'infl',
+    ["Rubber Duck", "Um pato inflável nos portos do mundo", "Florentijn Hofman fez um pato de borracha da altura de um prédio, inflado e ancorado na água, que viaja de cidade em cidade e é refeito em cada lugar.", "Desde a primeira versão, em Saint-Nazaire, o pato passou por portos da Europa, da Ásia, da Oceania e das Américas.", "O inflável como monumento temporário e brincadeira de escala na cidade.", "2007 · Florentijn Hofman"],
+    ["Rubber Duck", "An inflatable duck in the world’s harbours", "Florentijn Hofman made a rubber duck as tall as a building, inflated and moored on the water, which travels from city to city and is rebuilt in each place.", "Since the first version in Saint-Nazaire, the duck has visited harbours in Europe, Asia, Oceania and the Americas.", "The inflatable as a temporary monument and a game of scale in the city.", "2007 · Florentijn Hofman"], ['pneumatica', 'empuxo']);
+  R3('aeroSolar', 'infl',
+    ["Museo Aero Solar", "Um balão feito de sacolas plásticas", "Tomás Saraceno e Alberto Pesavento iniciaram um balão solar costurado com milhares de sacolas plásticas reaproveitadas, que cresce a cada montagem e voa aquecido apenas pelo sol.", "O projeto antecede o Aerocene e é montado coletivamente em oficinas em vários países.", "O empuxo do ar quente como prática coletiva e como crítica ao plástico descartável.", "2007 · Tomás Saraceno e Alberto Pesavento"],
+    ["Museo Aero Solar", "A balloon made of plastic bags", "Tomás Saraceno and Alberto Pesavento began a solar balloon sewn from thousands of reused plastic bags, which grows with each assembly and flies warmed only by the sun.", "The project predates Aerocene and is assembled collectively in workshops in several countries.", "The buoyancy of warm air as collective practice and a critique of throwaway plastic.", "2007 · Tomás Saraceno and Alberto Pesavento"], ['empuxo', 'conveccao']);
+  Object.assign(art, {
+    echo1: () => `<circle cx="120" cy="76" r="46"/><path class="thin" d="M78 60 Q120 44 162 60 M74 84 Q120 104 166 84"/>` + dots(14, 10, 230, 8, 120, .9, 31) +
+      `<path d="M10 160 Q120 130 230 160"/>` + A('M40 152 L84 112', '') + A('M156 112 L200 152', '') + T(120, 176, 'uma esfera de 30 m inflada em órbita|a 30 m sphere inflated in orbit', 'middle'),
+    goodyearStation: () => `<ellipse cx="120" cy="80" rx="92" ry="40"/><ellipse cx="120" cy="80" rx="62" ry="22"/><ellipse class="knock" cx="120" cy="80" rx="10" ry="6"/>` +
+      `<path class="thin" d="M58 80 H110 M130 80 H182 M120 58 V74 M120 86 V102"/>` + A('M200 44 Q222 64 212 96', '') + dots(10, 10, 230, 130, 160, .8, 7) + T(120, 172, 'um anel inflável que gira para criar gravidade|an inflatable ring that spins for gravity', 'middle'),
+    inflatoplane: () => pillow(64, 58, 112, 10) + `<path class="thin" d="M100 68 L108 96 M140 68 L132 96"/>` +
+      `<path d="M40 104 C40 90 196 88 206 104 C196 118 40 118 40 104 Z"/><path d="M196 104 L214 80 L222 104"/><path class="bold" d="M34 90 V118"/>` + person(118, 104, .6) +
+      `<line x1="10" y1="150" x2="230" y2="150"/>` + T(120, 172, 'um avião de tecido rígido pela pressão|a fabric plane stiffened by pressure', 'middle'),
+    transhab: () => `<rect x="80" y="40" width="80" height="104" rx="30"/><rect class="thin" x="72" y="32" width="96" height="120" rx="38"/><rect class="thin" x="64" y="24" width="112" height="136" rx="46"/>` +
+      `<line class="dash" x1="82" y1="74" x2="158" y2="74"/><line class="dash" x1="82" y1="108" x2="158" y2="108"/>` + person(120, 106, .7) + T(120, 174, 'um núcleo rígido e paredes de tecido|a rigid core and fabric walls', 'middle'),
+    genesis: () => `<rect x="70" y="64" width="100" height="46" rx="23"/><path class="thin" d="M90 64 V110 M150 64 V110"/>` +
+      `<rect class="h" x="14" y="74" width="44" height="26"/><rect class="h" x="182" y="74" width="44" height="26"/><line x1="58" y1="87" x2="70" y2="87"/><line x1="170" y1="87" x2="182" y2="87"/>` +
+      dots(16, 10, 230, 10, 150, .8, 12) + T(120, 170, 'um módulo que se expande em órbita|a module that expands in orbit', 'middle'),
+    beam: () => `<line class="bold" x1="10" y1="52" x2="230" y2="52"/><rect class="h" x="96" y="52" width="48" height="40"/><rect x="88" y="92" width="64" height="56" rx="22"/>` +
+      `<path class="dash" d="M100 108 H140 M100 124 H140"/>` + A('M86 120 L58 120', '') + A('M154 120 L182 120', '') + T(120, 172, 'um cômodo inflável preso à estação|an inflatable room on the station', 'middle'),
+    marsAirbags: () => `<path class="dash" d="M14 34 Q36 150 64 118 Q84 94 96 126"/>` +
+      [[112, 112], [140, 112], [126, 90], [126, 124]].map(([x, y]) => `<circle class="knock" cx="${x}" cy="${y}" r="16"/>`).join('') +
+      ground(10, 230, 144) + T(120, 172, 'bolsas de ar que quicam no solo|air bags that bounce on the ground', 'middle'),
+    marsIceHome: () => sun(206, 30) + membrane(120, 146, 90, 80) + membrane(120, 146, 74, 64, 'thin') + `<path class="thin" d="M70 112 L60 100 M170 112 L180 100 M120 78 V64"/>` +
+      person(120, 146, .8) + ground(10, 230, 146) + T(120, 172, 'gelo inflado como escudo e janela|inflated ice as shield and window', 'middle'),
+    loftid: () => `<rect class="knock" x="108" y="24" width="24" height="22" rx="4"/>` +
+      [0, 1, 2, 3, 4].map(i => `<ellipse class="${i % 2 ? 'thin' : ''}" cx="120" cy="${54 + i * 13}" rx="${30 + i * 18}" ry="9"/>`).join('') +
+      arcs(120, 172, [52, 64, 76], -2.6, -.54) + A('M24 160 L24 112', '') + A('M216 160 L216 112', '') + T(120, 176, 'anéis inflados freiam a reentrada|inflated rings brake reentry', 'middle'),
+    lunarHab: () => `<path d="M40 148 C40 70 200 70 200 148"/>` + [70, 100, 140, 170].map(x => `<line class="thin" x1="${x}" y1="148" x2="${x}" y2="${x < 120 ? 90 + (100 - x) * .5 : 90 + (x - 140) * .5}"/>`).join('') +
+      `<rect class="knock" x="108" y="122" width="24" height="26"/>` + dots(24, 10, 230, 8, 60, .9, 44) + ground(10, 230, 148) + A('M10 108 L34 108', '') + T(120, 172, 'um abrigo inflado testado no gelo|an inflated shelter tested on ice', 'middle'),
+    binishell: () => `<rect class="h" x="14" y="138" width="86" height="8"/><path class="thin" d="M14 138 Q57 130 100 138"/>` + A('M108 112 L130 112', '') +
+      `<path class="h" d="M140 146 C140 70 228 70 228 146 Z"/><path class="dash" d="M150 146 C150 84 218 84 218 146"/>` + `<line x1="10" y1="146" x2="230" y2="146"/>` +
+      T(120, 172, 'concreto levantado por uma bolha|concrete lifted by a bubble', 'middle'),
+    hausRucker: () => `<circle cx="120" cy="80" r="58"/><circle class="thin" cx="120" cy="80" r="48"/>` + person(102, 132, .9) + person(138, 132, .9) +
+      `<path d="M78 132 H162 M90 132 L84 150 M150 132 L156 150"/><line x1="10" y1="150" x2="230" y2="150"/>` + T(120, 172, 'uma bolha para duas cabeças|a bubble for two heads', 'middle'),
+    cushicle: () => person(66, 148) + `<rect class="knock" x="52" y="112" width="12" height="22"/>` +
+      `<path d="M78 148 C78 58 222 58 222 148"/><path class="dash" d="M96 148 C96 82 204 82 204 148"/>` + `<rect x="140" y="128" width="30" height="20"/><line x1="10" y1="148" x2="230" y2="148"/>` +
+      T(120, 172, 'uma mochila que vira casa|a backpack that becomes a house', 'middle'),
+    instantCity: () => membrane(56, 148, 42, 40) + membrane(122, 148, 32, 56) + membrane(186, 148, 44, 34) + `<path class="thin" d="M96 132 H92 M152 136 H146"/>` +
+      person(56, 148, .7) + person(122, 148, .7) + person(186, 148, .7) + `<line x1="10" y1="148" x2="230" y2="148"/>` + T(120, 172, 'uma cidade de bolhas montada por estudantes|a city of bubbles built by students', 'middle'),
+    fujiPavilion: () => [0, 1, 2, 3, 4, 5].map(i => membrane(120, 148, 96 - i * 4, 48 + i * 10, i === 5 ? 'bold' : 'thin')).join('') +
+      `<line x1="10" y1="148" x2="230" y2="148"/>` + person(120, 148, .8) + T(120, 172, 'tubos de ar curvados em arco|air tubes bent into arches', 'middle'),
+    desertCloud: () => sun(204, 26) + pillow(50, 52, 120, 22) + `<path class="dash" d="M70 82 L60 146 M150 82 L160 146"/>` +
+      `<ellipse class="h" cx="110" cy="148" rx="60" ry="6"/><path d="M10 152 Q60 138 110 152 T230 152"/>` + person(110, 148, .7) + T(120, 172, 'uma nuvem de sombra aquecida pelo sol|a sun-warmed cloud of shade', 'middle'),
+    luminarium: () => membrane(66, 148, 50, 62) + membrane(150, 148, 44, 74) + membrane(206, 148, 26, 40) + `<path class="dash" d="M150 30 L150 60 M128 36 L136 62 M172 36 L164 62"/>` +
+      person(150, 148, .8) + person(70, 148, .7) + `<line x1="10" y1="148" x2="230" y2="148"/>` + T(120, 172, 'cúpulas de ar tingidas pela luz|air domes tinted by light', 'middle'),
+    eden: () => membrane(82, 148, 64, 66) + membrane(176, 148, 50, 52) + arcs(82, 148, [30, 50], -2.7, -.44) + arcs(176, 148, [24, 38], -2.7, -.44) +
+      `<path class="thin" d="M60 148 V120 M100 148 V112 M170 148 V126"/><circle class="h" cx="60" cy="114" r="8"/><circle class="h" cx="100" cy="104" r="10"/><circle class="h" cx="170" cy="120" r="7"/>` +
+      `<line x1="10" y1="148" x2="230" y2="148"/>` + T(120, 172, 'biomas sob almofadas de ETFE|biomes under ETFE cushions', 'middle'),
+    allianz: () => [0, 1, 2].map(j => [0, 1, 2, 3, 4, 5, 6].map(i => pillow(26 + i * 28 + (j % 2) * 14, 50 + j * 26, 20, 14, (i + j) % 3 === 0 ? 'h' : '')).join('')).join('') +
+      `<path d="M14 130 H226"/><path class="thin" d="M20 130 L30 148 M220 130 L210 148"/><line x1="10" y1="148" x2="230" y2="148"/>` + T(120, 172, 'almofadas de ar que acendem|air cushions that light up', 'middle'),
+    rubberDuck: () => `<path d="M40 128 C40 98 84 94 136 106 C150 112 188 108 196 120 C204 140 176 150 120 150 C70 150 40 146 40 128 Z"/>` +
+      `<circle cx="168" cy="82" r="24"/><path d="M190 84 L214 90 L190 96"/><circle class="f" cx="174" cy="76" r="2.4"/>` + wave(10, 156, 27) + `<rect x="20" y="146" width="14" height="6"/>` +
+      T(120, 174, 'um pato inflável do tamanho de um prédio|an inflatable duck the size of a building', 'middle'),
+    aeroSolar: () => sun(206, 26) + `<circle cx="116" cy="66" r="50"/><path class="thin" d="M72 46 H160 M66 66 H166 M72 86 H160 M96 20 V112 M136 20 V112"/>` +
+      `<path class="dash" d="M96 112 L70 148 M136 112 L164 148"/>` + person(70, 148, .7) + person(164, 148, .7) + `<line x1="10" y1="148" x2="230" y2="148"/>` +
+      T(120, 172, 'um balão de sacolas aquecido pelo sol|a balloon of bags warmed by the sun', 'middle')
+  });
   const BY = {}; PLATES.forEach(p => BY[p.key] = p);
   const VOL = {};
   for (const v of [1, 2, 3]) {
@@ -2021,27 +2156,53 @@ footer{padding-block:28px 48px;display:flex;justify-content:space-between;gap:16
   const W3 = ['torreVentos', 'malqafEgito', 'hawaMahal', 'leonardo', 'panteao', 'crystalPalace', 'tenda', 'gourna', 'masdar', 'ch2', 'soundBox', 'pompeia', 'magney', 'bakerCDS', 'silves', 'tubeHouse', 'tjibaou', 'pedregulho', 'sarah', 'ishigami', 'serpentine2006', 'kleinRuhnau'];
   const WX = { deslocamento: ['chamine'], poco: ['@t:frescor'] };
   const WROOT = {
-    '@ar': { pt: 'Ar', en: 'Air', dpt: 'O ponto de partida: a mistura de gases que nos envolve. Quando ganha movimento, vira vento.', den: 'The starting point: the mix of gases around us. When it starts to move, it becomes wind.' },
-    '@vento': { pt: 'Vento', en: 'Wind', dpt: 'Ar em movimento. Daqui saem seis temas que ligam fenômenos, dispositivos de projeto e obras de arte e arquitetura.', den: 'Air in motion. Six themes branch from here, linking phenomena, design devices and works of art and architecture.' }
+    '@ar': { pt: 'Ar', en: 'Air', dpt: 'O ponto de partida: a mistura de gases que nos envolve. Quando ganha movimento vira vento; quando fica preso numa membrana, vira estrutura.', den: 'The starting point: the mix of gases around us. Set moving, it becomes wind; trapped in a membrane, it becomes structure.' },
+    '@hub': { pt: 'Vento', en: 'Wind', dpt: 'Ar em movimento. Daqui saem seis temas que ligam fenômenos, dispositivos de projeto e obras de arte e arquitetura.', den: 'Air in motion. Six themes branch from here, linking phenomena, design devices and works of art and architecture.' }
   };
-  function buildW() {
+  const IT = [
+    { id: 'sustentar', pt: 'Ar que sustenta', en: 'Air that holds up', ks: ['pressao', 'gases', 'arComprimido'],
+      dpt: 'Com a pressão de dentro maior que a de fora, a membrana se tensiona e vira estrutura: cúpulas, tubos, arcos, asas e amortecedores de ar.',
+      den: 'With more pressure inside than out, the membrane tightens into structure: domes, tubes, arches, wings and air cushions.' },
+    { id: 'flutuar', pt: 'Ar que flutua', en: 'Air that floats', ks: ['empuxo', 'conveccao', 'bexiga'],
+      dpt: 'Ar mais quente ou mais leve que o ar em volta sobe: balões, nuvens de plástico e esculturas que voam sozinhas.',
+      den: 'Air warmer or lighter than the air around it rises: balloons, plastic clouds and sculptures that fly by themselves.' },
+    { id: 'isolar', pt: 'Ar que isola', en: 'Air that insulates', ks: ['isolamento'],
+      dpt: 'Camadas de ar parado entre membranas guardam o calor e deixam passar a luz: almofadas de ETFE, paredes duplas e cúpulas climáticas.',
+      den: 'Layers of still air between membranes keep in heat and let light through: ETFE cushions, double walls and climate domes.' },
+    { id: 'habitar', pt: 'Bolha habitável', en: 'Habitable bubble', ks: ['sino', 'composicao', 'alveolo'],
+      dpt: 'Um volume de ar respirável e pressurizado separado de um meio hostil: do sino de mergulho às cápsulas e módulos espaciais.',
+      den: 'A volume of breathable, pressurised air set apart from a hostile medium: from the diving bell to space capsules and modules.' },
+    { id: 'voar', pt: 'Ar contra o ar', en: 'Air against air', ks: ['voo', 'camadaLimite'],
+      dpt: 'Infláveis que enfrentam o ar em velocidade: asas de tecido inflado e escudos que freiam a volta do espaço.',
+      den: 'Inflatables that face air at speed: wings of inflated fabric and shields that brake the return from space.' }
+  ];
+  const WPAN = {
+    vento: { T: WT, ii: W2, iii: p => p.dom === 'vento' || W3.includes(p.key), x: WX, hub: WROOT['@hub'] },
+    infl: { T: IT, ii: ['pneumatica', 'etfe'], iii: p => p.dom === 'infl' || p.dom === 'esp' || ['cloudNine', 'aerocene', 'montgolfier', 'kleinRuhnau'].includes(p.key), x: {},
+      hub: { pt: 'Inflar', en: 'Inflate', dpt: 'Prender o ar dentro de uma membrana. Daqui saem cinco temas que ligam a física da pressão e do empuxo às estruturas pneumáticas, às obras infláveis e às cápsulas espaciais.', den: 'Trapping air inside a membrane. Five themes branch from here, linking the physics of pressure and buoyancy to pneumatic structures, inflatable works and space capsules.' } }
+  };
+  function buildW(cfg) {
     const N = {}, order = [];
     const add = (id, col, o) => { if (N[id]) return; N[id] = Object.assign({ id, col, par: [], kid: [] }, o); order.push(id); };
     const link = (a, b) => { if (!N[a] || !N[b] || a === b || N[b].par.includes(a)) return; N[b].par.push(a); N[a].kid.push(b); };
-    add('@ar', 0, { r: WROOT['@ar'] }); add('@vento', 1, { r: WROOT['@vento'] }); link('@ar', '@vento');
-    WT.forEach(t => { const id = '@t:' + t.id; add(id, 2, { t }); link('@vento', id); t.ks.forEach(k => { if (BY[k]) { add(k, 3, { p: BY[k] }); link(id, k); } }); });
-    W2.forEach(k => BY[k] && add(k, 4, { p: BY[k] }));
-    VOL[3].filter(p => p.dom === 'vento' || W3.includes(p.key)).forEach(p => add(p.key, 5, { p }));
+    add('@ar', 0, { r: WROOT['@ar'] }); add('@hub', 1, { r: cfg.hub }); link('@ar', '@hub');
+    cfg.T.forEach(t => { const id = '@t:' + t.id; add(id, 2, { t }); link('@hub', id); t.ks.forEach(k => { if (BY[k]) { add(k, 3, { p: BY[k] }); link(id, k); } }); });
+    cfg.ii.forEach(k => BY[k] && add(k, 4, { p: BY[k] }));
+    VOL[3].filter(cfg.iii).forEach(p => add(p.key, 5, { p }));
     order.filter(id => N[id].col >= 4).forEach(id => {
-      origins(BY[id]).filter(o => N[o] && N[o].col < N[id].col).concat(WX[id] || []).forEach(o => link(o, id));
-      if (!N[id].par.length) link('@vento', id);
+      origins(BY[id]).filter(o => N[o] && N[o].col < N[id].col).concat(cfg.x[id] || []).forEach(o => link(o, id));
+      if (!N[id].par.length) link('@hub', id);
     });
-    return { N, order };
+    return { N, order, T: cfg.T };
   }
-  const WG = buildW();
+  const WGS = {}; Object.keys(WPAN).forEach(k => { WGS[k] = buildW(WPAN[k]); });
+  let wPanel = 'vento';
+  try { const s = localStorage.getItem('air-wpanel'); if (WGS[s]) wPanel = s; } catch (e) {}
+  let WG = WGS[wPanel];
   const wLabel = n => n.p ? tx(n.p, 0) : n.t ? n.t[L].toUpperCase() : n.r[L];
   const wName = id => { const n = WG.N[id]; return n.p ? tx(n.p, 0) : n.t ? n.t[L] : n.r[L]; };
-  const W_KEYS = WG.order.filter(id => WG.N[id].p);
+  const wKeys = () => WG.order.filter(id => WG.N[id].p);
+  const wTitle = () => u(wPanel === 'infl' ? 'windI' : 'wind');
 
   /* ───────── saved board state (per viewer) ───────── */
   let items = [];
@@ -2140,13 +2301,13 @@ footer{padding-block:28px 48px;display:flex;justify-content:space-between;gap:16
   function renderHeader() {
     document.documentElement.lang = L === 'en' ? 'en' : 'pt-BR';
     $('lang-pt').setAttribute('aria-pressed', L === 'pt'); $('lang-en').setAttribute('aria-pressed', L === 'en');
-    const vn = vnum(), V = vn ? u('v' + vn) : view === 'painel' ? u('vw') : u('vm');
-    $('eb-left').textContent = vn ? `${u('almanac')} · ${u('vol')} ${ROMAN[vn]}` : `${u('almanac')} · ${view === 'painel' ? u('wind') : u('board')}`;
+    const vn = vnum(), V = vn ? u('v' + vn) : view === 'painel' ? u(wPanel === 'infl' ? 'vi' : 'vw') : u('vm');
+    $('eb-left').textContent = vn ? `${u('almanac')} · ${u('vol')} ${ROMAN[vn]}` : `${u('almanac')} · ${view === 'painel' ? wTitle() : u('board')}`;
     $('lede-t').textContent = V[1]; $('lede-s').textContent = V[2]; $('foot-r').textContent = V[3];
     vols.setAttribute('aria-label', u('wViews')); nav.setAttribute('aria-label', u('filterBy'));
     vols.innerHTML =
       [1, 2, 3].map(v => `<button type="button" id="view-v${v}" data-view="v${v}" aria-pressed="${view === 'v' + v}"><span class="num">${ROMAN[v]}</span><span class="nm">${u('v' + v)[0]}</span><span class="ct">${VOL[v].length} ${u('plates')}</span></button>`).join('') +
-      `<button type="button" id="view-painel" data-view="painel" aria-pressed="${view === 'painel'}"><svg class="wico" viewBox="0 0 34 44" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 15 H22 a5 5 0 1 0 -5 -5"/><path d="M2 23 H29"/><path d="M2 31 H20 a5 5 0 1 1 -5 5"/></svg><span class="nm">${u('wind')}</span><span class="ct">${u('wElems')(WG.order.length)}</span></button>` +
+      `<button type="button" id="view-painel" data-view="painel" aria-pressed="${view === 'painel'}"><svg class="wico" viewBox="0 0 34 44" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 15 H22 a5 5 0 1 0 -5 -5"/><path d="M2 23 H29"/><path d="M2 31 H20 a5 5 0 1 1 -5 5"/></svg><span class="nm">${u('wPanels')}</span><span class="ct">${u('wPanelsCt')(Object.keys(WGS).length)}</span></button>` +
       `<button type="button" id="view-mural" data-view="mural" aria-pressed="${view === 'mural'}"><svg class="pin" viewBox="0 0 30 44" aria-hidden="true"><circle cx="15" cy="9" r="7" fill="currentColor"/><line x1="15" y1="16" x2="15" y2="42" stroke="currentColor" stroke-width="1.6"/></svg><span class="nm">${u('board')}</span><span class="ct" id="mural-ct">${u('boardCt')(items.length)}</span></button>`;
   }
 
@@ -2154,8 +2315,9 @@ footer{padding-block:28px 48px;display:flex;justify-content:space-between;gap:16
     const vn = vnum();
     if (view === 'painel') {
       nav.hidden = false;
-      nav.innerHTML = [['', u('wAllT'), WG.order.length], ...WT.map(t => ['@t:' + t.id, t[L], wReach('@t:' + t.id).size - 3])]
+      nav.innerHTML = [['', u('wAllT'), WG.order.length], ...WG.T.map(t => ['@t:' + t.id, t[L], wReach('@t:' + t.id).size - 3])]
         .map(([id, name, n]) => `<button type="button" data-wsel="${id}" aria-pressed="${(wSel || '') === id}">${esc(name)}<sup>${n}</sup></button>`).join('') +
+        `<span class="cover-tg" role="group" aria-label="${u('wPan')}"><span>${u('wPan')}</span>${[['vento', u('wPV')], ['infl', u('wPI')]].map(([v, t]) => `<button type="button" data-wpanel="${v}" aria-pressed="${wPanel === v}">${t}</button>`).join('')}</span>` +
         `<span class="cover-tg" role="group" aria-label="${u('wDiag')}"><span>${u('wDiag')}</span>${[['lines', u('wLines')], ['img', u('wImgs')]].map(([v, t]) => `<button type="button" data-wmode="${v}" aria-pressed="${wMode === v}">${t}</button>`).join('')}</span>`;
       return;
     }
@@ -2230,12 +2392,12 @@ footer{padding-block:28px 48px;display:flex;justify-content:space-between;gap:16
     const x = [14];
     for (let c = 0; c < 5; c++) x.push(x[c] + OFF + Math.max(...cols[c].map(id => N[id].w)) + GAP[c]);
     const top = 48, bot = 18, row = 25, tgap = 0.9;
-    const u3 = cols[3].length + (WT.length - 1) * tgap;
+    const u3 = cols[3].length + (WG.T.length - 1) * tgap;
     const H = top + bot + Math.max(u3, cols[4].length, cols[5].length) * row, av = H - top - bot;
     let y = top, s = av / u3; y += s / 2;
-    WT.forEach((t, i) => { N['@t:' + t.id].kid.filter(k => N[k].col === 3).forEach(k => { N[k].y = y; y += s; }); y += i < WT.length - 1 ? tgap * s : 0; });
+    WG.T.forEach((t, i) => { N['@t:' + t.id].kid.filter(k => N[k].col === 3).forEach(k => { N[k].y = y; y += s; }); y += i < WG.T.length - 1 ? tgap * s : 0; });
     cols[2].forEach(id => { const ks = N[id].kid.filter(k => N[k].col === 3); N[id].y = ks.reduce((a, k) => a + N[k].y, 0) / ks.length; });
-    N['@vento'].y = N['@ar'].y = cols[2].reduce((a, id) => a + N[id].y, 0) / cols[2].length;
+    N['@hub'].y = N['@ar'].y = cols[2].reduce((a, id) => a + N[id].y, 0) / cols[2].length;
     [4, 5].forEach(c => {
       const bary = id => N[id].par.reduce((a, p) => a + N[p].y, 0) / N[id].par.length;
       cols[c].sort((a, b) => bary(a) - bary(b) || ids.indexOf(a) - ids.indexOf(b));
@@ -2252,7 +2414,7 @@ footer{padding-block:28px 48px;display:flex;justify-content:space-between;gap:16
     : `<rect class="mk" x="${x - 3.4}" y="${y - 3.4}" width="6.8" height="6.8"/>`;
   function wSvg() {
     const N = WG.N, G = layoutW(), f = v => Math.round(v * 10) / 10;
-    const heads = [[0, 0], [1, 2], [2, 3], [3, 4], [4, 5]].map(([i, c]) => `<g>${c ? wMarker(c, G.x[c], 15) : ''}<text class="hd" x="${c ? G.x[c] + 11 : G.x[0] - 6}" y="15" dy=".35em">${u('wCols')[i].toUpperCase()}</text></g>`).join('');
+    const heads = [[0, 0], [1, 2], [2, 3], [3, 4], [4, 5]].map(([i, c]) => `<g>${c ? wMarker(c, G.x[c], 15) : ''}<text class="hd" x="${c ? G.x[c] + 11 : G.x[0] - 6}" y="15" dy=".35em">${(i ? u('wCols')[i] : `${wName('@ar')} · ${wName('@hub')}`).toUpperCase()}</text></g>`).join('');
     const edges = [];
     WG.order.forEach(b => N[b].par.forEach(a => {
       const A = N[a], B = N[b], sx = A.x + G.OFF + A.w + 7, ex = B.x - 8, mx = (sx + ex) / 2;
@@ -2264,7 +2426,7 @@ footer{padding-block:28px 48px;display:flex;justify-content:space-between;gap:16
       const kick = n.p ? `${u('plate')} ${n.p.num}. ` : n.t ? `${u('wTheme')}. ` : '';
       return `<g class="wn" data-wn="${id}" tabindex="0" role="button" aria-label="${esc(kick + wName(id))}"><rect class="hl" x="${f(lx - 5)}" y="${f(n.y - h / 2)}" width="${f(n.w + 10)}" height="${h}"/>${wMarker(c, f(n.x), f(n.y))}<text class="${cls}" x="${f(lx)}" y="${f(n.y)}" dy=".35em">${esc(wLabel(n))}</text></g>`;
     }).join('');
-    return `<svg class="wmap" id="wmap" viewBox="0 0 ${G.W} ${G.H}" style="min-width:${Math.round(G.W * 0.76)}px" role="group" aria-label="${esc(u('wind'))}"><line class="hdl" x1="0" x2="${G.W}" y1="30" y2="30"/>${heads}<g>${edges.join('')}</g><g>${nodes}</g></svg>`;
+    return `<svg class="wmap" id="wmap" viewBox="0 0 ${G.W} ${G.H}" style="min-width:${Math.round(G.W * 0.76)}px" role="group" aria-label="${esc(wTitle())}"><line class="hdl" x1="0" x2="${G.W}" y1="30" y2="30"/>${heads}<g>${edges.join('')}</g><g>${nodes}</g></svg>`;
   }
   function wReach(id) {
     const N = WG.N, s = new Set([id]);
@@ -2310,8 +2472,8 @@ footer{padding-block:28px 48px;display:flex;justify-content:space-between;gap:16
   function wLayoutImg() {
     const N = WG.N, ids = WG.order, TAU = Math.PI * 2, P = {};
     const cols = [0, 1, 2, 3, 4, 5].map(c => ids.filter(id => N[id].col === c));
-    const g = 0.9, st = TAU / (cols[3].length + WT.length * g); let a = -Math.PI / 2 + st / 2;
-    WT.forEach(t => { N['@t:' + t.id].kid.filter(k => N[k].col === 3).forEach(k => { P[k] = a; a += st; }); a += g * st; });
+    const g = 0.9, st = TAU / (cols[3].length + WG.T.length * g); let a = -Math.PI / 2 + st / 2;
+    WG.T.forEach(t => { N['@t:' + t.id].kid.filter(k => N[k].col === 3).forEach(k => { P[k] = a; a += st; }); a += g * st; });
     const cmean = arr => arr.length ? Math.atan2(arr.reduce((s, x) => s + Math.sin(x), 0), arr.reduce((s, x) => s + Math.cos(x), 0)) : 0;
     cols[2].forEach(id => { P[id] = cmean(N[id].kid.filter(k => N[k].col === 3).map(k => P[k])); });
     const dang = (x, y) => { let d = (x - y) % TAU; if (d > Math.PI) d -= TAU; if (d < -Math.PI) d += TAU; return d; };
@@ -2337,7 +2499,7 @@ footer{padding-block:28px 48px;display:flex;justify-content:space-between;gap:16
     const defs = [], edges = [], nodes = [];
     WG.order.forEach(b => N[b].par.forEach(a => {
       if (a === '@ar') return;
-      const ra = a === '@vento' ? W_R[1] : W_R[N[a].col], rb = W_R[N[b].col], aa = P[a] !== undefined ? P[a] : P[b];
+      const ra = a === '@hub' ? W_R[1] : W_R[N[a].col], rb = W_R[N[b].col], aa = P[a] !== undefined ? P[a] : P[b];
       const s = pol(ra, aa), c1 = pol(ra + (rb - ra) * 0.45, aa), c2 = pol(rb - (rb - ra) * 0.45, P[b]), e = pos(b);
       edges.push(`<path class="e" data-a="${a}" data-b="${b}" d="M${f(s[0])} ${f(s[1])}C${f(c1[0])} ${f(c1[1])} ${f(c2[0])} ${f(c2[1])} ${f(e[0])} ${f(e[1])}"/>`);
     }));
@@ -2353,23 +2515,23 @@ footer{padding-block:28px 48px;display:flex;justify-content:space-between;gap:16
       const r = W_RN[c], cid = `wc${i}`, ph = photosOf(id)[0];
       defs.push(`<clipPath id="${cid}"><circle cx="${f(x)}" cy="${f(y)}" r="${r}"/></clipPath>`);
       const fill = ph ? `<image href="${esc(ph.cur ? ph.src.replace(/^img\//, 'img/t/') : ph.src)}" x="${f(x - r)}" y="${f(y - r)}" width="${2 * r}" height="${2 * r}" preserveAspectRatio="xMidYMid slice" clip-path="url(#${cid})"/>`
-        : `<g clip-path="url(#${cid})"><svg x="${f(x - r * 0.86)}" y="${f(y - r * 0.645)}" width="${f(r * 1.72)}" height="${f(r * 1.29)}" viewBox="0 0 240 180" preserveAspectRatio="xMidYMid meet">${art[id]()}</svg></g>`;
+        : `<g class="art" clip-path="url(#${cid})"><svg x="${f(x - r * 0.86)}" y="${f(y - r * 0.645)}" width="${f(r * 1.72)}" height="${f(r * 1.29)}" viewBox="0 0 240 180" preserveAspectRatio="xMidYMid meet">${art[id]()}</svg></g>`;
       const deg = P[id] * 180 / Math.PI, flip = Math.cos(P[id]) < 0, [lx, ly] = pol(W_R[c] + r + 9, P[id]);
       nodes.push(`${open}<circle class="bg" cx="${f(x)}" cy="${f(y)}" r="${r}"/>${fill}<circle class="ring" cx="${f(x)}" cy="${f(y)}" r="${r}"/><text class="lb" x="${f(lx)}" y="${f(ly)}" dy=".35em" text-anchor="${flip ? 'end' : 'start'}" transform="rotate(${f(deg + (flip ? 180 : 0))} ${f(lx)} ${f(ly)})">${esc(tx(n.p, 0))}</text></g>`);
     });
     const guides = [3, 4, 5].map(c => `<circle class="gd" cx="${cx}" cy="${cy}" r="${W_R[c]}"/>`).join('');
     const legend = [[3, u('wCols')[2]], [4, u('wCols')[3]], [5, u('wCols')[4]]].map(([c, t], j) => `<text class="hd" x="14" y="${22 + j * 18}">${['●', '○', '■'][j]} ${esc(t.toUpperCase())} · ${u('wRing')(j + 1)}</text>`).join('');
-    return `<svg class="wmap wimg" id="wmap" viewBox="0 0 ${2 * E} ${2 * E}" style="min-width:860px;max-width:1320px;margin:0 auto" role="group" aria-label="${esc(u('wind'))}"><defs>${defs.join('')}</defs>${legend}${guides}<g>${edges.join('')}</g><g>${nodes.join('')}</g></svg>`;
+    return `<svg class="wmap wimg" id="wmap" viewBox="0 0 ${2 * E} ${2 * E}" style="min-width:860px;max-width:1320px;margin:0 auto" role="group" aria-label="${esc(wTitle())}"><defs>${defs.join('')}</defs>${legend}${guides}<g>${edges.join('')}</g><g>${nodes.join('')}</g></svg>`;
   }
   function renderPainel() {
     main.className = 'wpanel';
-    main.innerHTML = `<div class="winfo idle" id="winfo" aria-live="polite"></div><div class="wscroll">${wMode === 'img' ? wSvgImg() : wSvg()}</div>`;
-    wInfo(); wPaint(); setFoot();
+    main.innerHTML = `<div class="winfo idle" id="winfo" aria-live="polite"></div><div class="wzoom"><div class="wzctl" role="group" aria-label="Zoom"><button type="button" data-wzoom="-1" aria-label="${u('wZoomOut')}">−</button><span id="wzval" aria-live="polite">100%</span><button type="button" data-wzoom="1" aria-label="${u('wZoomIn')}">+</button><button type="button" data-wzoom="0">${u('wFit')}</button></div><div class="wscroll" id="wscroll">${wMode === 'img' ? wSvgImg() : wSvg()}</div><p class="wzhint">${u('wZoomHint')}</p></div>`;
+    wInfo(); wPaint(); setFoot(); wApplyZoom(wZoom);
   }
 
   function setFoot() {
     const vn = vnum();
-    if (view === 'painel') { $('foot-l').textContent = `Air_ · ${u('wind')} · ${u('wElems')(WG.order.length)}`; return; }
+    if (view === 'painel') { $('foot-l').textContent = `Air_ · ${wTitle()} · ${u('wElems')(WG.order.length)}`; return; }
     if (!vn) { $('foot-l').textContent = `Air_ · ${u('boardCt')(items.length)}`; return; }
     const n = VOL[vn].filter(p => filter === 'all' || p.dom === filter).length;
     $('foot-l').textContent = `Air_ · ${u('vol')} ${ROMAN[vn]} · ${n} ${u('plates')}`;
@@ -2405,7 +2567,7 @@ footer{padding-block:28px 48px;display:flex;justify-content:space-between;gap:16
   /* ───────── detail sheet ───────── */
   function seqFor(k) {
     if (view === 'mural') return items.map(i => i.k);
-    if (view === 'painel' && W_KEYS.includes(k)) return W_KEYS;
+    if (view === 'painel' && wKeys().includes(k)) return wKeys();
     const p = BY[k];
     return listFor(p.vol).filter(x => p.vol !== vnum() || filter === 'all' || x.dom === filter).map(x => x.key);
   }
@@ -2514,7 +2676,9 @@ footer{padding-block:28px 48px;display:flex;justify-content:space-between;gap:16
   /* ───────── events ───────── */
   document.addEventListener('click', e => {
     const b = e.target.closest('button'); if (!b) { if (e.target === dlg) dlg.close(); return; }
-    if (b.dataset.wmode) { wMode = b.dataset.wmode; try { localStorage.setItem('air-wmode', wMode); } catch (er) {} nav.querySelectorAll('[data-wmode]').forEach(x => x.setAttribute('aria-pressed', x === b)); renderPainel(); return; }
+    if (b.dataset.wpanel) { if (b.dataset.wpanel !== wPanel) { wPanel = b.dataset.wpanel; WG = WGS[wPanel]; wSel = null; wHover = null; wZoom = 1; try { localStorage.setItem('air-wpanel', wPanel); } catch (er) {} renderHeader(); renderFilters(); renderPainel(); } return; }
+    if (b.dataset.wzoom !== undefined) { wZoomBy(+b.dataset.wzoom); return; }
+    if (b.dataset.wmode) { wMode = b.dataset.wmode; wZoom = 1; try { localStorage.setItem('air-wmode', wMode); } catch (er) {} nav.querySelectorAll('[data-wmode]').forEach(x => x.setAttribute('aria-pressed', x === b)); renderPainel(); return; }
     if (b.dataset.wsel !== undefined) { wSelect(b.dataset.wsel, !!b.closest('#winfo')); return; }
     if (b.dataset.lang) { if (b.dataset.lang !== L) { L = b.dataset.lang; try { localStorage.setItem('air-lang', L); } catch (er) {} render(); } return; }
     if (b.dataset.view && (!b.dataset.act || b.dataset.act === 'view')) { if (b.dataset.view !== view) { view = b.dataset.view; filter = 'all'; render(); window.scrollTo({ top: 0 }); } return; }
@@ -2545,6 +2709,42 @@ footer{padding-block:28px 48px;display:flex;justify-content:space-between;gap:16
       const nb = main.querySelector(`[data-act="mv"][data-k="${k}"][data-d="${b.dataset.d}"]`); if (nb && !nb.disabled) nb.focus();
     }
   });
+
+  /* ───────── panel zoom and pan ───────── */
+  let wZoom = 1, wDrag = null, wDragged = false;
+  function wApplyZoom(z, fx, fy) {
+    const sc = $('wscroll'), svg = $('wmap'); if (!sc || !svg) return;
+    const oldW = svg.getBoundingClientRect().width || 1, oldH = svg.getBoundingClientRect().height || 1;
+    const px = fx === undefined ? sc.clientWidth / 2 : fx, py = fy === undefined ? Math.min(sc.clientHeight, window.innerHeight) / 2 : fy;
+    const rx = (sc.scrollLeft + px) / oldW, ry = (sc.scrollTop + py) / oldH;
+    wZoom = Math.max(1, Math.min(6, Math.round(z * 100) / 100));
+    const minW = parseFloat(svg.style.minWidth) || 0, base = Math.max(sc.clientWidth, minW);
+    if (wZoom === 1) { svg.style.width = ''; svg.style.maxWidth = svg.classList.contains('wimg') ? '1320px' : ''; sc.classList.remove('zoomed'); }
+    else { svg.style.width = Math.round(base * wZoom) + 'px'; svg.style.maxWidth = 'none'; sc.classList.add('zoomed'); }
+    const r = svg.getBoundingClientRect();
+    if (wZoom > 1) { sc.scrollLeft = rx * r.width - px; sc.scrollTop = ry * r.height - py; }
+    const v = $('wzval'); if (v) v.textContent = Math.round(wZoom * 100) + '%';
+  }
+  function wZoomBy(d) { if (d === 0) { wApplyZoom(1); return; } wApplyZoom(d > 0 ? wZoom * 1.5 : wZoom / 1.5); }
+  main.addEventListener('wheel', e => {
+    if (view !== 'painel' || !e.ctrlKey) return;
+    const sc = e.target.closest && e.target.closest('#wscroll'); if (!sc) return;
+    e.preventDefault(); const b = sc.getBoundingClientRect();
+    wApplyZoom(wZoom * Math.exp(-e.deltaY * 0.01), e.clientX - b.left, e.clientY - b.top);
+  }, { passive: false });
+  main.addEventListener('pointerdown', e => {
+    if (view !== 'painel' || wZoom === 1 || e.button !== 0) return;
+    const sc = e.target.closest && e.target.closest('#wscroll'); if (!sc) return;
+    wDrag = { x: e.clientX, y: e.clientY, l: sc.scrollLeft, t: sc.scrollTop, sc }; wDragged = false;
+  });
+  window.addEventListener('pointermove', e => {
+    if (!wDrag) return; const dx = e.clientX - wDrag.x, dy = e.clientY - wDrag.y;
+    if (!wDragged && Math.abs(dx) + Math.abs(dy) > 4) { wDragged = true; wDrag.sc.classList.add('grabbing'); }
+    if (wDragged) { wDrag.sc.scrollLeft = wDrag.l - dx; wDrag.sc.scrollTop = wDrag.t - dy; }
+  });
+  window.addEventListener('pointerup', () => { if (wDrag) { wDrag.sc.classList.remove('grabbing'); wDrag = null; } });
+  main.addEventListener('click', e => { if (wDragged) { e.stopImmediatePropagation(); e.preventDefault(); wDragged = false; } }, true);
+  window.addEventListener('resize', () => { if (view === 'painel' && wZoom > 1) wApplyZoom(wZoom); });
   main.addEventListener('click', e => {
     if (view !== 'painel') return;
     const g = e.target.closest('[data-wn]');
