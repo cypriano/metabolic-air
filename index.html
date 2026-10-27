@@ -252,6 +252,25 @@ footer{padding-block:28px 48px;display:flex;justify-content:space-between;gap:16
 .wmap .wn.sel .hl{fill:var(--ink)}
 .wmap .wn.sel text{fill:var(--paper)}
 .wmap .wn.sel .mk.o{fill:var(--ink)}
+.wimg .gd{fill:none;stroke:var(--line);stroke-width:1}
+.wimg .e{stroke-opacity:.26}
+.wimg .bg{fill:var(--paper)}
+.wimg .ring{fill:none;stroke:var(--ink);stroke-width:1.4}
+.wimg .k5 .ring{stroke-width:2}
+.wimg image{filter:grayscale(1) contrast(1.06)}
+.wimg .lb{font:400 12px var(--body)}
+.wimg .k3 .lb,.wimg .k4 .lb{opacity:0;transition:opacity .15s}
+.wimg .wn:hover .lb,.wimg .wn:focus-visible .lb,.wimg.focus .wn.on .lb{opacity:1}
+.wmap.wimg .tl{font:500 8.5px var(--mono);letter-spacing:.08em;fill:var(--paper)}
+.wmap.wimg .ti{font:400 32px var(--display);fill:var(--paper)}
+.wimg .vr{fill:none;stroke:var(--ink);stroke-width:1.5}
+.wimg .hit{fill:none;stroke:transparent;stroke-width:20}
+.wmap.wimg .wn.sel text{fill:var(--ink)}
+.wmap.wimg .wn.sel .tl,.wmap.wimg .wn.sel .ti{fill:var(--paper)}
+.wimg .wn.sel .ring{stroke-width:4.5}
+.wimg .wn.sel .vr{stroke-width:4}
+.wimg .wn:focus-visible .ring{stroke-width:3.5}
+.wimg .wn:hover .ring{stroke-width:3}
 
 @media (max-width:860px){
   .vols{grid-template-columns:1fr 1fr}
@@ -333,6 +352,7 @@ footer{padding-block:28px 48px;display:flex;justify-content:space-between;gap:16
       wCols: ['Ar · Vento', 'Temas', 'I · Fenômenos', 'II · Dispositivos', 'III · Referências'],
       wHint: 'Toque num elemento para ver de onde ele vem e o que ele liga. Passe o mouse para seguir as linhas.',
       wCount: (a, b, c, d) => `${d} temas · ${a} fenômenos · ${b} dispositivos · ${c} referências`,
+      wDiag: 'Diagrama', wLines: 'Linhas', wImgs: 'Imagens', wRing: n => `anel ${n}`,
       wChain: 'Caminho', wFrom: 'Vem de', wTo: 'Liga a', wTheme: 'Tema', wClear: 'Limpar', wAllT: 'Todos',
       vm: ['Meu mural', 'Seu mural de referências.', 'As pranchas que você salvou ficam aqui, com suas anotações. Reordene, comente e use como painel de pesquisa para o projeto.', 'Air_ · mural pessoal']
     },
@@ -351,6 +371,7 @@ footer{padding-block:28px 48px;display:flex;justify-content:space-between;gap:16
       wCols: ['Air · Wind', 'Themes', 'I · Phenomena', 'II · Devices', 'III · References'],
       wHint: 'Tap an element to see where it comes from and what it links to. Hover to follow the lines.',
       wCount: (a, b, c, d) => `${d} themes · ${a} phenomena · ${b} devices · ${c} references`,
+      wDiag: 'Diagram', wLines: 'Lines', wImgs: 'Images', wRing: n => `ring ${n}`,
       wChain: 'Path', wFrom: 'Comes from', wTo: 'Links to', wTheme: 'Theme', wClear: 'Clear', wAllT: 'All',
       vm: ['My board', 'Your reference board.', 'The plates you save collect here with your notes. Reorder, annotate and use it as a research board for the project.', 'Air_ · personal board']
     }
@@ -2134,7 +2155,8 @@ footer{padding-block:28px 48px;display:flex;justify-content:space-between;gap:16
     if (view === 'painel') {
       nav.hidden = false;
       nav.innerHTML = [['', u('wAllT'), WG.order.length], ...WT.map(t => ['@t:' + t.id, t[L], wReach('@t:' + t.id).size - 3])]
-        .map(([id, name, n]) => `<button type="button" data-wsel="${id}" aria-pressed="${(wSel || '') === id}">${esc(name)}<sup>${n}</sup></button>`).join('');
+        .map(([id, name, n]) => `<button type="button" data-wsel="${id}" aria-pressed="${(wSel || '') === id}">${esc(name)}<sup>${n}</sup></button>`).join('') +
+        `<span class="cover-tg" role="group" aria-label="${u('wDiag')}"><span>${u('wDiag')}</span>${[['lines', u('wLines')], ['img', u('wImgs')]].map(([v, t]) => `<button type="button" data-wmode="${v}" aria-pressed="${wMode === v}">${t}</button>`).join('')}</span>`;
       return;
     }
     if (!vn) { nav.hidden = true; nav.innerHTML = ''; return; }
@@ -2281,9 +2303,67 @@ footer{padding-block:28px 48px;display:flex;justify-content:space-between;gap:16
     nav.querySelectorAll('[data-wsel]').forEach(b => b.setAttribute('aria-pressed', b.dataset.wsel === (wSel || '')));
     if (focusNode && wSel) { const g = document.querySelector(`#wmap [data-wn="${wSel}"]`); if (g) { g.focus({ preventScroll: true }); g.scrollIntoView({ block: 'nearest', inline: 'nearest' }); } }
   }
+  /* ───────── wind panel, image view: concentric rings of circles ───────── */
+  let wMode = 'lines';
+  try { const m = localStorage.getItem('air-wmode'); if (m === 'img' || m === 'lines') wMode = m; } catch (e) {}
+  const W_R = [0, 88, 205, 320, 455, 600], W_RN = { 3: 25, 4: 29, 5: 31 };
+  function wLayoutImg() {
+    const N = WG.N, ids = WG.order, TAU = Math.PI * 2, P = {};
+    const cols = [0, 1, 2, 3, 4, 5].map(c => ids.filter(id => N[id].col === c));
+    const g = 0.9, st = TAU / (cols[3].length + WT.length * g); let a = -Math.PI / 2 + st / 2;
+    WT.forEach(t => { N['@t:' + t.id].kid.filter(k => N[k].col === 3).forEach(k => { P[k] = a; a += st; }); a += g * st; });
+    const cmean = arr => arr.length ? Math.atan2(arr.reduce((s, x) => s + Math.sin(x), 0), arr.reduce((s, x) => s + Math.cos(x), 0)) : 0;
+    cols[2].forEach(id => { P[id] = cmean(N[id].kid.filter(k => N[k].col === 3).map(k => P[k])); });
+    const dang = (x, y) => { let d = (x - y) % TAU; if (d > Math.PI) d -= TAU; if (d < -Math.PI) d += TAU; return d; };
+    [4, 5].forEach(c => {
+      const list = cols[c].map(id => ({ id, p: cmean(N[id].par.filter(q => P[q] !== undefined).map(q => P[q])) })).sort((x, y) => x.p - y.p);
+      const n = list.length, s = TAU / n; let best = null;
+      for (let r = 0; r < n; r++) for (let o = 0; o < 48; o++) {
+        const off = -Math.PI + o * s / 48; let cost = 0;
+        for (let i = 0; i < n; i++) { const d = dang(list[(i + r) % n].p, off + i * s); cost += d * d; }
+        if (!best || cost < best.c) best = { c: cost, r, off };
+      }
+      for (let i = 0; i < n; i++) P[list[(i + best.r) % n].id] = best.off + i * s;
+    });
+    return P;
+  }
+  const wWrap = (s, n) => { const out = []; s.split(' ').forEach(w => { const l = out[out.length - 1]; if (l && (l + ' ' + w).length <= n) out[out.length - 1] = l + ' ' + w; else out.push(w); }); return out; };
+  function wSvgImg() {
+    const N = WG.N, P = wLayoutImg(), f = v => Math.round(v * 10) / 10;
+    const maxL = Math.max(...WG.order.filter(id => N[id].col >= 3).map(id => wMeasure(tx(N[id].p, 0), 'n')));
+    const E = Math.ceil(W_R[5] + W_RN[5] + 12 + maxL + 40), cx = E, cy = E;
+    const pol = (r, a) => [cx + r * Math.cos(a), cy + r * Math.sin(a)];
+    const pos = id => { const n = N[id]; return n.col < 2 ? [cx, cy] : pol(W_R[n.col], P[id]); };
+    const defs = [], edges = [], nodes = [];
+    WG.order.forEach(b => N[b].par.forEach(a => {
+      if (a === '@ar') return;
+      const ra = a === '@vento' ? W_R[1] : W_R[N[a].col], rb = W_R[N[b].col], aa = P[a] !== undefined ? P[a] : P[b];
+      const s = pol(ra, aa), c1 = pol(ra + (rb - ra) * 0.45, aa), c2 = pol(rb - (rb - ra) * 0.45, P[b]), e = pos(b);
+      edges.push(`<path class="e" data-a="${a}" data-b="${b}" d="M${f(s[0])} ${f(s[1])}C${f(c1[0])} ${f(c1[1])} ${f(c2[0])} ${f(c2[1])} ${f(e[0])} ${f(e[1])}"/>`);
+    }));
+    WG.order.forEach((id, i) => {
+      const n = N[id], c = n.col, [x, y] = pos(id), al = esc(n.p ? `${u('plate')} ${n.p.num}. ${wName(id)}` : n.t ? `${u('wTheme')}. ${wName(id)}` : wName(id));
+      const open = `<g class="wn k${c}" data-wn="${id}" tabindex="0" role="button" aria-label="${al}"><title>${al}</title>`;
+      if (c === 0) { nodes.push(`${open}<circle class="mk" cx="${cx}" cy="${cy}" r="44"/><text class="ti" x="${cx}" y="${cy}" dy=".35em" text-anchor="middle">${esc(wName(id))}</text></g>`); return; }
+      if (c === 1) { nodes.push(`${open}<circle class="vr" cx="${cx}" cy="${cy}" r="${W_R[1]}"/><circle class="hit" cx="${cx}" cy="${cy}" r="${W_R[1]}"/><text class="th" x="${cx}" y="${cy - W_R[1] - 14}" text-anchor="middle">${esc(wName(id))}</text></g>`); return; }
+      if (c === 2) {
+        const ls = wWrap(wLabel(n), 10), lh = 11, y0 = y - (ls.length - 1) * lh / 2;
+        nodes.push(`${open}<circle class="mk" cx="${f(x)}" cy="${f(y)}" r="42"/>${ls.map((l, j) => `<text class="tl" x="${f(x)}" y="${f(y0 + j * lh)}" dy=".35em" text-anchor="middle">${esc(l)}</text>`).join('')}</g>`); return;
+      }
+      const r = W_RN[c], cid = `wc${i}`, ph = photosOf(id)[0];
+      defs.push(`<clipPath id="${cid}"><circle cx="${f(x)}" cy="${f(y)}" r="${r}"/></clipPath>`);
+      const fill = ph ? `<image href="${esc(ph.cur ? ph.src.replace(/^img\//, 'img/t/') : ph.src)}" x="${f(x - r)}" y="${f(y - r)}" width="${2 * r}" height="${2 * r}" preserveAspectRatio="xMidYMid slice" clip-path="url(#${cid})"/>`
+        : `<g clip-path="url(#${cid})"><svg x="${f(x - r * 0.86)}" y="${f(y - r * 0.645)}" width="${f(r * 1.72)}" height="${f(r * 1.29)}" viewBox="0 0 240 180" preserveAspectRatio="xMidYMid meet">${art[id]()}</svg></g>`;
+      const deg = P[id] * 180 / Math.PI, flip = Math.cos(P[id]) < 0, [lx, ly] = pol(W_R[c] + r + 9, P[id]);
+      nodes.push(`${open}<circle class="bg" cx="${f(x)}" cy="${f(y)}" r="${r}"/>${fill}<circle class="ring" cx="${f(x)}" cy="${f(y)}" r="${r}"/><text class="lb" x="${f(lx)}" y="${f(ly)}" dy=".35em" text-anchor="${flip ? 'end' : 'start'}" transform="rotate(${f(deg + (flip ? 180 : 0))} ${f(lx)} ${f(ly)})">${esc(tx(n.p, 0))}</text></g>`);
+    });
+    const guides = [3, 4, 5].map(c => `<circle class="gd" cx="${cx}" cy="${cy}" r="${W_R[c]}"/>`).join('');
+    const legend = [[3, u('wCols')[2]], [4, u('wCols')[3]], [5, u('wCols')[4]]].map(([c, t], j) => `<text class="hd" x="14" y="${22 + j * 18}">${['●', '○', '■'][j]} ${esc(t.toUpperCase())} · ${u('wRing')(j + 1)}</text>`).join('');
+    return `<svg class="wmap wimg" id="wmap" viewBox="0 0 ${2 * E} ${2 * E}" style="min-width:860px;max-width:1320px;margin:0 auto" role="group" aria-label="${esc(u('wind'))}"><defs>${defs.join('')}</defs>${legend}${guides}<g>${edges.join('')}</g><g>${nodes.join('')}</g></svg>`;
+  }
   function renderPainel() {
     main.className = 'wpanel';
-    main.innerHTML = `<div class="winfo idle" id="winfo" aria-live="polite"></div><div class="wscroll">${wSvg()}</div>`;
+    main.innerHTML = `<div class="winfo idle" id="winfo" aria-live="polite"></div><div class="wscroll">${wMode === 'img' ? wSvgImg() : wSvg()}</div>`;
     wInfo(); wPaint(); setFoot();
   }
 
@@ -2318,6 +2398,7 @@ footer{padding-block:28px 48px;display:flex;justify-content:space-between;gap:16
   function refreshPhotos() {
     document.querySelectorAll('[data-slot]').forEach(el => { const p = BY[el.dataset.slot]; const want = coverOf(p.key) || 'art', has = el.dataset.cv || 'art'; if (want !== has) { el.innerHTML = figInner(p); el.dataset.cv = want; } });
     document.querySelectorAll('[data-pc]').forEach(b => { const n = photosOf(b.dataset.pc).length; b.textContent = `${u('photos')}${n ? ` · ${n}` : ''}`; });
+    if (view === 'painel' && wMode === 'img' && $('wmap')) { renderPainel(); }
     if (dlg.open && openKey) renderDetail(openKey);
   }
 
@@ -2433,6 +2514,7 @@ footer{padding-block:28px 48px;display:flex;justify-content:space-between;gap:16
   /* ───────── events ───────── */
   document.addEventListener('click', e => {
     const b = e.target.closest('button'); if (!b) { if (e.target === dlg) dlg.close(); return; }
+    if (b.dataset.wmode) { wMode = b.dataset.wmode; try { localStorage.setItem('air-wmode', wMode); } catch (er) {} nav.querySelectorAll('[data-wmode]').forEach(x => x.setAttribute('aria-pressed', x === b)); renderPainel(); return; }
     if (b.dataset.wsel !== undefined) { wSelect(b.dataset.wsel, !!b.closest('#winfo')); return; }
     if (b.dataset.lang) { if (b.dataset.lang !== L) { L = b.dataset.lang; try { localStorage.setItem('air-lang', L); } catch (er) {} render(); } return; }
     if (b.dataset.view && (!b.dataset.act || b.dataset.act === 'view')) { if (b.dataset.view !== view) { view = b.dataset.view; filter = 'all'; render(); window.scrollTo({ top: 0 }); } return; }
